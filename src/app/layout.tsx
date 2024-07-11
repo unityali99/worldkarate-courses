@@ -1,8 +1,35 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Providers from "@/components/Providers";
+import localFont from "next/font/local";
 
 const inter = Inter({ subsets: ["latin"] });
+const iranSans = localFont({
+  src: [
+    {
+      path: "./fonts/IRANSans-Medium-web.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/IRANSans-Light-web.woff2",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "./fonts/IRANSans-Bold-web.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/IRANSans-UltraLight-web.woff2",
+      weight: "100",
+      style: "normal",
+    },
+  ],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +43,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={iranSans.className}>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }
