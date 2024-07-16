@@ -5,25 +5,22 @@ import FormContainer from "@/layouts/FormContainer";
 import { Text } from "@chakra-ui/react";
 import React from "react";
 
-function LoginPage() {
+function page() {
   return (
     <FormContainer>
       <Text className="font-bold text-xl my-5">ورود به پنل کاربری</Text>
-      <FormInput label="ایمیل:" placeholder="Email@example.com" />
-      <FormInput label="رمز عبور:" placeholder="Password" />
-      <FormButton text="ورود" />
+      <FormInput label="نام" placeholder="" />
+      <FormInput label="نام خانوادگی" placeholder="" />
+      <FormInput label="ایمیل" placeholder="Example@gmail.com" />
+      <FormInput label="رمز عبور" placeholder="Password" />
+      <FormButton text="ثبت نام" />
       <FormFooter
-        text="رمز خود را فراموش کرده اید؟"
-        linkText="ریست رمز"
+        text="ثبت نام کرده اید؟"
+        linkText="ورود"
         href="/auth/forget-password"
-      />
-      <FormFooter
-        text="ثبت نام نکرده اید؟"
-        linkText="ثبت نام"
-        href="/auth/register"
       />
     </FormContainer>
   );
 }
 
-export default LoginPage;
+export default page;
