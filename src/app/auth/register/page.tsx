@@ -4,40 +4,100 @@ import FormFooter from "@/components/Form/FormFooter";
 import FormInput from "@/components/Form/FormInput";
 import FormContainer from "@/layouts/FormContainer";
 import Register, { RegisterType } from "@/schemas/Register";
-import { Text } from "@chakra-ui/react";
+import ApiClient from "@/services/ApiClient";
+import { Alert, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 function Page() {
-  const { register, handleSubmit } = useForm<RegisterType>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterType>({
     resolver: zodResolver(Register),
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const apiClient = new ApiClient<RegisterType>("/register");
+
+  const onSubmit = (data: RegisterType) => {
+    apiClient
+      .post(data)
+      .then((res) => {
+        toast.success(res.data.message);
+      })
+      .catch((error: AxiosError) =>
+        toast.error((error.response?.data as { message: string }).message)
+      );
   };
 
   return (
     <FormContainer>
-      <Text className="font-bold text-xl my-5">ورود به پنل کاربری</Text>
-      <FormInput register={register("firstName")} label="نام" placeholder="" />
+      <Text className="font-bold text-xl my-5">ثبت نام</Text>
       <FormInput
+        dir="rtl"
+        register={register("firstName")}
+        label="نام"
+        placeholder=""
+      />
+      {errors.firstName && (
+        <Alert
+          className="rounded-md text-sm"
+          textColor={"red"}
+          colorScheme="red"
+        >
+          {errors.firstName.message}
+        </Alert>
+      )}
+      <FormInput
+        dir="rtl"
         register={register("lastName")}
         label="نام خانوادگی"
         placeholder=""
       />
+      {errors.lastName && (
+        <Alert
+          className="rounded-md text-sm"
+          textColor={"red"}
+          colorScheme="red"
+        >
+          {errors.lastName.message}
+        </Alert>
+      )}
       <FormInput
+        dir="ltr"
         register={register("email")}
         label="ایمیل"
         placeholder="Example@gmail.com"
       />
+      {errors.email && (
+        <Alert
+          className="rounded-md text-sm"
+          textColor={"red"}
+          colorScheme="red"
+        >
+          {errors.email.message}
+        </Alert>
+      )}
       <FormInput
+        dir="ltr"
         password
         register={register("password")}
         label="رمز عبور"
         placeholder="Password"
       />
+      {errors.password && (
+        <Alert
+          className="rounded-md text-sm"
+          textColor={"red"}
+          colorScheme="red"
+        >
+          {errors.password.message}
+        </Alert>
+      )}
       <FormButton onClick={handleSubmit(onSubmit)} text="ثبت نام" />
       <FormFooter text="ثبت نام کرده اید؟" linkText="ورود" href="/auth/login" />
     </FormContainer>
