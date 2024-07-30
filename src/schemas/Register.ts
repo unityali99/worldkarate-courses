@@ -3,19 +3,28 @@ import { passwordRegex } from "../utils/passwordRegex";
 
 const Register = z.object({
   firstName: z
-    .string({ invalid_type_error: "First name should be of type string" })
-    .min(3, { message: "First name should be atleast 3 characters" })
-    .max(20, "First name cannot be more than 20 characters"),
+    .string({
+      required_error: "لطفا نام را وارد کنید",
+      invalid_type_error: "نام باید فقط از حروف تشکیل شده باشد",
+    })
+    .min(3, { message: "نام باید حداقل 3 کاراتر باشد" })
+    .max(20, "نام نمیتواتند بیشتر از 20 کاراکتر باشد"),
   lastName: z
-    .string({ invalid_type_error: "Last name should be of type string" })
-    .min(3, { message: "Last name should be atleast 3 characters" })
-    .max(20, "Last name cannot be more than 20 characters"),
+    .string({
+      required_error: "لطفا نام خانوادگی را وارد کنید",
+      invalid_type_error: "نام خانوادگی باید فقط از حروف تشکیل شده باشد",
+    })
+    .min(3, { message: "نام خانوادگی باید حداقل 3 کاراتر باشد" })
+    .max(20, "نام خانوادگی نمیتواتند بیشتر از 20 کاراکتر باشد"),
   email: z
-    .string({ required_error: "Email is required" })
-    .email({ message: "Email is not valid" }),
+    .string({ required_error: "لطفا ایمیل را وارد کنید" })
+    .email({ message: "ایمیل وارد شده صحیح نمیباشد" }),
   password: z
-    .string({ required_error: "Password is required" })
-    .regex(passwordRegex),
+    .string({ required_error: "لطفا رمز عبور خودرا انتخاب کنید" })
+    .regex(
+      passwordRegex,
+      "رمز عبور باید حداقل 8 کاراکتر شامل حداقل یک حرف و یک عدد باشد"
+    ),
 });
 
 export type RegisterType = z.infer<typeof Register>;
