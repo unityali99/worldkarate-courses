@@ -1,9 +1,17 @@
-import { Button, Flex, HStack } from "@chakra-ui/react";
+"use client";
+import useAuthStore from "@/utils/store";
+import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import BurgerMenu from "./BurgerMenu";
 
 function Navbar() {
+  const { user, logout } = useAuthStore();
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => setHydrated(true), []);
+
   return (
     <Flex className="py-10 justify-between md:justify-around items-center px-5">
       <HStack className="space-x-0 md:space-x-16">
@@ -21,23 +29,36 @@ function Navbar() {
           اینستاگرام
         </Link>
       </HStack>
-      {/* <HStack
+      {user && (
+        <HStack
           className="space-x-0 md:space-x-10"
           display={{ base: "none", md: "flex" }}
         >
           <Link className="font-light hover:underline" href={"/courses"}>
             دوره ها
           </Link>
-          <Text>Profile</Text>
-        </HStack> */}
-      <Link href={"/auth/login"}>
-        <Button colorScheme="red" p={6}>
-          ورود
-        </Button>
-      </Link>
-      {/* <Box className="md:hidden">
+          <Text>{user?.fullName}</Text>
+          <Link className="font-light hover:underline" href={"/"}>
+            <Button colorScheme="red" p={6} onClick={logout}>
+              خروج
+            </Button>
+          </Link>
+        </HStack>
+      )}
+      {!user ||
+        (!hydrated && (
+          <Link href={"/auth/login"}>
+            <Button colorScheme="red" p={6}>
+              ورود
+            </Button>
+          </Link>
+        ))}
+      {user && (
+        <Box className="md:hidden">
           <BurgerMenu />
-        </Box> */}
+        </Box>
+      )}
+      {!hydrated && <div>Loading</div>}
     </Flex>
   );
 }
