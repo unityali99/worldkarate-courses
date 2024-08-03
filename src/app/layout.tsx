@@ -48,6 +48,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <ToastContainer
+            className={"text-right"}
             position="top-right"
             autoClose={5000}
             hideProgressBar={false}

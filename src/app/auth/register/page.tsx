@@ -8,7 +8,7 @@ import ApiClient from "@/services/ApiClient";
 import { Alert, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -20,10 +20,12 @@ function Page() {
   } = useForm<RegisterType>({
     resolver: zodResolver(Register),
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const apiClient = new ApiClient<RegisterType>("/register");
 
   const onSubmit = (data: RegisterType) => {
+    setIsLoading(true);
     apiClient
       .post(data)
       .then((res) => {
@@ -31,7 +33,8 @@ function Page() {
       })
       .catch((error: AxiosError) =>
         toast.error((error.response?.data as { message: string }).message)
-      );
+      )
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -98,7 +101,11 @@ function Page() {
           {errors.password.message}
         </Alert>
       )}
-      <FormButton onClick={handleSubmit(onSubmit)} text="ثبت نام" />
+      <FormButton
+        onClick={handleSubmit(onSubmit)}
+        text="ثبت نام"
+        isLoading={isLoading}
+      />
       <FormFooter text="ثبت نام کرده اید؟" linkText="ورود" href="/auth/login" />
     </FormContainer>
   );

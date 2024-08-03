@@ -1,12 +1,14 @@
 "use client";
-import { Button } from "@chakra-ui/react";
+import { Button, Spinner } from "@chakra-ui/react";
 import React from "react";
 
 function FormButton({
   text,
+  isLoading,
   onClick,
 }: {
   text: string;
+  isLoading: boolean;
   onClick: (data: any) => void;
 }) {
   return (
@@ -17,7 +19,7 @@ function FormButton({
       textColor={"white"}
       onClick={onClick}
     >
-      {text}
+      {isLoading ? <Spinner color="white" /> : text}
     </Button>
   );
 }

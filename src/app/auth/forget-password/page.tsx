@@ -6,7 +6,7 @@ import FormContainer from "@/layouts/FormContainer";
 import ForgetPassword, { ForgetPasswordType } from "@/schemas/ForgetPassword";
 import { Alert, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 function ForgetPasswordPage() {
@@ -16,9 +16,9 @@ function ForgetPasswordPage() {
     formState: { errors },
   } = useForm<ForgetPasswordType>({ resolver: zodResolver(ForgetPassword) });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSubmit = (data: any) => {};
 
   return (
     <FormContainer>
@@ -38,7 +38,11 @@ function ForgetPasswordPage() {
           {errors.email.message}
         </Alert>
       )}
-      <FormButton onClick={handleSubmit(onSubmit)} text="ارسال" />
+      <FormButton
+        onClick={handleSubmit(onSubmit)}
+        text="ارسال"
+        isLoading={isLoading}
+      />
       <FormFooter
         text="ثبت نام نکرده اید؟"
         linkText="ثبت نام"
