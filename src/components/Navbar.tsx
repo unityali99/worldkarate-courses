@@ -1,13 +1,15 @@
 "use client";
-import useAuthStore from "@/utils/store";
-import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react";
+import useAuth from "@/utils/store";
+import { Box, Button, Flex, HStack, Spinner, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import BurgerMenu from "./BurgerMenu";
+import { toast } from "react-toastify";
+import ProfileLink from "./ProfileLink";
 
 function Navbar() {
-  const { user, logout } = useAuthStore();
+  const { user, logout } = useAuth();
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => setHydrated(true), []);
@@ -37,28 +39,34 @@ function Navbar() {
           <Link className="font-light hover:underline" href={"/courses"}>
             دوره ها
           </Link>
-          <Text>{user?.fullName}</Text>
+          <ProfileLink fullName="ALi Ahmadi" />
           <Link className="font-light hover:underline" href={"/"}>
-            <Button colorScheme="red" p={6} onClick={logout}>
+            <Button
+              colorScheme="red"
+              p={6}
+              onClick={() => {
+                logout();
+                toast.warning("از حساب کاربری خارج شدید");
+              }}
+            >
               خروج
             </Button>
           </Link>
         </HStack>
       )}
-      {!user ||
-        (!hydrated && (
-          <Link href={"/auth/login"}>
-            <Button colorScheme="red" p={6}>
-              ورود
-            </Button>
-          </Link>
-        ))}
+      {!user && hydrated && (
+        <Link href={"/auth/login"}>
+          <Button colorScheme="red" p={6}>
+            ورود
+          </Button>
+        </Link>
+      )}
       {user && (
         <Box className="md:hidden">
           <BurgerMenu />
         </Box>
       )}
-      {!hydrated && <div>Loading</div>}
+      {!hydrated && <Spinner color="black" size={"lg"} />}
     </Flex>
   );
 }

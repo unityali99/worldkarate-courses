@@ -5,17 +5,17 @@ import FormInput from "@/components/Form/FormInput";
 import FormContainer from "@/layouts/FormContainer";
 import Login, { LoginType } from "@/schemas/Login";
 import ApiClient from "@/services/ApiClient";
-import useAuthStore from "@/utils/store";
+import useAuth from "@/utils/store";
 import { Alert, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 function LoginPage() {
-  const { login } = useAuthStore();
+  const { login } = useAuth();
   const { replace } = useRouter();
   const {
     register,
@@ -25,19 +25,22 @@ function LoginPage() {
     resolver: zodResolver(Login),
   });
   const apiClient = new ApiClient<LoginType>("/login");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (data: LoginType) => {
+    setIsLoading(true);
     apiClient
       .post(data)
       .then((res) => {
-        toast.success(res.data.message);
         login(res.data.jwt);
         localStorage.setItem("auth-token", res.data.jwt);
+        toast.success(res.data.message);
         replace("/");
       })
-      .catch((error: AxiosError) =>
-        toast.error((error.response?.data as { message: string })?.message)
-      );
+      .catch((error: AxiosError) => {
+        toast.error((error.response?.data as { message: string })?.message);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -74,7 +77,11 @@ function LoginPage() {
           {errors.password.message}
         </Alert>
       )}
-      <FormButton onClick={handleSubmit(onSubmit)} text="ورود" />
+      <FormButton
+        onClick={handleSubmit(onSubmit)}
+        text="ورود"
+        isLoading={isLoading}
+      />
       <FormFooter
         text="رمز خود را فراموش کرده اید؟"
         linkText="ریست رمز"
