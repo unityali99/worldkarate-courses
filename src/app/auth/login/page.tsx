@@ -5,14 +5,18 @@ import FormInput from "@/components/Form/FormInput";
 import FormContainer from "@/layouts/FormContainer";
 import Login, { LoginType } from "@/schemas/Login";
 import ApiClient from "@/services/ApiClient";
+import useAuthStore from "@/utils/store";
 import { Alert, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 function LoginPage() {
+  const { login } = useAuthStore();
+  const { replace } = useRouter();
   const {
     register,
     handleSubmit,
@@ -27,10 +31,12 @@ function LoginPage() {
       .post(data)
       .then((res) => {
         toast.success(res.data.message);
-        console.log(res);
+        login(res.data.jwt);
+        localStorage.setItem("auth-token", res.data.jwt);
+        replace("/");
       })
       .catch((error: AxiosError) =>
-        toast.error((error.response?.data as { message: string }).message)
+        toast.error((error.response?.data as { message: string })?.message)
       );
   };
 
