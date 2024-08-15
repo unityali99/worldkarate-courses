@@ -13,6 +13,8 @@ import Link from "next/link";
 import React from "react";
 import { TiThMenu } from "react-icons/ti";
 import ProfileLink from "./ProfileLink";
+import { redirect } from "next/navigation";
+import { toast } from "react-toastify";
 
 function BurgerMenu() {
   const { user, logout } = useAuth();
@@ -29,14 +31,22 @@ function BurgerMenu() {
         />
         <MenuList minW={0} w={"150px"} dir="rtl">
           <MenuItem>
-            <ProfileLink fullName={user?.fullName!} />
+            <ProfileLink fullName={`${user?.firstName} ${user?.lastName}`} />
           </MenuItem>
           <Link href={"/courses"}>
             <MenuItem>دوره ها</MenuItem>
           </Link>
           <MenuItem>اینستاگرام</MenuItem>
           <MenuDivider borderColor={"gray"} mx={2} />
-          <MenuItem onClick={logout}>خروج</MenuItem>
+          <MenuItem
+            onClick={() => {
+              logout();
+              toast.warning("از حساب کاربری خارج شدید");
+              redirect("/");
+            }}
+          >
+            خروج
+          </MenuItem>
         </MenuList>
       </Menu>
     </Center>
