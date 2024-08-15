@@ -5,7 +5,8 @@ import { get as getItem, set as setItem, remove } from "local-storage";
 
 type User = {
   email: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
 };
 
 type LoginState = {
@@ -14,7 +15,7 @@ type LoginState = {
   logout: () => void;
 };
 
-const storageKey = "auth-token";
+export const storageKey = "auth-token";
 
 const useAuth = create<LoginState>()(
   persist(

@@ -4,10 +4,13 @@ import FormFooter from "@/components/Form/FormFooter";
 import FormInput from "@/components/Form/FormInput";
 import FormContainer from "@/layouts/FormContainer";
 import ForgetPassword, { ForgetPasswordType } from "@/schemas/ForgetPassword";
+import ApiClient from "@/services/ApiClient";
 import { Alert, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 function ForgetPasswordPage() {
   const {
@@ -16,9 +19,23 @@ function ForgetPasswordPage() {
     formState: { errors },
   } = useForm<ForgetPasswordType>({ resolver: zodResolver(ForgetPassword) });
 
+  const apiClient = new ApiClient<ForgetPasswordType>("/forget-password");
+
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = (data: any) => {};
+  const onSubmit = (data: ForgetPasswordType) => {
+    setIsLoading(true);
+    apiClient
+      .post(data)
+      .then((res) => {
+        console.log(res.data);
+        toast.success(res.data.message);
+      })
+      .catch((error: AxiosError) =>
+        toast.error((error.response?.data as { message: string })?.message)
+      )
+      .finally(() => setIsLoading(false));
+  };
 
   return (
     <FormContainer>

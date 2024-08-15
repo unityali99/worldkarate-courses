@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import BurgerMenu from "./BurgerMenu";
 import { toast } from "react-toastify";
 import ProfileLink from "./ProfileLink";
+import { redirect } from "next/navigation";
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -39,14 +40,14 @@ function Navbar() {
           <Link className="font-light hover:underline" href={"/courses"}>
             دوره ها
           </Link>
-          <ProfileLink fullName="ALi Ahmadi" />
+          <ProfileLink fullName={`${user.firstName} ${user.lastName}`} />
           <Link className="font-light hover:underline" href={"/"}>
             <Button
               colorScheme="red"
               p={6}
               onClick={() => {
-                logout();
                 toast.warning("از حساب کاربری خارج شدید");
+                logout();
               }}
             >
               خروج
