@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import BurgerMenu from "./BurgerMenu";
-import { toast } from "react-toastify";
 import ProfileLink from "./ProfileLink";
+import { redirect } from "next/navigation";
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -45,8 +45,8 @@ function Navbar() {
               colorScheme="red"
               p={6}
               onClick={() => {
-                toast.warning("از حساب کاربری خارج شدید");
                 logout();
+                redirect("/");
               }}
             >
               خروج

@@ -1,5 +1,8 @@
 import { create } from "zustand";
 import { get as getItem, set as setItem, remove } from "local-storage";
+import ApiClient from "@/services/ApiClient";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 type User = {
   email: string;
@@ -25,6 +28,9 @@ const useAuth = create<LoginState>()((set, get) => ({
   logout: () => {
     remove(userStorageKey);
     set(() => ({ user: null }));
+    ApiClient.logout()
+      .then((res) => toast.success(res.data.message as string))
+      .catch((error: AxiosError) => toast.error(error.message));
   },
 }));
 
