@@ -14,7 +14,6 @@ import React from "react";
 import { TiThMenu } from "react-icons/ti";
 import ProfileLink from "./ProfileLink";
 import { redirect } from "next/navigation";
-import { toast } from "react-toastify";
 
 function BurgerMenu() {
   const { user, logout } = useAuth();
@@ -41,7 +40,6 @@ function BurgerMenu() {
           <MenuItem
             onClick={() => {
               logout();
-              toast.warning("از حساب کاربری خارج شدید");
               redirect("/");
             }}
           >

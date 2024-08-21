@@ -22,39 +22,32 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 function ProfilePage() {
-  const { user } = useAuth();
+  const { user, login } = useAuth();
   const [isEditingFirstName, setIsEditingFirstName] = useState(false);
   const [isEditingLastName, setIsEditingLastName] = useState(false);
   const [isEditingEmail, setIsEditingEmail] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const { refresh } = useRouter();
 
   useEffect(() => setHydrated(true), [setHydrated]);
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<ProfileType>({
+  const { register, handleSubmit, reset } = useForm<ProfileType>({
     resolver: zodResolver(Profile),
   });
-  const [isLoading, setIsLoading] = useState(false);
   const { replace } = useRouter();
   const apiClient = new ApiClient<ProfileType>("/profile");
 
   const onSubmit = (data: ProfileType) => {
-    setIsLoading(true);
     reset();
     apiClient
       .put(data)
       .then((res) => {
         toast.success(res.data.message);
+        // login(data);
+        refresh();
       })
       .catch((error: AxiosError) =>
         toast.error((error.response?.data as { message: string }).message)
-      )
-      .finally(() => {
-        setIsLoading(false);
-      });
+      );
   };
 
   if (!user && hydrated) return replace("/auth/login");
