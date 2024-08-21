@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import BurgerMenu from "./BurgerMenu";
 import { toast } from "react-toastify";
 import ProfileLink from "./ProfileLink";
-import { redirect } from "next/navigation";
 
 function Navbar() {
   const { user, logout } = useAuth();
