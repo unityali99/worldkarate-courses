@@ -32,8 +32,7 @@ function LoginPage() {
     apiClient
       .post(data)
       .then((res) => {
-        login(res.data.jwt);
-        localStorage.setItem("auth-token", res.data.jwt);
+        login(res.data.user);
         toast.success(res.data.message);
         replace("/");
       })

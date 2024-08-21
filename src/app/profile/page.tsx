@@ -1,8 +1,7 @@
 "use client";
 import Profile, { ProfileType } from "@/schemas/Profile";
 import ApiClient from "@/services/ApiClient";
-import useAuth, { storageKey } from "@/utils/store";
-import { tokenWithBearer } from "@/utils/tokenWithBearer";
+import useAuth from "@/utils/store";
 import {
   Box,
   Button,
@@ -21,7 +20,6 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { get } from "local-storage";
 
 function ProfilePage() {
   const { user } = useAuth();
@@ -41,10 +39,7 @@ function ProfilePage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const { replace } = useRouter();
-  const token: string = get(storageKey);
-  const apiClient = new ApiClient<ProfileType>("/profile", {
-    headers: { Authorization: tokenWithBearer(token) },
-  });
+  const apiClient = new ApiClient<ProfileType>("/profile");
 
   const onSubmit = (data: ProfileType) => {
     setIsLoading(true);
