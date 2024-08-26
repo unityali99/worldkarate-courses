@@ -1,7 +1,7 @@
 "use client";
-import FormButton from "@/components/Form/FormButton";
-import FormFooter from "@/components/Form/FormFooter";
-import FormInput from "@/components/Form/FormInput";
+import FormButton from "@/components/Form/components/FormButton";
+import FormFooter from "@/components/Form/components/FormFooter";
+import FormInput from "@/components/Form/components/FormInput";
 import FormContainer from "@/layouts/FormContainer";
 import Register, { RegisterType } from "@/schemas/Register";
 import ApiClient from "@/services/ApiClient";
