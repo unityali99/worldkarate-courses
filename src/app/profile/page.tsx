@@ -23,14 +23,17 @@ import { toast } from "react-toastify";
 
 function ProfilePage() {
   const { user, login } = useAuth();
-  const [isEditingFirstName, setIsEditingFirstName] = useState(false);
-  const [isEditingLastName, setIsEditingLastName] = useState(false);
-  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const { refresh } = useRouter();
 
   useEffect(() => setHydrated(true), [setHydrated]);
-  const { register, handleSubmit, reset } = useForm<ProfileType>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ProfileType>({
     resolver: zodResolver(Profile),
   });
   const { replace } = useRouter();
@@ -42,12 +45,17 @@ function ProfilePage() {
       .put(data)
       .then((res) => {
         toast.success(res.data.message);
-        // login(data);
+        login(data);
         refresh();
       })
       .catch((error: AxiosError) =>
         toast.error((error.response?.data as { message: string }).message)
       );
+  };
+  console.log(errors);
+  const inputDisabledStyle = {
+    opacity: isEditing ? 1 : 1,
+    cursor: isEditing ? "text" : "default",
   };
 
   if (!user && hydrated) return replace("/auth/login");
@@ -62,120 +70,94 @@ function ProfilePage() {
           dir="rtl"
         >
           <Table variant="simple">
-            <TableCaption>
+            <TableCaption className="space-y-10">
+              {isEditing ? (
+                <Button
+                  className="w-6/12"
+                  display={"block"}
+                  mx={"auto"}
+                  onClick={handleSubmit((data) => {
+                    onSubmit(data);
+                    setIsEditing(false);
+                  })}
+                  colorScheme="green"
+                >
+                  {"ذخیره"}
+                </Button>
+              ) : (
+                <Button
+                  className="w-6/12"
+                  display={"block"}
+                  mx={"auto"}
+                  onClick={() => setIsEditing(true)}
+                  colorScheme="orange"
+                >
+                  {"اصلاح"}
+                </Button>
+              )}
               <Button colorScheme="red">{"حذف حساب"}</Button>
             </TableCaption>
             <Tbody>
               <Tr>
                 <Td>{"نام"}</Td>
                 <Td>
-                  {isEditingFirstName ? (
+                  {hydrated ? (
                     <Input
+                      disabled={!isEditing}
                       {...register("firstName")}
                       size={"md"}
-                      defaultValue={hydrated ? user.firstName : ""}
-                      outlineColor={"orange"}
+                      defaultValue={user.firstName}
+                      style={inputDisabledStyle}
                     />
-                  ) : hydrated ? (
-                    user.firstName
                   ) : (
-                    "Loading"
-                  )}
-                </Td>
-                <Td>
-                  {isEditingFirstName ? (
-                    <Button
-                      onClick={handleSubmit((data) => {
-                        onSubmit(data);
-                        setIsEditingFirstName(false);
-                      })}
-                      colorScheme="green"
-                    >
-                      {"ذخیره"}
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={() => setIsEditingFirstName(true)}
-                      colorScheme="orange"
-                    >
-                      {"اصلاح"}
-                    </Button>
+                    <Input
+                      disabled
+                      size={"md"}
+                      placeholder="Loading"
+                      outlineColor={"black"}
+                    />
                   )}
                 </Td>
               </Tr>
               <Tr>
                 <Td>{"نام خانوادگی"}</Td>
                 <Td>
-                  {" "}
-                  {isEditingLastName ? (
+                  {hydrated ? (
                     <Input
+                      disabled={!isEditing}
                       {...register("lastName")}
                       size={"md"}
-                      defaultValue={hydrated ? user.lastName : ""}
-                      outlineColor={"orange"}
+                      defaultValue={user.lastName}
+                      style={inputDisabledStyle}
                     />
-                  ) : hydrated ? (
-                    user.lastName
                   ) : (
-                    "Loading"
-                  )}
-                </Td>
-                <Td>
-                  {isEditingLastName ? (
-                    <Button
-                      onClick={handleSubmit((data) => {
-                        onSubmit(data);
-                        setIsEditingLastName(false);
-                      })}
-                      colorScheme="green"
-                    >
-                      {"ذخیره"}
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={() => setIsEditingLastName(true)}
-                      colorScheme="orange"
-                    >
-                      {"اصلاح"}
-                    </Button>
+                    <Input
+                      disabled
+                      size={"md"}
+                      placeholder="Loading"
+                      outlineColor={"black"}
+                    />
                   )}
                 </Td>
               </Tr>
               <Tr>
                 <Td>{"ایمیل"}</Td>
                 <Td>
-                  {" "}
-                  {isEditingEmail ? (
+                  {hydrated ? (
                     <Input
+                      disabled={!isEditing}
                       {...register("email")}
                       size={"md"}
-                      defaultValue={hydrated ? user.email : ""}
-                      outlineColor={"orange"}
+                      defaultValue={user.email}
+                      style={inputDisabledStyle}
                     />
-                  ) : hydrated ? (
-                    user.email
                   ) : (
-                    "Loading"
-                  )}
-                </Td>
-                <Td>
-                  {isEditingEmail ? (
-                    <Button
-                      onClick={handleSubmit((data) => {
-                        onSubmit(data);
-                        setIsEditingEmail(false);
-                      })}
-                      colorScheme="green"
-                    >
-                      {"ذخیره"}
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={() => setIsEditingEmail(true)}
-                      colorScheme="orange"
-                    >
-                      {"اصلاح"}
-                    </Button>
+                    <Input
+                      disabled
+                      size={"md"}
+                      placeholder="Loading"
+                      outlineColor={"black"}
+                    />
                   )}
                 </Td>
               </Tr>
