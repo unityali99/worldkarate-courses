@@ -25,7 +25,7 @@ function FormInput({
   dir,
 }: {
   className?: string;
-  label: string;
+  label?: string;
   password?: boolean;
   number?: boolean;
   placeholder?: string;
@@ -34,7 +34,7 @@ function FormInput({
 }) {
   return (
     <Box className="space-y-1">
-      <Text className="text-start">{label}</Text>
+      {label && <Text className="text-start">{label}</Text>}
       <Input
         className={className}
         {...register}

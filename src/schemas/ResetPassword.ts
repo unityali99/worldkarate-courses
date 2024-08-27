@@ -7,15 +7,10 @@ const regexError =
 
 const ResetPassword = z
   .object({
-    email: z
-      .string({ required_error: "لطفا ایمیل را وارد کنید" })
-      .email({ message: "ایمیل وارد شده صحیح نمیباشد" }),
     newPassword: z
       .string({ required_error: requiredError })
       .regex(passwordRegex, regexError),
-    repeatPassword: z
-      .string({ required_error: requiredError })
-      .regex(passwordRegex, regexError),
+    repeatPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.repeatPassword, {
     message: "تکرار رمز عبور همخوانی ندارد",

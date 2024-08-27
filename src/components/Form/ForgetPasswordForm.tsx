@@ -30,7 +30,7 @@ function ForgetPasswordForm({
   const onSubmit = (data: ForgetPasswordType) => {
     setIsLoading(true);
     apiClient
-      .post(data)
+      .put(data)
       .then((res) => {
         toast.success(res.data.OTP);
         setOtp(res.data.OTP);
