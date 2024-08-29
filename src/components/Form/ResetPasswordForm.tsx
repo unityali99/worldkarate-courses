@@ -5,7 +5,7 @@ import FormInput from "./components/FormInput";
 import FormButton from "./components/FormButton";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ResetPassword, { ResetPasswordType } from "@/schemas/ResetPassword";
+import ResetPassword, { ResetPasswordType } from "@/schemas/auth/ResetPassword";
 import ApiClient from "@/services/ApiClient";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";

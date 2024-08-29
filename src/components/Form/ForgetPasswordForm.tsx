@@ -5,7 +5,9 @@ import FormInput from "./components/FormInput";
 import FormButton from "./components/FormButton";
 import FormFooter from "./components/FormFooter";
 import { useForm } from "react-hook-form";
-import ForgetPassword, { ForgetPasswordType } from "@/schemas/ForgetPassword";
+import ForgetPassword, {
+  ForgetPasswordType,
+} from "@/schemas/auth/ForgetPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ApiClient from "@/services/ApiClient";
 import { toast } from "react-toastify";
