@@ -12,6 +12,8 @@ export default class ApiClient<T> {
 
   static logout = () => httpService.post("/logout");
 
+  get = () => httpService.get<T>(this.endpoint, this.config);
+
   post = (data: T) => httpService.post(this.endpoint, data, this.config);
 
   put = (data: T) => httpService.put(this.endpoint, data, this.config);

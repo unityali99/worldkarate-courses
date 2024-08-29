@@ -15,7 +15,7 @@ import {
 import React, { useEffect, useState } from "react";
 import FormInput from "./components/FormInput";
 import { toast } from "react-toastify";
-import ResetPassword, { ResetPasswordType } from "@/schemas/ResetPassword";
+import ResetPassword, { ResetPasswordType } from "@/schemas/auth/ResetPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import ApiClient from "@/services/ApiClient";

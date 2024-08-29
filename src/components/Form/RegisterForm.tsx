@@ -1,5 +1,5 @@
 "use client";
-import Register, { RegisterType } from "@/schemas/Register";
+import Register, { RegisterType } from "@/schemas/auth/Register";
 import ApiClient from "@/services/ApiClient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";

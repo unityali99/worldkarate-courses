@@ -1,6 +1,6 @@
 "use client";
 import FormContainer from "@/layouts/FormContainer";
-import Login, { LoginType } from "@/schemas/Login";
+import Login, { LoginType } from "@/schemas/auth/Login";
 import ApiClient from "@/services/ApiClient";
 import useAuth from "@/utils/store";
 import { Alert, Text } from "@chakra-ui/react";
@@ -15,6 +15,7 @@ import FormButton from "./components/FormButton";
 import FormFooter from "./components/FormFooter";
 
 function LoginForm() {
+  console.log("dasdasd");
   const { login } = useAuth();
   const { replace } = useRouter();
   const {

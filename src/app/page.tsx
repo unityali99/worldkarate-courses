@@ -1,8 +1,14 @@
 import CourseCard from "@/components/CourseCard";
 import NewsLetterForm from "@/components/Form/NewsLetterForm";
+import { CourseType } from "@/schemas/Course";
+import ApiClient from "@/services/ApiClient";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
-export default function Home() {
+export default async function Home() {
+  const apiClient = new ApiClient<CourseType[]>("/fetch-courses");
+
+  const courses = (await apiClient.get()).data;
+
   return (
     <main className="space-y-14 px-4 md:px-0 my-12 flex flex-col items-center">
       <Box className="bg-heading text-white text-center py-12 font-bold text-lg px-4 w-full">
@@ -19,17 +25,15 @@ export default function Home() {
           <NewsLetterForm />
         </Flex>
       </Box>
-      <CourseCard
-        description="آموزش کامل 10 کاتای پیشرفته و مسابقه ای از شیتوریو، گوجوریو و رووی ریو"
-        imageAlt="Golden Package"
-        imageSrc="/Kiyuna.webp"
-        title={
-          <>
-            پکیج <Text className="text-yellow-500 inline">طلایی</Text> 10 کاتای
-            پیشرفته
-          </>
-        }
-      />
+      {courses?.map((course, index) => (
+        <CourseCard
+          key={index}
+          description={course.description}
+          imageAlt={course.title}
+          imageSrc={course.img}
+          title={course.title}
+        />
+      ))}
     </main>
   );
 }

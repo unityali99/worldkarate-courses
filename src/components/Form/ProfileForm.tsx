@@ -1,5 +1,5 @@
 "use client";
-import Profile, { ProfileType } from "@/schemas/Profile";
+import Profile, { ProfileType } from "@/schemas/auth/Profile";
 import ApiClient from "@/services/ApiClient";
 import useAuth from "@/utils/store";
 import {

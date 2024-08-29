@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import OTP, { OTPType } from "@/schemas/OTP";
+import OTP, { OTPType } from "@/schemas/auth/OTP";
 import ApiClient from "@/services/ApiClient";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";

@@ -1,9 +1,9 @@
-import { ForgetPasswordType } from "@/schemas/ForgetPassword";
-import { LoginType } from "@/schemas/Login";
-import { OTPType } from "@/schemas/OTP";
-import { ProfileType } from "@/schemas/Profile";
-import { RegisterType } from "@/schemas/Register";
-import { ResetPasswordType } from "@/schemas/ResetPassword";
+import { ForgetPasswordType } from "@/schemas/auth/ForgetPassword";
+import { LoginType } from "@/schemas/auth/Login";
+import { OTPType } from "@/schemas/auth/OTP";
+import { ProfileType } from "@/schemas/auth/Profile";
+import { RegisterType } from "@/schemas/auth/Register";
+import { ResetPasswordType } from "@/schemas/auth/ResetPassword";
 import { Box, Input, Text } from "@chakra-ui/react";
 import React from "react";
 import { UseFormRegister } from "react-hook-form";

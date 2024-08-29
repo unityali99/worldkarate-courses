@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import Image from "next/image";
 import React, { ReactNode } from "react";
 
@@ -15,14 +15,18 @@ function CourseCard({
 }) {
   return (
     <Flex className="flex-col md:flex-row justify-center items-stretch space-y-12 md:space-x-5">
-      <Image
-        alt={imageAlt}
-        src={imageSrc}
-        width={500}
-        height={500}
-        quality={100}
-        className="sm:w-9/12 md:w-5/12 lg:w-5/12 rounded-lg"
-      />
+      <Box className=" md:w-6/12 lg:w-5/12 self-center">
+        <Image
+          className="rounded-lg"
+          alt={imageAlt}
+          src={imageSrc}
+          unoptimized
+          width={600}
+          height={600}
+          quality={100}
+        />
+      </Box>
+
       <VStack dir="rtl" alignItems={"start"} className="md:w-4/12 space-y-7">
         <Heading>{title}</Heading>
         <Text>{description}</Text>
