@@ -5,7 +5,7 @@ import ApiClient from "@/services/ApiClient";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 export default async function Home() {
-  const apiClient = new ApiClient<CourseType[]>("/fetch-courses");
+  const apiClient = new ApiClient<CourseType[]>("/fetch-course");
 
   const courses = (await apiClient.get()).data;
 
@@ -28,6 +28,7 @@ export default async function Home() {
       {courses?.map((course, index) => (
         <CourseCard
           key={index}
+          courseId={course.id}
           description={course.description}
           imageAlt={course.title}
           imageSrc={course.img}

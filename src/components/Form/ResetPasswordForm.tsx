@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 
-function ResetPasswordForm({ email }: { email: string }) {
+function ResetPasswordForm() {
   const {
     register,
     handleSubmit,
@@ -23,12 +23,10 @@ function ResetPasswordForm({ email }: { email: string }) {
   const apiClient = new ApiClient<ResetPasswordType>("/reset-password");
   const [isLoading, setIsLoading] = useState(false);
 
-  setValue("email", email);
-
   const onSubmit = (data: ResetPasswordType) => {
     setIsLoading(true);
     apiClient
-      .post(data)
+      .put(data)
       .then((res) => {
         toast.success(res.data.message);
         ApiClient.logout();
