@@ -53,7 +53,7 @@ function ChangePasswordForm() {
 
   if (user)
     return (
-      <Box className="w-6/12 mx-auto space-y-10">
+      <Box className="w-10/12 md:w-6/12 mx-auto space-y-10">
         <Text className="text-2xl" dir="rtl">
           {"تغییر رمز عبور"}
         </Text>

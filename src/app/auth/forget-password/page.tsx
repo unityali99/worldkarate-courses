@@ -9,7 +9,7 @@ function ForgetPasswordPage() {
   const [isOtpValid, setIsOtpValid] = useState(false);
   const [email, setEmail] = useState<string>();
 
-  if (isOtpValid) return <ResetPasswordForm email={email!} />;
+  if (isOtpValid) return <ResetPasswordForm />;
 
   if (otp && !isOtpValid)
     return <OTPForm setIsOtpValid={setIsOtpValid} email={email!} />;
