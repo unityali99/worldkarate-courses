@@ -1,29 +1,21 @@
+import { CourseType } from "@/schemas/Course";
 import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { ReactNode } from "react";
+import React from "react";
 
 function CourseCard({
-  courseId,
-  imageAlt,
-  imageSrc,
-  title,
-  description,
+  course: { id, description, img, title },
 }: {
-  courseId: string;
-  imageAlt: string;
-  imageSrc: string;
-  title: ReactNode;
-  description: string;
+  course: CourseType;
 }) {
-  console.log(courseId);
   return (
     <Flex className="flex-col md:flex-row justify-center items-stretch space-y-12 md:space-x-5">
       <Box className=" md:w-6/12 lg:w-5/12 self-center">
         <Image
           className="rounded-lg"
-          alt={imageAlt}
-          src={imageSrc}
+          alt={title}
+          src={img}
           unoptimized
           width={600}
           height={600}
@@ -38,7 +30,7 @@ function CourseCard({
       >
         <Heading>{title}</Heading>
         <Text>{description}</Text>
-        <Link href={`/${courseId}`}>
+        <Link href={`/${id}`}>
           <Button colorScheme="red">مشاهده پکیج</Button>
         </Link>
       </VStack>

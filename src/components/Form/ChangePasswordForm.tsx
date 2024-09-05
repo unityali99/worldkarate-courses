@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import ApiClient from "@/services/ApiClient";
 import { AxiosError } from "axios";
-import useAuth from "@/utils/store";
+import useAuth from "@/stores/authStore";
 
 function ChangePasswordForm() {
   const [hydrated, setHydrated] = useState(false);
