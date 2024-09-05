@@ -1,4 +1,4 @@
-import { cookieKey } from "@/utils/store";
+import { cookieKey } from "@/stores/authStore";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 

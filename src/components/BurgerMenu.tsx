@@ -1,5 +1,5 @@
 "use client";
-import useAuth from "@/utils/store";
+import useAuth from "@/stores/authStore";
 import {
   Center,
   IconButton,

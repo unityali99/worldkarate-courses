@@ -26,14 +26,7 @@ export default async function Home() {
         </Flex>
       </Box>
       {courses?.map((course, index) => (
-        <CourseCard
-          key={index}
-          courseId={course.id}
-          description={course.description}
-          imageAlt={course.title}
-          imageSrc={course.img}
-          title={course.title}
-        />
+        <CourseCard key={index} course={course} />
       ))}
     </main>
   );

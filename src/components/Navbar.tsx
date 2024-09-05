@@ -1,21 +1,20 @@
 "use client";
-import useAuth from "@/utils/store";
-import { Box, Button, Flex, HStack, Spinner, Text } from "@chakra-ui/react";
+import useAuth from "@/stores/authStore";
+import { Box, Button, Flex, HStack, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import BurgerMenu from "./BurgerMenu";
 import ProfileLink from "./ProfileLink";
 import { redirect } from "next/navigation";
-import { FaShoppingBasket } from "react-icons/fa";
+import Cart from "./Cart";
 
 function Navbar() {
   const { user, logout } = useAuth();
   const [hydrated, setHydrated] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => setHydrated(true), []);
-  console.log(isCartOpen);
+
   return (
     <Flex className="py-10 justify-between md:justify-around items-center px-5">
       <HStack className="space-x-0 md:space-x-16">
@@ -38,11 +37,7 @@ function Navbar() {
           className="space-x-0 md:space-x-10"
           display={{ base: "none", md: "flex" }}
         >
-          <FaShoppingBasket
-            size={25}
-            className="hover:cursor-pointer"
-            onClick={() => setIsCartOpen((prevValue) => !prevValue)}
-          />
+          <Cart />
           <ProfileLink fullName={`${user.firstName} ${user.lastName}`} />
           <Link className="font-light hover:underline" href={"/"}>
             <Button
