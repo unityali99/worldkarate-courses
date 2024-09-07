@@ -1,6 +1,8 @@
 "use client";
 import useCart from "@/stores/cartStore";
 import {
+  Alert,
+  Badge,
   Button,
   Drawer,
   DrawerBody,
@@ -11,6 +13,7 @@ import {
   DrawerOverlay,
   Flex,
   Text,
+  useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
@@ -20,7 +23,8 @@ import { MdClose } from "react-icons/md";
 function Cart() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef(null);
-  const { courses, remove } = useCart();
+  const { courses, remove, clear } = useCart();
+  const isMobileScreenSize = useBreakpointValue({ base: true, md: false });
 
   return (
     <>
@@ -29,7 +33,7 @@ function Cart() {
       </Button>
       <Drawer
         isOpen={isOpen}
-        placement="right"
+        placement={isMobileScreenSize ? "bottom" : "right"}
         onClose={onClose}
         finalFocusRef={btnRef}
       >
@@ -38,23 +42,32 @@ function Cart() {
           <DrawerCloseButton />
           <DrawerHeader className="mx-auto">سبد خرید</DrawerHeader>
           <DrawerBody>
-            {courses.map((course, index) => (
-              <Flex
-                key={index}
-                className="flex-row justify-between items-center"
-              >
-                <Text className="text-base my-6">{course.title}</Text>
-                <MdClose
-                  size={20}
-                  className="cursor-pointer"
-                  onClick={() => remove(course.id)}
-                />
-              </Flex>
-            ))}
+            {courses.length === 0 ? (
+              <Alert colorScheme="purple" className="rounded-lg mt-10">
+                <Text className="mx-auto">سبد خرید خالی میباشد</Text>
+              </Alert>
+            ) : (
+              courses.map((course, index) => (
+                <Flex
+                  key={index}
+                  className="flex-row justify-between items-center"
+                >
+                  <Text className="text-base my-6">{course.title}</Text>
+                  <MdClose
+                    size={20}
+                    className="cursor-pointer"
+                    onClick={() => remove(course.id)}
+                  />
+                </Flex>
+              ))
+            )}
           </DrawerBody>
-          <DrawerFooter>
-            <Button className="w-full" colorScheme="green">
+          <DrawerFooter className="flex flex-col space-y-3">
+            <Button w={"100%"} colorScheme="green">
               پرداخت
+            </Button>
+            <Button onClick={clear} w={"100%"} colorScheme="red">
+              حذف همه
             </Button>
           </DrawerFooter>
         </DrawerContent>

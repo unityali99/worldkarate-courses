@@ -1,5 +1,6 @@
 import { Box, Button, Input } from "@chakra-ui/react";
 import React from "react";
+import { IoNewspaperOutline } from "react-icons/io5";
 
 function NewsLetterForm() {
   return (
@@ -13,7 +14,8 @@ function NewsLetterForm() {
         />
       </Box>
       <Button colorScheme="red" size={{ base: "md", md: "lg" }}>
-        اطلاع از بروزرسانی ها
+        <IoNewspaperOutline className="mr-3" />
+        {"اطلاع از بروزرسانی ها"}
       </Button>
     </React.Fragment>
   );
