@@ -1,24 +1,33 @@
 import { CourseType } from "@/schemas/Course";
-import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { IoIosArrowRoundBack } from "react-icons/io";
+import PriceBadge from "./Form/components/PriceBadge";
 
 function CourseCard({
-  course: { id, description, img, title },
+  course: { id, description, img, title, price },
 }: {
   course: CourseType;
 }) {
   return (
-    <Flex className="flex-col md:flex-row justify-center items-stretch space-y-12 md:space-x-5">
-      <Box className=" md:w-6/12 lg:w-5/12 self-center">
+    <Flex className="flex-col md:flex-row justify-center items-stretch space-y-12 md:space-x-5 w-full mx-5 lg:w-8/12">
+      <Box className="self-center relative w-full md:w-6/12 h-56 sm:h-64 md:h-96">
         <Image
-          className="rounded-lg"
+          className="md:rounded-l-lg rounded-t-lg md:rounded-r-none object-cover "
           alt={title}
           src={img}
           unoptimized
-          width={600}
-          height={600}
+          fill
           quality={100}
         />
       </Box>
@@ -26,12 +35,16 @@ function CourseCard({
       <VStack
         dir="rtl"
         alignItems={"start"}
-        className="md:w-4/12 space-y-5 md:space-y-14"
+        className="md:w-4/12 space-y-5 md:space-y-10"
       >
         <Heading>{title}</Heading>
         <Text>{description}</Text>
-        <Link href={`/${id}`}>
-          <Button colorScheme="red">مشاهده پکیج</Button>
+        <PriceBadge price={price} />
+        <Link href={`/courses/${id}`}>
+          <Button colorScheme="red">
+            {"مشاهده دوره"}
+            <IoIosArrowRoundBack size={30} />
+          </Button>
         </Link>
       </VStack>
     </Flex>
