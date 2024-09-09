@@ -19,7 +19,7 @@ function FormButton({
       textColor={"white"}
       onClick={onClick}
     >
-      {isLoading ? <Spinner color="white" /> : text}
+      {isLoading ? <Spinner as={"div"} color="white" /> : text}
     </Button>
   );
 }

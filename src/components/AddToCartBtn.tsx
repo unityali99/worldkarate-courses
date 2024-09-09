@@ -8,7 +8,7 @@ function AddToCartBtn({ course, text }: { course: CourseType; text: string }) {
   const { add } = useCart();
 
   return (
-    <Button onClick={() => add(course)} colorScheme="red">
+    <Button onClick={() => add(course)} colorScheme="blue">
       {text}
     </Button>
   );

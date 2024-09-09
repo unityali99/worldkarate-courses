@@ -5,6 +5,7 @@ import useAuth from "@/stores/authStore";
 import {
   Box,
   Button,
+  Center,
   Input,
   Spinner,
   Table,
@@ -22,7 +23,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-function ProfileForm() {
+function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
   const { user, login } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -39,7 +40,7 @@ function ProfileForm() {
   } = useForm<ProfileType>({
     resolver: zodResolver(Profile),
   });
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
   const apiClient = new ApiClient<ProfileType>("/profile");
 
   const onSubmit = (data: ProfileType) => {
@@ -68,21 +69,37 @@ function ProfileForm() {
   }
   if (user)
     return (
-      <Box className="w-10/12 md:w-6/12 mx-auto space-y-10">
-        <Text className="text-2xl" dir="rtl">
+      <Box
+        className="mx-auto space-y-10 text-xs md:text-base font-bold "
+        w={{ base: "90%", md: "75%", lg: "50%" }}
+      >
+        {isAdmin && (
+          <>
+            <Text className="text-lg md:text-2xl" dir="rtl">
+              {"پنل ادمین"}
+            </Text>
+            <Center>
+              <Button onClick={() => push("/profile/admin")} colorScheme="blue">
+                {"هدایت به پنل ادمین"}
+              </Button>
+            </Center>
+          </>
+        )}
+        <Text className="text-lg md:text-2xl" dir="rtl">
           {"پروفایل"}
         </Text>
         <TableContainer
-          className="border border-black border-opacity-20 rounded-lg p-10"
+          overflowX="auto"
+          className="border border-black border-opacity-20 rounded-lg p-2 md:p-5"
           dir="rtl"
         >
           <Table variant="simple">
-            <TableCaption className="space-y-10">
+            <TableCaption>
               {isEditing ? (
                 <Button
-                  className="w-6/12"
-                  display={"block"}
-                  mx={"auto"}
+                  w={{ base: "100%", md: "50%" }}
+                  size={{ base: "sm", md: "md" }}
+                  mx="auto"
                   onClick={handleSubmit((data) => {
                     onSubmit(data);
                     setIsEditing(false);
@@ -93,77 +110,88 @@ function ProfileForm() {
                 </Button>
               ) : (
                 <Button
-                  className="w-6/12"
-                  display={"block"}
-                  mx={"auto"}
+                  w={{ base: "100%", md: "50%" }}
+                  size={{ base: "sm", md: "md" }}
+                  mx="auto"
                   onClick={() => setIsEditing(true)}
                   colorScheme="orange"
                 >
                   {"اصلاح"}
                 </Button>
               )}
-              <Button colorScheme="red">{"حذف حساب"}</Button>
             </TableCaption>
             <Tbody>
               <Tr>
-                <Td>{"نام"}</Td>
-                <Td>
+                <Td p={{ base: "8px", md: "16px" }}>{"نام:"}</Td>
+                <Td p={{ base: "8px", md: "16px" }}>
                   {hydrated ? (
                     <Input
                       disabled={!isEditing}
                       {...register("firstName")}
-                      size={"md"}
+                      size={{ base: "sm", md: "md" }}
+                      fontSize={{ base: "small", md: "md" }}
+                      textAlign={"center"}
                       defaultValue={user.firstName}
                       style={inputDisabledStyle}
                     />
                   ) : (
                     <Input
                       disabled
-                      size={"md"}
+                      size={{ base: "sm", md: "md" }}
+                      fontSize={{ base: "small", md: "md" }}
+                      textAlign={"center"}
                       placeholder="Loading"
-                      outlineColor={"black"}
+                      outlineColor="black"
                     />
                   )}
                 </Td>
               </Tr>
               <Tr>
-                <Td>{"نام خانوادگی"}</Td>
-                <Td>
+                <Td p={{ base: "8px", md: "16px" }}>{"نام خانوادگی:"}</Td>
+                <Td p={{ base: "8px", md: "16px" }}>
                   {hydrated ? (
                     <Input
                       disabled={!isEditing}
                       {...register("lastName")}
-                      size={"md"}
+                      size={{ base: "sm", md: "md" }}
+                      fontSize={{ base: "small", md: "md" }}
+                      textAlign={"center"}
                       defaultValue={user.lastName}
                       style={inputDisabledStyle}
                     />
                   ) : (
                     <Input
                       disabled
-                      size={"md"}
+                      size={{ base: "sm", md: "md" }}
+                      fontSize={{ base: "small", md: "md" }}
+                      textAlign={"center"}
                       placeholder="Loading"
-                      outlineColor={"black"}
+                      outlineColor="black"
                     />
                   )}
                 </Td>
               </Tr>
               <Tr>
-                <Td>{"ایمیل"}</Td>
-                <Td>
+                <Td p={{ base: "8px", md: "16px" }}>{"ایمیل:"}</Td>
+                <Td p={{ base: "8px", md: "16px" }}>
                   {hydrated ? (
                     <Input
                       disabled={!isEditing}
                       {...register("email")}
-                      size={"md"}
+                      size={{ base: "sm", md: "md" }}
+                      fontSize={{ base: "small", md: "md" }}
+                      textAlign={"center"}
                       defaultValue={user.email}
                       style={inputDisabledStyle}
                     />
                   ) : (
                     <Input
                       disabled
-                      size={"md"}
+                      size={{ base: "sm", md: "md" }}
+                      fontSize={{ base: "small", md: "md" }}
+                      textAlign={"center"}
                       placeholder="Loading"
-                      outlineColor={"black"}
+                      outlineColor="black"
                     />
                   )}
                 </Td>

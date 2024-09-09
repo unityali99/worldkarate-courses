@@ -5,11 +5,11 @@ import {
   Button,
   Flex,
   Heading,
+  Link,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import PriceBadge from "./Form/components/PriceBadge";
@@ -20,7 +20,7 @@ function CourseCard({
   course: CourseType;
 }) {
   return (
-    <Flex className="flex-col md:flex-row justify-center items-stretch space-y-12 md:space-x-5 w-full mx-5 lg:w-8/12">
+    <Flex className="flex-col md:flex-row justify-center items-stretch space-y-12 md:space-x-5 w-full mx-5 lg:w-7/12">
       <Box className="self-center relative w-full md:w-6/12 h-56 sm:h-64 md:h-96">
         <Image
           className="md:rounded-l-lg rounded-t-lg md:rounded-r-none object-cover "

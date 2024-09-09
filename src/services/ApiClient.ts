@@ -17,4 +17,6 @@ export default class ApiClient<T> {
   post = (data: T) => httpService.post(this.endpoint, data, this.config);
 
   put = (data: T) => httpService.put(this.endpoint, data, this.config);
+
+  delete = () => httpService.delete(this.endpoint, this.config);
 }

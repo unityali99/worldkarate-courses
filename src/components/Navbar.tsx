@@ -16,7 +16,10 @@ function Navbar() {
   useEffect(() => setHydrated(true), []);
 
   return (
-    <Flex className="py-10 justify-between md:justify-around items-center px-5">
+    <Flex
+      className="py-10 justify-between md:justify-around items-center px-5"
+      suppressHydrationWarning={true}
+    >
       <HStack className="space-x-0 md:space-x-16">
         <Link href={"/"}>
           <Image
@@ -28,8 +31,12 @@ function Navbar() {
             src={"/logo.webp"}
           />
         </Link>
-        <Link className="hidden md:block hover:underline" href={"#"}>
-          اینستاگرام
+        <Link
+          className="hidden md:block hover:underline"
+          href={"https://www.instagram.com/amiryarikata/?hl=en"}
+          target="_blank"
+        >
+          {"اینستاگرام"}
         </Link>
       </HStack>
       {user && (
@@ -54,17 +61,21 @@ function Navbar() {
         </HStack>
       )}
       {!user && hydrated && (
-        <Link href={"/auth/login"}>
-          <Button colorScheme="red" p={6}>
-            ورود
-          </Button>
-        </Link>
+        <HStack
+          className="space-x-0 md:space-x-10"
+          display={{ base: "none", md: "flex" }}
+        >
+          <Cart />
+          <Link href={"/auth/login"}>
+            <Button colorScheme="red" p={6}>
+              {"ورود / ثبت نام"}
+            </Button>
+          </Link>
+        </HStack>
       )}
-      {user && (
-        <Box className="md:hidden">
-          <BurgerMenu />
-        </Box>
-      )}
+      <Box className="md:hidden">
+        <BurgerMenu />
+      </Box>
       {!hydrated && <Spinner color="black" size={"lg"} />}
     </Flex>
   );
