@@ -53,16 +53,21 @@ function ChangePasswordForm() {
 
   if (user)
     return (
-      <Box className="w-10/12 md:w-6/12 mx-auto space-y-10">
-        <Text className="text-2xl" dir="rtl">
+      <Box
+        className="mx-auto space-y-10 text-xs md:text-base font-bold"
+        w={{ base: "90%", md: "75%", lg: "50%" }}
+      >
+        <Text className="text-lg md:text-2xl" dir="rtl">
           {"تغییر رمز عبور"}
         </Text>
         <TableContainer
-          className="border border-black border-opacity-20 rounded-lg p-10"
+          className="border border-black border-opacity-20 rounded-lg"
           dir="rtl"
+          overflowX="auto"
+          p={{ base: "2", md: "5" }}
         >
           <Table variant="simple">
-            <TableCaption className="space-y-10">
+            <TableCaption>
               {errors.newPassword && (
                 <Alert
                   className="rounded-md text-sm"
@@ -82,7 +87,8 @@ function ChangePasswordForm() {
                 </Alert>
               )}
               <Button
-                className="w-6/12"
+                w={{ base: "100%", md: "50%" }}
+                size={{ base: "sm", md: "md" }}
                 colorScheme="green"
                 onClick={handleSubmit(onSubmit)}
               >
@@ -91,8 +97,8 @@ function ChangePasswordForm() {
             </TableCaption>
             <Tbody>
               <Tr>
-                <Td>{"رمز عبور جدید:"}</Td>
-                <Td>
+                <Td p={{ base: "8px", md: "16px" }}>{"رمز عبور جدید:"}</Td>
+                <Td p={{ base: "8px", md: "16px" }}>
                   <FormInput
                     password
                     register={register("newPassword")}
@@ -105,8 +111,10 @@ function ChangePasswordForm() {
                 <Td></Td>
               </Tr>
               <Tr>
-                <Td>{"تکرار رمز عبور جدید:"}</Td>
-                <Td>
+                <Td p={{ base: "8px", md: "16px" }}>
+                  {"تکرار رمز عبور جدید:"}
+                </Td>
+                <Td p={{ base: "8px", md: "16px" }}>
                   <FormInput
                     password
                     register={register("repeatPassword")}

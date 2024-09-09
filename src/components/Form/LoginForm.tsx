@@ -15,7 +15,6 @@ import FormButton from "./components/FormButton";
 import FormFooter from "./components/FormFooter";
 
 function LoginForm() {
-  console.log("dasdasd");
   const { login } = useAuth();
   const { replace } = useRouter();
   const {

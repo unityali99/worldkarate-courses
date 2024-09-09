@@ -1,6 +1,7 @@
 "use client";
 import useAuth from "@/stores/authStore";
 import {
+  Button,
   Center,
   IconButton,
   Menu,
@@ -34,9 +35,15 @@ function BurgerMenu() {
           variant="outline"
         />
         <MenuList minW={0} w={"150px"} dir="rtl">
-          <MenuItem>
-            <ProfileLink fullName={`${user?.firstName} ${user?.lastName}`} />
-          </MenuItem>
+          {user ? (
+            <MenuItem>
+              <ProfileLink fullName={`${user?.firstName} ${user?.lastName}`} />
+            </MenuItem>
+          ) : (
+            <MenuItem>
+              <Button colorScheme="red">{"ورود / ثبت نام"}</Button>
+            </MenuItem>
+          )}
           <MenuItem>اینستاگرام</MenuItem>
           <MenuDivider borderColor={"gray"} mx={2} />
           <MenuItem
