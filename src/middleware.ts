@@ -22,8 +22,12 @@ export function middleware(request: NextRequest) {
     if (authToken)
       return NextResponse.redirect(new URL("/profile", request.url));
   }
+
+  if (path.startsWith("/payment"))
+    if (!authToken)
+      return NextResponse.redirect(new URL("/auth/login", request.url));
 }
 
 export const config = {
-  matcher: ["/profile/:path*", "/auth/:path*"],
+  matcher: ["/profile/:path*", "/auth/:path*", "/payment/:path*"],
 };
