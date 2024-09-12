@@ -1,16 +1,16 @@
 "use client";
 import useAuth from "@/stores/authStore";
-import { Box, Button, Flex, HStack, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, Link, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import BurgerMenu from "./BurgerMenu";
 import ProfileLink from "./ProfileLink";
-import { redirect } from "next/navigation";
 import Cart from "./Cart";
+import { useRouter } from "next/navigation";
 
 function Navbar() {
   const { user, logout } = useAuth();
+  const { replace } = useRouter();
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => setHydrated(true), []);
@@ -46,18 +46,16 @@ function Navbar() {
         >
           <Cart />
           <ProfileLink fullName={`${user.firstName} ${user.lastName}`} />
-          <Link className="font-light hover:underline" href={"/"}>
-            <Button
-              colorScheme="red"
-              p={6}
-              onClick={() => {
-                logout();
-                redirect("/");
-              }}
-            >
-              خروج
-            </Button>
-          </Link>
+          <Button
+            colorScheme="red"
+            p={6}
+            onClick={() => {
+              logout();
+              replace("/");
+            }}
+          >
+            خروج
+          </Button>
         </HStack>
       )}
       {!user && hydrated && (
