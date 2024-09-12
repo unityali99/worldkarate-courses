@@ -10,7 +10,7 @@ export default async function Home() {
   const courses = (await apiClient.get()).data;
 
   return (
-    <main className="space-y-14 px-4 md:px-0 my-12 flex flex-col items-center mb-28">
+    <main className="space-y-14 md:px-0 my-12 flex flex-col items-center mb-28">
       <Box className="bg-heading text-white text-center py-12 font-bold text-lg px-4 w-full">
         <Heading>سنسی امیر یاری</Heading>
         <Text className="mt-7 mb-10 font-light">پکیج های آموزشی کاتا</Text>
@@ -31,3 +31,5 @@ export default async function Home() {
     </main>
   );
 }
+
+export const dynamic = "force-static";

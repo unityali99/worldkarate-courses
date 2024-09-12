@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import ApiClient from "@/services/ApiClient";
 import { AxiosError } from "axios";
 import useAuth from "@/stores/authStore";
+import Placeholder from "../Placeholder";
 
 function ChangePasswordForm() {
   const [hydrated, setHydrated] = useState(false);
@@ -51,83 +52,93 @@ function ChangePasswordForm() {
       .finally(() => setIsLoading(false));
   };
 
-  if (user)
-    return (
-      <Box
-        className="mx-auto space-y-10 text-xs md:text-base font-bold"
-        w={{ base: "90%", md: "75%", lg: "50%" }}
+  return (
+    <Box
+      className="mx-auto space-y-10 text-xs md:text-base font-bold"
+      w={{ base: "90%", md: "75%", lg: "50%" }}
+    >
+      <Text className="text-lg md:text-2xl" dir="rtl">
+        {"تغییر رمز عبور"}
+      </Text>
+      <TableContainer
+        className="border border-black border-opacity-20 rounded-lg"
+        dir="rtl"
+        overflowX="auto"
+        p={{ base: "2", md: "5" }}
       >
-        <Text className="text-lg md:text-2xl" dir="rtl">
-          {"تغییر رمز عبور"}
-        </Text>
-        <TableContainer
-          className="border border-black border-opacity-20 rounded-lg"
-          dir="rtl"
-          overflowX="auto"
-          p={{ base: "2", md: "5" }}
-        >
-          <Table variant="simple">
-            <TableCaption>
-              {errors.newPassword && (
-                <Alert
-                  className="rounded-md text-sm"
-                  textColor={"red"}
-                  colorScheme="red"
-                >
-                  {errors.newPassword.message}
-                </Alert>
-              )}
-              {errors.repeatPassword && (
-                <Alert
-                  className="rounded-md text-sm"
-                  textColor={"red"}
-                  colorScheme="red"
-                >
-                  {errors.repeatPassword.message}
-                </Alert>
-              )}
-              <Button
-                w={{ base: "100%", md: "50%" }}
-                size={{ base: "sm", md: "md" }}
-                colorScheme="green"
-                onClick={handleSubmit(onSubmit)}
+        <Table variant="simple">
+          <TableCaption>
+            {errors.newPassword && (
+              <Alert
+                className="rounded-md text-sm"
+                textColor={"red"}
+                colorScheme="red"
               >
-                {isLoading ? <Spinner /> : <Text>{"ذخیره"}</Text>}
-              </Button>
-            </TableCaption>
-            <Tbody>
-              <Tr>
-                <Td p={{ base: "8px", md: "16px" }}>{"رمز عبور جدید:"}</Td>
-                <Td p={{ base: "8px", md: "16px" }}>
+                {errors.newPassword.message}
+              </Alert>
+            )}
+            {errors.repeatPassword && (
+              <Alert
+                className="rounded-md text-sm"
+                textColor={"red"}
+                colorScheme="red"
+              >
+                {errors.repeatPassword.message}
+              </Alert>
+            )}
+            <Button
+              w={{ base: "100%", md: "50%" }}
+              size={{ base: "sm", md: "md" }}
+              colorScheme="green"
+              isDisabled={!hydrated}
+              onClick={handleSubmit(onSubmit)}
+            >
+              {isLoading ? <Spinner /> : <Text>{"ذخیره"}</Text>}
+            </Button>
+          </TableCaption>
+          <Tbody>
+            <Tr>
+              <Td p={{ base: "8px", md: "16px" }}>{"رمز عبور جدید:"}</Td>
+              <Td
+                w={hydrated ? "unset" : "50%"}
+                p={{ base: "8px", md: "16px" }}
+              >
+                {hydrated ? (
                   <FormInput
                     password
                     register={register("newPassword")}
                     dir="ltr"
                     key={1}
                   />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td></Td>
-              </Tr>
-              <Tr>
-                <Td p={{ base: "8px", md: "16px" }}>
-                  {"تکرار رمز عبور جدید:"}
-                </Td>
-                <Td p={{ base: "8px", md: "16px" }}>
+                ) : (
+                  <Placeholder />
+                )}
+              </Td>
+            </Tr>
+
+            <Tr>
+              <Td p={{ base: "8px", md: "16px" }}>{"تکرار رمز عبور جدید:"}</Td>
+              <Td
+                w={hydrated ? "unset" : "50%"}
+                p={{ base: "8px", md: "16px" }}
+              >
+                {hydrated ? (
                   <FormInput
                     password
                     register={register("repeatPassword")}
                     dir="ltr"
                     key={2}
                   />
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Box>
-    );
+                ) : (
+                  <Placeholder />
+                )}
+              </Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
 }
 
 export default ChangePasswordForm;
