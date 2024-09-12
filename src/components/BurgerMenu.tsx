@@ -4,6 +4,7 @@ import {
   Button,
   Center,
   IconButton,
+  Link,
   Menu,
   MenuButton,
   MenuDivider,
@@ -15,7 +16,6 @@ import { TiThMenu } from "react-icons/ti";
 import ProfileLink from "./ProfileLink";
 import { redirect } from "next/navigation";
 import Cart from "./Cart";
-import Link from "next/link";
 
 function BurgerMenu({ hydrated }: { hydrated: boolean }) {
   const { user, logout } = useAuth();

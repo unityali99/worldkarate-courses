@@ -1,5 +1,4 @@
-import { Text } from "@chakra-ui/react";
-import Link from "next/link";
+import { Link, Text } from "@chakra-ui/react";
 
 function FormFooter({
   text,

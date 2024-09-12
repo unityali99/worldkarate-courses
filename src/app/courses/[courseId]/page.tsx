@@ -16,6 +16,7 @@ async function SingleCoursePage({ params }: { params: { courseId: string } }) {
   const apiClient = new ApiClient<CourseType>(
     `/fetch-course/${params.courseId}`
   );
+
   let course: CourseType;
 
   const authToken = cookies().get(cookieKey)?.value;
@@ -53,7 +54,7 @@ async function SingleCoursePage({ params }: { params: { courseId: string } }) {
           </Link>
         </Box>
       ) : (
-        <AddToCartBtn course={course} text={"اضافه کردن به سبد خرید"} />
+        <AddToCartBtn course={course} />
       )}
     </Flex>
   );

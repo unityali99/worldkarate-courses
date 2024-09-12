@@ -37,8 +37,8 @@ function UserCourses({ email }: { email?: string }) {
       })
       .catch((error: AxiosError) =>
         toast.error((error.response?.data as { message: string }).message)
-      );
-    setHydrated(true);
+      )
+      .finally(() => setHydrated(true));
   }, [email]);
 
   if (hydrated && courses.length === 0)

@@ -6,7 +6,6 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 export default async function Home() {
   const apiClient = new ApiClient<CourseType[]>("/fetch-course");
-
   const courses = (await apiClient.get()).data;
 
   return (
