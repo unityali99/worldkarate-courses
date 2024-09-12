@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 function FormContainer({ children }: { children: ReactNode }) {
   return (
     <Box
-      className="mx-auto w-full md:w-7/12 p-10 text-center border border-black border-opacity-20 rounded-lg"
+      className="mx-auto w-10/12 md:w-7/12 p-10 text-center border border-black border-opacity-20 rounded-lg"
       dir="rtl"
     >
       <Box className="xl:mx-48 2xl:mx-64 space-y-6">{children}</Box>

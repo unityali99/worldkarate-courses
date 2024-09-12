@@ -17,7 +17,7 @@ function Navbar() {
 
   return (
     <Flex
-      className="py-10 justify-between md:justify-around items-center px-5"
+      className="py-10 justify-between md:justify-around items-center  md:px-5"
       suppressHydrationWarning={true}
     >
       <HStack className="space-x-0 md:space-x-16">
@@ -71,7 +71,7 @@ function Navbar() {
           </Link>
         </HStack>
       )}
-      <Box className="md:hidden">
+      <Box className="md:hidden mr-10 md:m-0">
         <BurgerMenu hydrated={hydrated} />
       </Box>
       {!hydrated && <Spinner color="black" size={"lg"} />}
