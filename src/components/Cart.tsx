@@ -2,7 +2,6 @@
 import useCart from "@/stores/cartStore";
 import {
   Alert,
-  Badge,
   Button,
   Drawer,
   DrawerBody,
@@ -16,12 +15,15 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { FaShoppingBasket } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
+import { toast } from "react-toastify";
 
 function Cart() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { push } = useRouter();
   const btnRef = React.useRef(null);
   const { courses, remove, clear } = useCart();
   const isMobileScreenSize = useBreakpointValue({ base: true, md: false });
@@ -43,7 +45,7 @@ function Cart() {
           <DrawerHeader className="mx-auto">سبد خرید</DrawerHeader>
           <DrawerBody>
             {courses.length === 0 ? (
-              <Alert colorScheme="purple" className="rounded-lg mt-10">
+              <Alert colorScheme="red" className="rounded-lg mt-10">
                 <Text className="mx-auto">سبد خرید خالی میباشد</Text>
               </Alert>
             ) : (
@@ -63,11 +65,26 @@ function Cart() {
             )}
           </DrawerBody>
           <DrawerFooter className="flex flex-col space-y-3">
-            <Button w={"100%"} colorScheme="green">
-              پرداخت
+            <Button
+              w={"100%"}
+              colorScheme="green"
+              onClick={() => {
+                if (courses.length === 0)
+                  return toast.error("سبد خرید خالی میباشد");
+                push("/payment/checkout");
+                onClose();
+              }}
+              isDisabled={courses.length === 0}
+            >
+              {"پرداخت"}
             </Button>
-            <Button onClick={clear} w={"100%"} colorScheme="red">
-              حذف همه
+            <Button
+              onClick={clear}
+              w={"100%"}
+              colorScheme="red"
+              isDisabled={courses.length === 0}
+            >
+              {"حذف همه"}
             </Button>
           </DrawerFooter>
         </DrawerContent>

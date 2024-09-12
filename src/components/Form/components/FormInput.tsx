@@ -5,9 +5,9 @@ import { ProfileType } from "@/schemas/auth/Profile";
 import { RegisterType } from "@/schemas/auth/Register";
 import { ResetPasswordType } from "@/schemas/auth/ResetPassword";
 import { CourseType } from "@/schemas/Course";
-import { CourseCreationType } from "@/schemas/CreateCourse";
+import { CreateCourseType } from "@/schemas/CreateCourse";
 import { Box, Input, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import { UseFormRegister } from "react-hook-form";
 
 type Inputs = LoginType &
@@ -17,7 +17,7 @@ type Inputs = LoginType &
   ForgetPasswordType &
   OTPType &
   CourseType &
-  CourseCreationType;
+  CreateCourseType;
 
 function FormInput({
   className,

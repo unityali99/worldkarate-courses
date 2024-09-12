@@ -74,7 +74,7 @@ function Navbar() {
         </HStack>
       )}
       <Box className="md:hidden">
-        <BurgerMenu />
+        <BurgerMenu hydrated={hydrated} />
       </Box>
       {!hydrated && <Spinner color="black" size={"lg"} />}
     </Flex>

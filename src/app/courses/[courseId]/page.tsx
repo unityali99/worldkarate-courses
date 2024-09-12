@@ -1,6 +1,6 @@
 import AddToCartBtn from "@/components/AddToCartBtn";
 import DeleteBtn from "@/components/DeleteBtn";
-import PriceBadge from "@/components/Form/components/PriceBadge";
+import PriceBadge from "@/components/PriceBadge";
 import { CourseType } from "@/schemas/Course";
 import UserType from "@/schemas/UserType";
 import ApiClient from "@/services/ApiClient";
@@ -32,7 +32,7 @@ async function SingleCoursePage({ params }: { params: { courseId: string } }) {
   if (!course) return notFound();
 
   return (
-    <Flex className="text-center my-10 space-y-16 flex-col items-center w-full px-4 md:px-0">
+    <Flex className="text-center my-10 space-y-16 flex-col items-center w-full px-4 md:px-0 mb-28">
       <Heading>{course.title}</Heading>
       <Image
         className="rounded-lg"
