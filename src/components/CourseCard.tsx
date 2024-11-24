@@ -20,10 +20,13 @@ function CourseCard({
   course: CourseType;
 }) {
   return (
-    <Flex className="flex-col md:flex-row justify-center items-stretch space-y-12 md:space-x-5 w-full px-2 md:px-0 lg:w-7/12">
-      <Box className="self-center relative w-full md:w-7/12 h-56 sm:h-64 md:h-96">
+    <Flex
+      background={"rgba(0,0,0,.5)"}
+      className="flex-col md:flex-row justify-between md:space-x-5 w-full lg:w-10/12 xl:w-7/12 md:rounded-l-lg rounded-t-lg md:rounded-r-none"
+    >
+      <Box className="relative w-full md:w-7/12 h-56 sm:h-64 md:h-96">
         <Image
-          className="md:rounded-l-lg rounded-t-lg md:rounded-r-none object-cover "
+          className="object-cover md:rounded-l-lg rounded-t-lg md:rounded-r-none"
           alt={title}
           src={img}
           unoptimized
@@ -35,7 +38,7 @@ function CourseCard({
       <VStack
         dir="rtl"
         alignItems={"start"}
-        className="md:w-4/12 space-y-5 md:space-y-10"
+        className="md:w-5/12 py-6 md:py-0 px-5 space-y-6 my-auto"
       >
         <Heading>{title}</Heading>
         <Text>{description}</Text>
