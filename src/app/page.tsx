@@ -1,5 +1,6 @@
 import CourseCard from "@/components/CourseCard";
 import NewsLetterForm from "@/components/Form/NewsLetterForm";
+import BackgroundImage from "@/layouts/BackgroundImage";
 import { CourseType } from "@/schemas/Course";
 import ApiClient from "@/services/ApiClient";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
@@ -7,10 +8,9 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 export default async function Home() {
   const apiClient = new ApiClient<CourseType[]>("/fetch-course");
   const courses = (await apiClient.get()).data;
-
   return (
-    <main>
-      <Box className="bg-heading text-white text-center py-12 font-bold text-lg px-4 w-full">
+    <BackgroundImage image="/kyuna.jpg">
+      <Box className="bg-heading bg-opacity-80 text-white text-center py-12 font-bold text-lg px-4 w-full pt-40">
         <Heading>سنسی امیر یاری</Heading>
         <Text className="mt-7 mb-10 font-light">پکیج های آموزشی کاتا</Text>
         <Text className="mt-7 mb-10 font-light" dir="rtl">
@@ -29,7 +29,7 @@ export default async function Home() {
           <CourseCard key={index} course={course} />
         ))}
       </Box>
-    </main>
+    </BackgroundImage>
   );
 }
 

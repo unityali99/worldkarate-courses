@@ -6,18 +6,21 @@ import React, { useEffect, useState } from "react";
 import BurgerMenu from "./BurgerMenu";
 import ProfileLink from "./ProfileLink";
 import Cart from "./Cart";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function Navbar() {
   const { user, logout } = useAuth();
   const { replace } = useRouter();
+  const path = usePathname();
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => setHydrated(true), []);
 
   return (
     <Flex
-      className="py-10 justify-between sm:justify-around  items-center"
+      className={`w-full bg-opacity-40 py-10 justify-between sm:justify-around items-center px-2 sm:px-0 ${
+        path === "/" && "absolute md:text-white"
+      }`}
       suppressHydrationWarning={true}
     >
       <HStack className="space-x-0 md:space-x-16">

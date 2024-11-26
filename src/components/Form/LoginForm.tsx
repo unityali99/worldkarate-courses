@@ -3,7 +3,7 @@ import FormContainer from "@/layouts/FormContainer";
 import Login, { LoginType } from "@/schemas/auth/Login";
 import ApiClient from "@/services/ApiClient";
 import useAuth from "@/stores/authStore";
-import { Alert, Text } from "@chakra-ui/react";
+import { Alert, Box, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";

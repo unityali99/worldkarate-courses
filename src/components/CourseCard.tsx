@@ -21,7 +21,7 @@ function CourseCard({
 }) {
   return (
     <Flex
-      background={"rgba(0,0,0,.5)"}
+      background={"rgba(255,255,255,.5)"}
       className="flex-col md:flex-row justify-between md:space-x-5 w-full lg:w-10/12 xl:w-7/12 md:rounded-l-lg rounded-t-lg md:rounded-r-none"
     >
       <Box className="relative w-full md:w-7/12 h-56 sm:h-64 md:h-96">
