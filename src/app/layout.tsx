@@ -45,34 +45,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={iranSans.className}>
-        <Box
-          bgAttachment={"fixed"}
-          bgImage={"url(/kyuna.jpg)"}
-          bgBlendMode={"darken"}
-          backgroundColor={"rgba(0,0,0,0.1)"}
-          bgPos={"center"}
-          bgSize={"cover"}
-          backgroundPosition={"center 25%"}
-          bgRepeat={"no-repeat"}
-        >
-          <Providers>
-            <Navbar />
-            {children}
-            <ToastContainer
-              className={"text-right font-bold"}
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="dark"
-            />
-          </Providers>
-        </Box>
+        <Providers>
+          <Navbar />
+          {children}
+          <ToastContainer
+            className={"text-right font-bold"}
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        </Providers>
       </body>
     </html>
   );
