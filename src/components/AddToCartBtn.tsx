@@ -1,10 +1,10 @@
 "use client";
 import { CourseType } from "@/schemas/Course";
 import ApiClient from "@/services/ApiClient";
+import useAuth from "@/stores/authStore";
 import useCart from "@/stores/cartStore";
 import { Alert, Box, Button, Link, Spinner } from "@chakra-ui/react";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -12,6 +12,7 @@ const apiClient = new ApiClient<CourseType[]>("/user/fetch-course");
 
 function AddToCartBtn({ course }: { course: CourseType }) {
   const { add } = useCart();
+  const {user} = useAuth()
   const [hydrated, setHydrated] = useState(false);
   const [userCourses, setUserCourses] = useState<CourseType[]>([]);
   useEffect(() => {
@@ -26,7 +27,7 @@ function AddToCartBtn({ course }: { course: CourseType }) {
 
   if (!hydrated) return <Spinner size={"xl"} />;
 
-  if (userCourses.find((c) => c.id === course.id))
+  if (user && userCourses.find((c) => c.id === course.id))
     return (
       <Box className="space-y-5">
         <Alert colorScheme="teal" className="rounded-lg">

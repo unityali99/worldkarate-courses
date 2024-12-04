@@ -17,18 +17,11 @@ async function SingleCoursePage({ params }: { params: { courseId: string } }) {
     `/fetch-course/${params.courseId}`
   );
 
-  let course: CourseType;
-
   const authToken = cookies().get(cookieKey)?.value;
   const user: UserType | undefined = authToken
     ? jwtDecode(authToken)
     : undefined;
-
-  try {
-    course = (await apiClient.get()).data;
-  } catch (error) {
-    return notFound();
-  }
+  const course = (await apiClient.get()).data;
 
   if (!course) return notFound();
 
