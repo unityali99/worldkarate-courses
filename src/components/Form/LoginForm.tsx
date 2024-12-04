@@ -24,7 +24,9 @@ function LoginForm() {
   } = useForm<LoginType>({
     resolver: zodResolver(Login),
   });
-  const apiClient = new ApiClient<LoginType>("/login");
+  const apiClient = new ApiClient<LoginType>("/login", {
+    withCredentials: true,
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (data: LoginType) => {
