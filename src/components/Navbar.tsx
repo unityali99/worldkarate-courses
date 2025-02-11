@@ -53,8 +53,8 @@ function Navbar() {
             colorScheme="red"
             p={6}
             onClick={() => {
-              logout();
               replace("/");
+              logout();
             }}
           >
             خروج
