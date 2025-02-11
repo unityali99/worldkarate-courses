@@ -5,8 +5,8 @@ import { CourseType } from "@/schemas/Course";
 import UserType from "@/schemas/UserType";
 import ApiClient from "@/services/ApiClient";
 import { cookieKey } from "@/stores/authStore";
+import decodeJwt from "@/utils/jwtDecode";
 import { Box, Button, Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -19,7 +19,7 @@ async function SingleCoursePage({ params }: { params: { courseId: string } }) {
 
   const authToken = cookies().get(cookieKey)?.value;
   const user: UserType | undefined = authToken
-    ? jwtDecode(authToken)
+    ? decodeJwt(authToken)
     : undefined;
   const course = (await apiClient.get()).data;
 

@@ -28,6 +28,7 @@ function CourseCard({
         <Image
           className="object-cover md:rounded-l-lg rounded-t-lg md:rounded-r-none"
           alt={title}
+          objectPosition="center top"
           src={img}
           unoptimized
           fill
