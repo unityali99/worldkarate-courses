@@ -5,7 +5,6 @@ import Profile, { ProfileType } from "@/schemas/auth/Profile";
 import ApiClient from "@/services/ApiClient";
 import useAuth from "@/stores/authStore";
 import {
-  Box,
   Button,
   Center,
   Input,
@@ -42,7 +41,7 @@ function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
   } = useForm<ProfileType>({
     resolver: zodResolver(Profile),
   });
-  const { replace, push } = useRouter();
+  const { push } = useRouter();
   const apiClient = new ApiClient<ProfileType>("/profile");
 
   const onSubmit = (data: ProfileType) => {
@@ -65,7 +64,7 @@ function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
     cursor: isEditing ? "text" : "default",
   };
   if (!user && hydrated) {
-    replace("/auth/login");
+    window.location.replace("/auth/login");
     return;
   }
 

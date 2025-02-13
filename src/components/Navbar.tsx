@@ -6,11 +6,10 @@ import React, { useEffect, useState } from "react";
 import BurgerMenu from "./BurgerMenu";
 import ProfileLink from "./ProfileLink";
 import Cart from "./Cart";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 function Navbar() {
   const { user, logout } = useAuth();
-  const { replace } = useRouter();
   const path = usePathname();
   const [hydrated, setHydrated] = useState(false);
 
@@ -49,14 +48,7 @@ function Navbar() {
         >
           <Cart />
           <ProfileLink fullName={`${user.firstName} ${user.lastName}`} />
-          <Button
-            colorScheme="red"
-            p={6}
-            onClick={() => {
-              replace("/");
-              logout();
-            }}
-          >
+          <Button colorScheme="red" p={6} onClick={logout}>
             خروج
           </Button>
         </HStack>

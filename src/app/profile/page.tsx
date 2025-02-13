@@ -10,9 +10,9 @@ import { redirect } from "next/navigation";
 
 async function ProfilePage() {
   const token = cookies().get(cookieKey)?.value;
-  if (!token) return redirect("/auth/login");
+  if (!token || token?.length === 0) return redirect("/auth/login");
 
-  const decodedToken = decodeJwt(token);
+  const decodedToken = decodeJwt(token!);
   const { isAdmin }: UserType = decodedToken;
 
   return (
@@ -25,5 +25,6 @@ async function ProfilePage() {
 }
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 export default ProfilePage;
