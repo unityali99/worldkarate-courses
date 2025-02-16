@@ -1,5 +1,5 @@
 "use client";
-import { registerNewsletter } from "@/utils/registerNewsletter";
+import { registerNewsletter } from "@/services/registerNewsletter";
 import { Alert, Button, Input, Spinner, Text } from "@chakra-ui/react";
 import React from "react";
 import { useFormState, useFormStatus } from "react-dom";
