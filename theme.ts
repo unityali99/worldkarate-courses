@@ -1,6 +1,2 @@
-import { extendTheme } from "@chakra-ui/react";
-
-export const theme = extendTheme({
-  initialColorMode: "light",
-  useSystemColorMode: false,
-});
+// Simple theme configuration for Chakra UI v2
+export const theme = {};

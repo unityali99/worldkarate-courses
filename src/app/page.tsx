@@ -8,7 +8,14 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 export default async function Home() {
   const apiClient = new ApiClient<CourseType[]>("/fetch-course");
 
-  const courses = (await apiClient.get()).data;
+  let courses: CourseType[] = [];
+  try {
+    const response = await apiClient.get();
+    courses = response.data || [];
+  } catch (error) {
+    console.error("Failed to fetch courses:", error);
+    // courses will remain empty array, so the page will still render
+  }
   return (
     <BackgroundImage image="/kyuna.jpg">
       <Box className="bg-heading bg-opacity-80 text-white text-center py-12 font-bold text-lg px-4 w-full pt-40">

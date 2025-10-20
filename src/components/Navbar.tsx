@@ -1,15 +1,18 @@
 "use client";
 import useAuth from "@/stores/authStore";
+import useLanguageStore from "@/stores/languageStore";
 import { Box, Button, Flex, HStack, Link, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import BurgerMenu from "./BurgerMenu";
 import ProfileLink from "./ProfileLink";
 import Cart from "./Cart";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { usePathname } from "next/navigation";
 
 function Navbar() {
   const { user, logout } = useAuth();
+  const { t } = useLanguageStore();
   const path = usePathname();
   const [hydrated, setHydrated] = useState(false);
 
@@ -38,18 +41,19 @@ function Navbar() {
           href={"https://www.instagram.com/amiryarikata/?hl=en"}
           target="_blank"
         >
-          {"اینستاگرام"}
+          {t.ui.instagram}
         </Link>
       </HStack>
-      {user && (
+      {user && hydrated && (
         <HStack
           className="space-x-0 md:space-x-10"
           display={{ base: "none", md: "flex" }}
         >
           <Cart />
+          <LanguageSwitcher />
           <ProfileLink fullName={`${user.firstName} ${user.lastName}`} />
           <Button colorScheme="red" p={6} onClick={logout}>
-            خروج
+            {t.ui.logout}
           </Button>
         </HStack>
       )}
@@ -59,9 +63,10 @@ function Navbar() {
           display={{ base: "none", md: "flex" }}
         >
           <Cart />
+          <LanguageSwitcher />
           <Link href={"/auth/login"}>
             <Button colorScheme="red" p={6}>
-              {"ورود / ثبت نام"}
+              {t.ui.login + " / " + t.ui.register}
             </Button>
           </Link>
         </HStack>

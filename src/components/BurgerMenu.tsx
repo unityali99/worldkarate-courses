@@ -23,10 +23,8 @@ function BurgerMenu({ hydrated }: { hydrated: boolean }) {
   if (hydrated)
     return (
       <Center>
+        <Cart />
         <Menu direction="rtl" placement="bottom-end">
-          <MenuItem>
-            <Cart />
-          </MenuItem>
           <MenuButton
             as={IconButton}
             aria-label="Options"
@@ -43,19 +41,16 @@ function BurgerMenu({ hydrated }: { hydrated: boolean }) {
                 />
               </MenuItem>
             ) : (
-              <MenuItem>
-                <Link href={"/auth/login"}>
-                  <Button colorScheme="red">{"ورود / ثبت نام"}</Button>
-                </Link>
+              <MenuItem as={Link} href={"/auth/login"}>
+                ورود / ثبت نام
               </MenuItem>
             )}
-            <MenuItem>
-              <Link
-                target="_blank"
-                href="https://www.instagram.com/amiryarikata/?hl=en"
-              >
-                {"اینستاگرام"}
-              </Link>
+            <MenuItem
+              as={Link}
+              target="_blank"
+              href="https://www.instagram.com/amiryarikata/?hl=en"
+            >
+              اینستاگرام
             </MenuItem>
             <MenuDivider borderColor={"gray"} mx={2} />
             <MenuItem
