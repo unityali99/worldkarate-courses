@@ -1,5 +1,6 @@
 "use client";
 import useCart from "@/stores/cartStore";
+import useLanguageStore from "@/stores/languageStore";
 import {
   Alert,
   Button,
@@ -16,7 +17,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaShoppingBasket } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -25,8 +26,21 @@ function Cart() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { push } = useRouter();
   const btnRef = React.useRef(null);
-  const { courses, remove, clear } = useCart();
+  const { courses, remove, clear, hydrated, setHydrated } = useCart();
+  const { t } = useLanguageStore();
   const isMobileScreenSize = useBreakpointValue({ base: true, md: false });
+
+  useEffect(() => {
+    setHydrated();
+  }, [setHydrated]);
+
+  if (!hydrated) {
+    return (
+      <Button ref={btnRef} disabled>
+        <FaShoppingBasket size={25} />
+      </Button>
+    );
+  }
 
   return (
     <>
@@ -69,14 +83,13 @@ function Cart() {
               w={"100%"}
               colorScheme="green"
               onClick={() => {
-                if (courses.length === 0)
-                  return toast.error("سبد خرید خالی میباشد");
+                if (courses.length === 0) return toast.error(t.ui.emptyCart);
                 push("/payment/checkout");
                 onClose();
               }}
               isDisabled={courses.length === 0}
             >
-              {"پرداخت"}
+              {t.ui.payment}
             </Button>
             <Button
               onClick={clear}
@@ -84,7 +97,7 @@ function Cart() {
               colorScheme="red"
               isDisabled={courses.length === 0}
             >
-              {"حذف همه"}
+              {t.ui.clear}
             </Button>
           </DrawerFooter>
         </DrawerContent>

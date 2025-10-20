@@ -21,12 +21,14 @@ import { useForm } from "react-hook-form";
 import ApiClient from "@/services/ApiClient";
 import { AxiosError } from "axios";
 import useAuth from "@/stores/authStore";
+import useLanguageStore from "@/stores/languageStore";
 import Placeholder from "../Placeholder";
 
 function ChangePasswordForm() {
   const [hydrated, setHydrated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
+  const { t } = useLanguageStore();
 
   useEffect(() => setHydrated(true), [setHydrated]);
 
@@ -58,7 +60,7 @@ function ChangePasswordForm() {
       w={{ base: "90%", md: "75%", lg: "50%" }}
     >
       <Text className="text-lg md:text-2xl" dir="rtl">
-        {"تغییر رمز عبور"}
+        {t.ui.changePassword}
       </Text>
       <TableContainer
         className="border border-black border-opacity-20 rounded-lg"
@@ -93,12 +95,12 @@ function ChangePasswordForm() {
               isDisabled={!hydrated}
               onClick={handleSubmit(onSubmit)}
             >
-              {isLoading ? <Spinner /> : <Text>{"ذخیره"}</Text>}
+              {isLoading ? <Spinner /> : <Text>{t.ui.save}</Text>}
             </Button>
           </TableCaption>
           <Tbody>
             <Tr>
-              <Td p={{ base: "8px", md: "16px" }}>{"رمز عبور جدید:"}</Td>
+              <Td p={{ base: "8px", md: "16px" }}>{t.ui.newPassword}:</Td>
               <Td
                 w={hydrated ? "unset" : "50%"}
                 p={{ base: "8px", md: "16px" }}
@@ -108,6 +110,7 @@ function ChangePasswordForm() {
                     password
                     register={register("newPassword")}
                     dir="ltr"
+                    autoComplete="new-password"
                     key={1}
                   />
                 ) : (
@@ -117,7 +120,7 @@ function ChangePasswordForm() {
             </Tr>
 
             <Tr>
-              <Td p={{ base: "8px", md: "16px" }}>{"تکرار رمز عبور جدید:"}</Td>
+              <Td p={{ base: "8px", md: "16px" }}>{t.ui.repeatPassword}:</Td>
               <Td
                 w={hydrated ? "unset" : "50%"}
                 p={{ base: "8px", md: "16px" }}
@@ -127,6 +130,7 @@ function ChangePasswordForm() {
                     password
                     register={register("repeatPassword")}
                     dir="ltr"
+                    autoComplete="new-password"
                     key={2}
                   />
                 ) : (

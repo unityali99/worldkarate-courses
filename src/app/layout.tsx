@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { keywords } from "@/utils/keywords";
+import { lang } from "@/lang";
 
 const iranSans = localFont({
   src: [
@@ -33,9 +34,9 @@ const iranSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "آکادمی کاراته سنسی یاری",
-  description: "جامع ترین پلتفرم آموزش کاراته در کشور",
-  keywords: keywords,
+  title: lang.fa.metadata.title,
+  description: lang.fa.metadata.description,
+  keywords: lang.fa.metadata.keywords,
 };
 
 export default function RootLayout({

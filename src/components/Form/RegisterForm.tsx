@@ -11,6 +11,7 @@ import { Alert, Text } from "@chakra-ui/react";
 import FormContainer from "@/layouts/FormContainer";
 import FormFooter from "./components/FormFooter";
 import FormButton from "./components/FormButton";
+import { useRouter } from "next/navigation";
 
 function RegisterForm() {
   const {
@@ -21,6 +22,7 @@ function RegisterForm() {
     resolver: zodResolver(Register),
   });
   const [isLoading, setIsLoading] = useState(false);
+  const { replace } = useRouter();
 
   const apiClient = new ApiClient<RegisterType>("/register");
 
@@ -30,6 +32,7 @@ function RegisterForm() {
       .post(data)
       .then((res) => {
         toast.success(res.data.message);
+        replace("/auth/login");
       })
       .catch((error: AxiosError) =>
         toast.error((error.response?.data as { message: string }).message)

@@ -3,6 +3,7 @@ import FormContainer from "@/layouts/FormContainer";
 import Login, { LoginType } from "@/schemas/auth/Login";
 import ApiClient from "@/services/ApiClient";
 import useAuth from "@/stores/authStore";
+import useLanguageStore from "@/stores/languageStore";
 import { Alert, Box, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
@@ -16,6 +17,7 @@ import FormFooter from "./components/FormFooter";
 
 function LoginForm() {
   const { login } = useAuth();
+  const { t } = useLanguageStore();
   const { replace } = useRouter();
   const {
     register,
@@ -46,12 +48,12 @@ function LoginForm() {
 
   return (
     <FormContainer>
-      <Text className="font-bold text-xl my-5">ورود به پنل کاربری</Text>
+      <Text className="font-bold text-xl my-5">{t.ui.userLogin}</Text>
       <FormInput
         dir="ltr"
         register={register("email")}
-        label="ایمیل:"
-        placeholder="Email@example.com"
+        label={t.ui.email + ":"}
+        placeholder={t.ui.emailPlaceholder}
       />
       {errors.email && (
         <Alert
@@ -66,8 +68,8 @@ function LoginForm() {
         dir="ltr"
         password
         register={register("password")}
-        label="رمز عبور:"
-        placeholder="Password"
+        label={t.ui.password + ":"}
+        placeholder={t.ui.passwordPlaceholder}
       />
       {errors.password && (
         <Alert
@@ -80,17 +82,17 @@ function LoginForm() {
       )}
       <FormButton
         onClick={handleSubmit(onSubmit)}
-        text="ورود"
+        text={t.ui.login}
         isLoading={isLoading}
       />
       <FormFooter
-        text="رمز خود را فراموش کرده اید؟"
-        linkText="ریست رمز"
+        text={t.ui.forgotPassword}
+        linkText={t.ui.resetPassword}
         href="/auth/forget-password"
       />
       <FormFooter
-        text="ثبت نام نکرده اید؟"
-        linkText="ثبت نام"
+        text={t.ui.notRegistered}
+        linkText={t.ui.register}
         href="/auth/register"
       />
     </FormContainer>

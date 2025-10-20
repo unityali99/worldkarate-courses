@@ -27,6 +27,7 @@ function FormInput({
   number = false,
   register,
   dir,
+  autoComplete,
 }: {
   className?: string;
   label?: string;
@@ -35,6 +36,7 @@ function FormInput({
   placeholder?: string;
   register: ReturnType<UseFormRegister<Inputs>>;
   dir: "ltr" | "rtl";
+  autoComplete?: string;
 }) {
   return (
     <Box className="space-y-1">
@@ -48,6 +50,7 @@ function FormInput({
         dir={dir}
         size="md"
         type={password ? "password" : number ? "number" : ""}
+        autoComplete={autoComplete}
       />
     </Box>
   );

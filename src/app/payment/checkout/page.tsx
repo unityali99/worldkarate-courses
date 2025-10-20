@@ -9,5 +9,7 @@ function CheckoutPage() {
     </Box>
   );
 }
+export const fetchCache = "force-no-store";
+export const dynamic = "force-dynamic";
 
 export default CheckoutPage;
