@@ -2,14 +2,14 @@
 import PanelContainer from "@/layouts/PanelContainer";
 import { Alert, Box, Button, Spinner, Text } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import httpService from "@/services/httpService";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import PaidOrder from "@/components/Form/PaidOrder";
 import { ResponseData } from "@/layouts/CheckoutLogic";
 
-function VerifyPage() {
+function VerifyContent() {
   const searchParams = useSearchParams();
   const authority = searchParams.get("Authority");
   const status = searchParams.get("Status");
@@ -102,6 +102,22 @@ function VerifyPage() {
   }
 
   return null;
+}
+
+function VerifyPage() {
+  return (
+    <Suspense
+      fallback={
+        <PanelContainer>
+          <Box className="flex justify-center items-center min-h-[400px]">
+            <Spinner size="xl" />
+          </Box>
+        </PanelContainer>
+      }
+    >
+      <VerifyContent />
+    </Suspense>
+  );
 }
 
 export const fetchCache = "force-no-store";
