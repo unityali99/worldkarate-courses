@@ -4,7 +4,7 @@ import React from "react";
 function PriceBadge({ price }: { price: number }) {
   return (
     <Badge fontSize={"medium"} rounded={"10px"} p={"5px"} colorScheme="cyan">
-      {price.toLocaleString()}
+      {price.toLocaleString("en-US")}
       {" تومان"}
     </Badge>
   );

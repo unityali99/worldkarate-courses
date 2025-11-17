@@ -4,7 +4,9 @@ import PanelTableContainer from "@/layouts/PanelTableContainer";
 import { CreateCourseType } from "@/schemas/CreateCourse";
 import {
   Alert,
+  Box,
   Button,
+  Heading,
   Link,
   Table,
   TableCaption,
@@ -44,65 +46,83 @@ function UserCourses({ email }: { email?: string }) {
   if (hydrated && courses.length === 0)
     return (
       <PanelContainer>
-        <Text className="text-lg md:text-2xl" dir="rtl">
-          {"دوره های خریداری شده"}
-        </Text>
-        <Alert colorScheme="red">
-          <Text mx={"auto"}>{"دوره ای خریداری نشده است"}</Text>
-        </Alert>
+        <Box
+          bg="white"
+          borderRadius="lg"
+          border="1px solid"
+          borderColor="gray.200"
+          p={{ base: 4, md: 6 }}
+          shadow="sm"
+        >
+          <Heading size={{ base: "md", md: "lg" }} mb={4} dir="rtl" pb={2}>
+            {"دوره های خریداری شده"}
+          </Heading>
+          <Alert colorScheme="red">
+            <Text mx={"auto"}>{"دوره ای خریداری نشده است"}</Text>
+          </Alert>
+        </Box>
       </PanelContainer>
     );
 
   return (
     <PanelContainer>
-      <Text className="text-lg md:text-2xl" dir="rtl">
-        {"دوره های خریداری شده"}
-      </Text>
-      <PanelTableContainer>
-        <Table variant="striped" size={{ base: "md", md: "lg" }}>
-          <TableCaption>
-            <Link href="/">
-              <Button
-                w={{ base: "70%", md: "40%" }}
-                size={{ base: "sm", md: "md" }}
-                mx="auto"
-                colorScheme="green"
-              >
-                {"بازگشت به صفحه اصلی"}
-              </Button>
-            </Link>
-          </TableCaption>
-          <Thead>
-            <Tr>
-              <Th>{"عنوان"}</Th>
-              <Th>{"لینک"}</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {hydrated
-              ? courses.map((c, i) => (
-                  <Tr key={i}>
-                    <Td p={{ base: "0", md: "25px" }}>{c.title}</Td>
-                    <Td p={{ base: "0", md: "25px" }}>
-                      <Link target="_blank" href={c.link}>
-                        <Text className="text-blue-700">{"دانلود"}</Text>
-                      </Link>
-                    </Td>
-                  </Tr>
-                ))
-              : [0, 1, 2].map((v, i) => (
-                  <Tr key={i}>
-                    <Td>
-                      <Placeholder />
-                    </Td>
-                    <Td>
-                      <Placeholder />
-                    </Td>
-                  </Tr>
-                ))}
-          </Tbody>
-        </Table>
-      </PanelTableContainer>
+      <Box
+        bg="white"
+        borderRadius="lg"
+        border="1px solid"
+        borderColor="gray.200"
+        p={{ base: 4, md: 6 }}
+        shadow="sm"
+      >
+        <Heading size={{ base: "md", md: "lg" }} mb={4} dir="rtl" pb={2}>
+          {"دوره های خریداری شده"}
+        </Heading>
+        <PanelTableContainer>
+          <Table variant="striped" size={{ base: "md", md: "lg" }}>
+            <TableCaption>
+              <Link href="/">
+                <Button
+                  w={{ base: "70%", md: "40%" }}
+                  size={{ base: "sm", md: "md" }}
+                  mx="auto"
+                  colorScheme="green"
+                >
+                  {"بازگشت به صفحه اصلی"}
+                </Button>
+              </Link>
+            </TableCaption>
+            <Thead>
+              <Tr>
+                <Th>{"عنوان"}</Th>
+                <Th>{"لینک"}</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {hydrated
+                ? courses.map((c, i) => (
+                    <Tr key={i}>
+                      <Td p={{ base: "0", md: "25px" }}>{c.title}</Td>
+                      <Td p={{ base: "0", md: "25px" }}>
+                        <Link target="_blank" href={c.link}>
+                          <Text className="text-blue-700">{"دانلود"}</Text>
+                        </Link>
+                      </Td>
+                    </Tr>
+                  ))
+                : [0, 1, 2].map((v, i) => (
+                    <Tr key={i}>
+                      <Td>
+                        <Placeholder />
+                      </Td>
+                      <Td>
+                        <Placeholder />
+                      </Td>
+                    </Tr>
+                  ))}
+            </Tbody>
+          </Table>
+        </PanelTableContainer>
+      </Box>
     </PanelContainer>
   );
 }

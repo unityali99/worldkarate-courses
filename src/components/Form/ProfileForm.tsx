@@ -6,8 +6,10 @@ import ApiClient from "@/services/ApiClient";
 import useAuth from "@/stores/authStore";
 import useLanguageStore from "@/stores/languageStore";
 import {
+  Box,
   Button,
   Center,
+  Heading,
   Input,
   Spinner,
   Table,
@@ -75,142 +77,156 @@ function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
     opacity: isEditing ? 1 : 1,
     cursor: isEditing ? "text" : "default",
   };
-  if (!user && hydrated) {
-    window.location.replace("/auth/login");
-    return;
-  }
+
 
   return (
     <PanelContainer>
       {isAdmin && (
-        <>
-          <Text className="text-lg md:text-2xl" dir="rtl">
+        <Box
+          bg="white"
+          borderRadius="lg"
+          border="1px solid"
+          borderColor="gray.200"
+          p={{ base: 4, md: 6 }}
+          shadow="sm"
+          mb={6}
+        >
+          <Heading size={{ base: "md", md: "lg" }} mb={4} dir="rtl">
             {t.ui.adminPanel}
-          </Text>
+          </Heading>
           <Center>
             <Button onClick={() => push("/profile/admin")} colorScheme="blue">
               {t.ui.redirectToAdmin}
             </Button>
           </Center>
-        </>
+        </Box>
       )}
-      <Text className="text-lg md:text-2xl" dir="rtl">
-        {t.ui.profile}
-      </Text>
-      <PanelTableContainer>
-        <Table variant="simple">
-          <TableCaption>
-            {isEditing ? (
-              <Button
-                w={{ base: "100%", md: "50%" }}
-                size={{ base: "sm", md: "md" }}
-                mx="auto"
-                onClick={handleSubmit((data) => {
-                  onSubmit(data);
-                  setIsEditing(false);
-                })}
-                colorScheme="green"
-              >
-                {isLoading ? <Spinner /> : <Text>{t.ui.save}</Text>}
-              </Button>
-            ) : (
-              <Button
-                w={{ base: "100%", md: "50%" }}
-                size={{ base: "sm", md: "md" }}
-                mx="auto"
-                onClick={() => setIsEditing(true)}
-                colorScheme="orange"
-                isDisabled={!hydrated}
-              >
-                {t.ui.edit}
-              </Button>
-            )}
-          </TableCaption>
-          <Tbody>
-            <Tr>
-              <Td p={{ base: "8px", md: "16px" }}>{t.ui.firstName}:</Td>
-              <Td
-                w={hydrated ? "unset" : "50%"}
-                p={{ base: "8px", md: "16px" }}
-              >
-                {hydrated ? (
-                  <>
-                    <Input
-                      disabled={!isEditing}
-                      {...register("firstName")}
-                      size={{ base: "sm", md: "md" }}
-                      fontSize={{ base: "small", md: "md" }}
-                      textAlign={"center"}
-                      style={inputDisabledStyle}
-                    />
-                    {errors.firstName && (
-                      <Text color="red.500" fontSize="sm" mt={1}>
-                        {errors.firstName.message}
-                      </Text>
-                    )}
-                  </>
-                ) : (
-                  <Placeholder />
-                )}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td p={{ base: "8px", md: "16px" }}>{t.ui.lastName}:</Td>
-              <Td
-                w={hydrated ? "unset" : "50%"}
-                p={{ base: "8px", md: "16px" }}
-              >
-                {hydrated ? (
-                  <>
-                    <Input
-                      disabled={!isEditing}
-                      {...register("lastName")}
-                      size={{ base: "sm", md: "md" }}
-                      fontSize={{ base: "small", md: "md" }}
-                      textAlign={"center"}
-                      style={inputDisabledStyle}
-                    />
-                    {errors.lastName && (
-                      <Text color="red.500" fontSize="sm" mt={1}>
-                        {errors.lastName.message}
-                      </Text>
-                    )}
-                  </>
-                ) : (
-                  <Placeholder />
-                )}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td p={{ base: "8px", md: "16px" }}>{t.ui.email}:</Td>
-              <Td
-                w={hydrated ? "unset" : "50%"}
-                p={{ base: "8px", md: "16px" }}
-              >
-                {hydrated ? (
-                  <>
-                    <Input
-                      disabled={!isEditing}
-                      {...register("email")}
-                      size={{ base: "sm", md: "md" }}
-                      fontSize={{ base: "small", md: "md" }}
-                      textAlign={"center"}
-                      style={inputDisabledStyle}
-                    />
-                    {errors.email && (
-                      <Text color="red.500" fontSize="sm" mt={1}>
-                        {errors.email.message}
-                      </Text>
-                    )}
-                  </>
-                ) : (
-                  <Placeholder />
-                )}
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
-      </PanelTableContainer>
+      <Box
+        bg="white"
+        borderRadius="lg"
+        border="1px solid"
+        borderColor="gray.200"
+        p={{ base: 4, md: 6 }}
+        shadow="sm"
+      >
+        <Heading size={{ base: "md", md: "lg" }} mb={4} dir="rtl" pb={2}>
+          {t.ui.profile}
+        </Heading>
+        <PanelTableContainer>
+          <Table variant="simple">
+            <TableCaption>
+              {isEditing ? (
+                <Button
+                  w={{ base: "100%", md: "50%" }}
+                  size={{ base: "sm", md: "md" }}
+                  mx="auto"
+                  onClick={handleSubmit((data) => {
+                    onSubmit(data);
+                    setIsEditing(false);
+                  })}
+                  colorScheme="green"
+                >
+                  {isLoading ? <Spinner /> : <Text>{t.ui.save}</Text>}
+                </Button>
+              ) : (
+                <Button
+                  w={{ base: "100%", md: "50%" }}
+                  size={{ base: "sm", md: "md" }}
+                  mx="auto"
+                  onClick={() => setIsEditing(true)}
+                  colorScheme="orange"
+                  isDisabled={!hydrated}
+                >
+                  {t.ui.edit}
+                </Button>
+              )}
+            </TableCaption>
+            <Tbody>
+              <Tr>
+                <Td p={{ base: "8px", md: "16px" }}>{t.ui.firstName}:</Td>
+                <Td
+                  w={hydrated ? "unset" : "50%"}
+                  p={{ base: "8px", md: "16px" }}
+                >
+                  {hydrated ? (
+                    <>
+                      <Input
+                        disabled={!isEditing}
+                        {...register("firstName")}
+                        size={{ base: "sm", md: "md" }}
+                        fontSize={{ base: "small", md: "md" }}
+                        textAlign={"center"}
+                        style={inputDisabledStyle}
+                      />
+                      {errors.firstName && (
+                        <Text color="red.500" fontSize="sm" mt={1}>
+                          {errors.firstName.message}
+                        </Text>
+                      )}
+                    </>
+                  ) : (
+                    <Placeholder />
+                  )}
+                </Td>
+              </Tr>
+              <Tr>
+                <Td p={{ base: "8px", md: "16px" }}>{t.ui.lastName}:</Td>
+                <Td
+                  w={hydrated ? "unset" : "50%"}
+                  p={{ base: "8px", md: "16px" }}
+                >
+                  {hydrated ? (
+                    <>
+                      <Input
+                        disabled={!isEditing}
+                        {...register("lastName")}
+                        size={{ base: "sm", md: "md" }}
+                        fontSize={{ base: "small", md: "md" }}
+                        textAlign={"center"}
+                        style={inputDisabledStyle}
+                      />
+                      {errors.lastName && (
+                        <Text color="red.500" fontSize="sm" mt={1}>
+                          {errors.lastName.message}
+                        </Text>
+                      )}
+                    </>
+                  ) : (
+                    <Placeholder />
+                  )}
+                </Td>
+              </Tr>
+              <Tr>
+                <Td p={{ base: "8px", md: "16px" }}>{t.ui.email}:</Td>
+                <Td
+                  w={hydrated ? "unset" : "50%"}
+                  p={{ base: "8px", md: "16px" }}
+                >
+                  {hydrated ? (
+                    <>
+                      <Input
+                        disabled={!isEditing}
+                        {...register("email")}
+                        size={{ base: "sm", md: "md" }}
+                        fontSize={{ base: "small", md: "md" }}
+                        textAlign={"center"}
+                        style={inputDisabledStyle}
+                      />
+                      {errors.email && (
+                        <Text color="red.500" fontSize="sm" mt={1}>
+                          {errors.email.message}
+                        </Text>
+                      )}
+                    </>
+                  ) : (
+                    <Placeholder />
+                  )}
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </PanelTableContainer>
+      </Box>
     </PanelContainer>
   );
 }

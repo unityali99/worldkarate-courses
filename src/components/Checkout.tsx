@@ -24,17 +24,11 @@ import { PaymentType } from "@/schemas/Payment";
 import { toast } from "react-toastify";
 import { AxiosError, AxiosResponse } from "axios";
 
-function Checkout({
-  setApiRes,
-  hydrated,
-}: {
-  setApiRes: (res: AxiosResponse) => void;
-  hydrated: boolean;
-}) {
+function Checkout({ hydrated }: { hydrated: boolean }) {
   const { courses, clear } = useCart();
   const [isLoading, setIsLoading] = useState(false);
 
-  const apiClient = new ApiClient<PaymentType>("/checkout");
+  const apiClient = new ApiClient<PaymentType>("/payment/checkout");
 
   const totalPrice = courses.reduce(
     (accumulator, currentVal) => accumulator + currentVal.price,
@@ -48,8 +42,8 @@ function Checkout({
       .post({ courseIds })
       .then((res) => {
         toast.success(res.data.message);
-        clear();
-        setApiRes(res);
+        window.location.href = res.data.paymentUrl;
+        // clear();
       })
       .catch((error: AxiosError) =>
         toast.error((error.response?.data as { message: string }).message)
@@ -97,7 +91,7 @@ function Checkout({
                   <Tr key={i}>
                     <Td p={{ base: "0", md: "25px" }}>{c.title}</Td>
                     <Td p={{ base: "0", md: "25px" }}>
-                      {c.price.toLocaleString()}
+                      {c.price.toLocaleString("en-US")}
                     </Td>
                   </Tr>
                 ))
@@ -113,7 +107,13 @@ function Checkout({
                 ))}
             <Tr>
               <Td>{"مجموع"}</Td>
-              <Td>{totalPrice.toLocaleString()}</Td>
+              <Td>
+                {hydrated ? (
+                  totalPrice.toLocaleString("en-US")
+                ) : (
+                  <Placeholder />
+                )}
+              </Td>
             </Tr>
           </Tbody>
         </Table>

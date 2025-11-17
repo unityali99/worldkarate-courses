@@ -13,33 +13,47 @@ function NewsLetterForm() {
   });
 
   return (
-    <form action={formAction} className="space-y-6 w-10/12 md:w-3/12">
+    <form action={formAction} className="space-y-6 w-full md:w-auto min-w-80">
       <Input
-        mx={"auto"}
-        placeholder="Email"
+        placeholder="ایمیل خود را وارد کنید"
         size={{ base: "md", md: "lg" }}
-        bgColor={"whitesmoke"}
+        bgColor={"white"}
         textColor={"black"}
         type="email"
         name="email"
+        borderRadius="md"
+        border="2px solid"
+        borderColor="gray.300"
+        _hover={{
+          borderColor: "gray.400",
+        }}
+        _focus={{
+          borderColor: "red.500",
+          boxShadow: "0 0 0 1px var(--chakra-colors-red-500)",
+        }}
       />
       {state.message && (
         <Alert
           colorScheme={state.successful ? "green" : "red"}
-          textColor={"black"}
-          className="rounded-md text-xs md:text-base"
+          textColor={"white"}
+          borderRadius="md"
+          fontSize="sm"
         >
           <Text className="mx-auto">{state.message}</Text>
         </Alert>
       )}
-      <Button type="submit" colorScheme="red" size={{ base: "md", md: "lg" }}>
+      <Button
+        type="submit"
+        colorScheme="red"
+        size={{ base: "md", md: "lg" }}
+        w="full"
+        borderRadius="md"
+        leftIcon={<IoNewspaperOutline className="ml-3" />}
+      >
         {pending ? (
           <Spinner as={"div"} color="white" />
         ) : (
-          <React.Fragment>
-            <IoNewspaperOutline className="mr-3" />
-            {"اطلاع از بروزرسانی ها"}
-          </React.Fragment>
+          "اطلاع از بروزرسانی ها"
         )}
       </Button>
     </form>

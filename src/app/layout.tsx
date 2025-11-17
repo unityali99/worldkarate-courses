@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { keywords } from "@/utils/keywords";
 import { lang } from "@/lang";
+import { Box } from "@chakra-ui/react";
 
 const iranSans = localFont({
   src: [

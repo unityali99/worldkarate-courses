@@ -21,12 +21,22 @@ function CourseCard({
 }) {
   return (
     <Flex
-      background={"rgba(255,255,255,.5)"}
-      className="flex-col md:flex-row justify-between md:space-x-5 w-full lg:w-10/12 xl:w-7/12 md:rounded-l-lg rounded-t-lg md:rounded-r-none"
+      background={"rgba(255,255,255,0.4)"}
+      className="flex-col md:flex-row w-full lg:w-10/12 xl:w-7/12 rounded-xl overflow-hidden"
+      border="1px solid"
+      borderColor="rgba(255, 255, 255, 0.25)"
+      shadow="lg"
+      backdropFilter="blur(5px)"
+      _hover={{
+        shadow: "xl",
+        transform: "translateY(-2px)",
+        background: "rgba(255,255,255,0.55)",
+      }}
+      transition="all 0.3s ease"
     >
       <Box className="relative w-full md:w-7/12 h-56 sm:h-64 md:h-96">
         <Image
-          className="object-cover md:rounded-l-lg rounded-t-lg md:rounded-r-none"
+          className="object-cover"
           alt={title}
           objectPosition="center top"
           src={img}
@@ -39,15 +49,25 @@ function CourseCard({
       <VStack
         dir="rtl"
         alignItems={"start"}
-        className="md:w-5/12 py-6 md:py-0 px-5 space-y-6 my-auto"
+        className="md:w-5/12 py-8 md:py-0 px-8 space-y-6 my-auto"
       >
-        <Heading>{title}</Heading>
-        <Text>{description}</Text>
+        <Heading size={{ base: "md", md: "lg" }}>{title}</Heading>
+        <Text
+          fontSize={{ base: "sm", md: "md" }}
+          color="gray.700"
+          fontWeight="medium"
+        >
+          {description}
+        </Text>
         <PriceBadge price={price} />
-        <Link href={`/courses/${id}`}>
-          <Button colorScheme="red">
+        <Link href={`/courses/${id}`} w="full">
+          <Button
+            colorScheme="red"
+            w="full"
+            size={{ base: "md", md: "lg" }}
+            rightIcon={<IoIosArrowRoundBack size={30} />}
+          >
             {"مشاهده دوره"}
-            <IoIosArrowRoundBack size={30} />
           </Button>
         </Link>
       </VStack>
