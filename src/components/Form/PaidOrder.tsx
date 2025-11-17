@@ -79,7 +79,7 @@ function PaidOrder({
                 ))}
             <Tr>
               <Td>{"مجموع"}</Td>
-              <Td>{order.transaction.totalPrice.toLocaleString()}</Td>
+              <Td>{order.transaction.totalPrice.toLocaleString("en-US")}</Td>
             </Tr>
           </Tbody>
         </Table>

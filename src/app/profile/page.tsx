@@ -16,7 +16,7 @@ async function ProfilePage() {
   const { isAdmin }: UserType = decodedToken;
 
   return (
-    <Box className="space-y-20 mb-28">
+    <Box className="space-y-8 md:space-y-12 mb-28 pt-5">
       {!isAdmin && <UserCourses />}
       <ProfileForm isAdmin={isAdmin!} key={1} />
       <ChangePasswordForm key={2} />

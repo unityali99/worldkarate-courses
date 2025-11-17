@@ -26,7 +26,7 @@ async function SingleCoursePage({ params }: { params: { courseId: string } }) {
   if (!course) return notFound();
 
   return (
-    <Flex className="text-center my-10 space-y-16 flex-col items-center w-full px-4 md:px-0 mb-28">
+    <Flex className="text-center my-10 space-y-16 flex-col items-center w-full px-4 md:px-0 mb-28 pt-24 md:pt-28">
       <Heading>{course.title}</Heading>
       <Image
         className="rounded-lg"

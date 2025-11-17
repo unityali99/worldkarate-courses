@@ -3,6 +3,7 @@ import {
   Alert,
   Box,
   Button,
+  Heading,
   Spinner,
   Table,
   TableCaption,
@@ -55,92 +56,100 @@ function ChangePasswordForm() {
   };
 
   return (
-    <Box
-      className="mx-auto space-y-10 text-xs md:text-base font-bold"
-      w={{ base: "90%", md: "75%", lg: "50%" }}
-    >
-      <Text className="text-lg md:text-2xl" dir="rtl">
-        {t.ui.changePassword}
-      </Text>
-      <TableContainer
-        className="border border-black border-opacity-20 rounded-lg"
-        dir="rtl"
-        overflowX="auto"
-        p={{ base: "2", md: "5" }}
+    <Box w={{ base: "90%", md: "75%", lg: "50%" }} mx="auto" mb={8}>
+      <Box
+        bg="white"
+        borderRadius="lg"
+        border="1px solid"
+        borderColor="gray.200"
+        p={{ base: 4, md: 6 }}
+        shadow="sm"
       >
-        <Table variant="simple">
-          <TableCaption>
-            {errors.newPassword && (
-              <Alert
-                className="rounded-md text-sm"
-                textColor={"red"}
-                colorScheme="red"
+        <Heading size={{ base: "md", md: "lg" }} mb={4} dir="rtl" pb={2}>
+          {t.ui.changePassword}
+        </Heading>
+        <TableContainer
+          dir="rtl"
+          overflowX="auto"
+          borderRadius="md"
+          border="1px solid"
+          borderColor="gray.200"
+          p={{ base: 2, md: 4 }}
+        >
+          <Table variant="simple">
+            <TableCaption>
+              {errors.newPassword && (
+                <Alert
+                  className="rounded-md text-sm"
+                  textColor={"red"}
+                  colorScheme="red"
+                >
+                  {errors.newPassword.message}
+                </Alert>
+              )}
+              {errors.repeatPassword && (
+                <Alert
+                  className="rounded-md text-sm"
+                  textColor={"red"}
+                  colorScheme="red"
+                >
+                  {errors.repeatPassword.message}
+                </Alert>
+              )}
+              <Button
+                w={{ base: "100%", md: "50%" }}
+                size={{ base: "sm", md: "md" }}
+                colorScheme="green"
+                isDisabled={!hydrated}
+                onClick={handleSubmit(onSubmit)}
               >
-                {errors.newPassword.message}
-              </Alert>
-            )}
-            {errors.repeatPassword && (
-              <Alert
-                className="rounded-md text-sm"
-                textColor={"red"}
-                colorScheme="red"
-              >
-                {errors.repeatPassword.message}
-              </Alert>
-            )}
-            <Button
-              w={{ base: "100%", md: "50%" }}
-              size={{ base: "sm", md: "md" }}
-              colorScheme="green"
-              isDisabled={!hydrated}
-              onClick={handleSubmit(onSubmit)}
-            >
-              {isLoading ? <Spinner /> : <Text>{t.ui.save}</Text>}
-            </Button>
-          </TableCaption>
-          <Tbody>
-            <Tr>
-              <Td p={{ base: "8px", md: "16px" }}>{t.ui.newPassword}:</Td>
-              <Td
-                w={hydrated ? "unset" : "50%"}
-                p={{ base: "8px", md: "16px" }}
-              >
-                {hydrated ? (
-                  <FormInput
-                    password
-                    register={register("newPassword")}
-                    dir="ltr"
-                    autoComplete="new-password"
-                    key={1}
-                  />
-                ) : (
-                  <Placeholder />
-                )}
-              </Td>
-            </Tr>
+                {isLoading ? <Spinner /> : <Text>{t.ui.save}</Text>}
+              </Button>
+            </TableCaption>
+            <Tbody>
+              <Tr>
+                <Td p={{ base: "8px", md: "16px" }}>{t.ui.newPassword}:</Td>
+                <Td
+                  w={hydrated ? "unset" : "50%"}
+                  p={{ base: "8px", md: "16px" }}
+                >
+                  {hydrated ? (
+                    <FormInput
+                      password
+                      register={register("newPassword")}
+                      dir="ltr"
+                      autoComplete="new-password"
+                      key={1}
+                    />
+                  ) : (
+                    <Placeholder />
+                  )}
+                </Td>
+              </Tr>
 
-            <Tr>
-              <Td p={{ base: "8px", md: "16px" }}>{t.ui.repeatPassword}:</Td>
-              <Td
-                w={hydrated ? "unset" : "50%"}
-                p={{ base: "8px", md: "16px" }}
-              >
-                {hydrated ? (
-                  <FormInput
-                    password
-                    register={register("repeatPassword")}
-                    dir="ltr"
-                    autoComplete="new-password"
-                    key={2}
-                  />
-                ) : (
-                  <Placeholder />
-                )}
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
-      </TableContainer>
+              <Tr>
+                <Td p={{ base: "8px", md: "16px" }}>{t.ui.repeatPassword}:</Td>
+                <Td
+                  w={hydrated ? "unset" : "50%"}
+                  p={{ base: "8px", md: "16px" }}
+                >
+                  {hydrated ? (
+                    <FormInput
+                      password
+                      register={register("repeatPassword")}
+                      dir="ltr"
+                      autoComplete="new-password"
+                      key={2}
+                    />
+                  ) : (
+                    <Placeholder />
+                  )}
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Box>
   );
 }

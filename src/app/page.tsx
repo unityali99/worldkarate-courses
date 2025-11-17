@@ -18,21 +18,56 @@ export default async function Home() {
   }
   return (
     <BackgroundImage image="/kyuna.jpg">
-      <Box className="bg-heading bg-opacity-80 text-white text-center py-12 font-bold text-lg px-4 w-full pt-40">
-        <Heading>سنسی امیر یاری</Heading>
-        <Text className="mt-7 mb-10 font-light">پکیج های آموزشی کاتا</Text>
-        <Text className="mt-7 mb-10 font-light" dir="rtl">
-          {"برای اطلاع از آخرین بروزرسانی پکیج ها ایمیل خود را وارد کنید."}
-        </Text>
-        <Flex
-          alignItems={"center"}
-          justify={"center"}
-          className="space-y-3 md:space-x-5 md:space-y-0 flex-col md:flex-row"
+      <Box className="w-full pt-40 pb-20 px-4">
+        <Box
+          bg="rgba(13, 22, 27, 0.3)"
+          borderRadius="2xl"
+          border="1px solid"
+          borderColor="rgba(255, 255, 255, 0.15)"
+          textAlign="center"
+          textColor="white"
+          fontWeight="bold"
+          w={{ base: "100%", md: "80%", lg: "60%" }}
+          mx="auto"
+          p={{ base: 8, md: 12 }}
+          shadow="lg"
+          backdropFilter="blur(5px)"
         >
-          <NewsLetterForm />
-        </Flex>
+          <Heading
+            size={{ base: "lg", md: "xl", lg: "2xl" }}
+            mb={4}
+            textShadow="2px 2px 4px rgba(0,0,0,0.5)"
+          >
+            سنسی امیر یاری
+          </Heading>
+          <Text
+            fontSize={{ base: "md", md: "lg" }}
+            mb={6}
+            fontWeight="light"
+            textShadow="1px 1px 2px rgba(0,0,0,0.5)"
+          >
+            پکیج های آموزشی کاتا
+          </Text>
+          <Text
+            fontSize={{ base: "sm", md: "md" }}
+            mb={8}
+            fontWeight="light"
+            dir="rtl"
+            textShadow="1px 1px 2px rgba(0,0,0,0.5)"
+          >
+            {"برای اطلاع از آخرین بروزرسانی پکیج ها ایمیل خود را وارد کنید."}
+          </Text>
+          <Flex
+            alignItems={"center"}
+            justify={"center"}
+            gap={4}
+            flexDirection={{ base: "column", md: "row" }}
+          >
+            <NewsLetterForm />
+          </Flex>
+        </Box>
       </Box>
-      <Box className="space-y-14 py-12 flex flex-col w-full items-center pb-28 px-2">
+      <Box className="space-y-10 py-12 flex flex-col w-full items-center pb-28 px-2">
         {courses?.map((course, index) => (
           <CourseCard key={index} course={course} />
         ))}

@@ -36,16 +36,16 @@ function Cart() {
 
   if (!hydrated) {
     return (
-      <Button ref={btnRef} disabled>
-        <FaShoppingBasket size={25} />
+      <Button ref={btnRef} disabled size="sm">
+        <FaShoppingBasket size={20} />
       </Button>
     );
   }
 
   return (
     <>
-      <Button ref={btnRef} onClick={onOpen}>
-        <FaShoppingBasket size={25} />
+      <Button ref={btnRef} onClick={onOpen} size="sm">
+        <FaShoppingBasket size={20} />
       </Button>
       <Drawer
         isOpen={isOpen}

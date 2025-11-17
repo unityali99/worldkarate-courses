@@ -29,7 +29,10 @@ const useAuth = create<LoginState>()((set, get) => ({
     remove(userStorageKey);
     set(() => ({ user: null }));
     ApiClient.logout()
-      .then((res) => toast.success(res.data.message as string))
+      .then((res) => {
+        toast.success(res.data.message as string);
+        window.location.replace("/");
+      })
       .catch((error: AxiosError) => toast.error(error.message));
   },
 }));
