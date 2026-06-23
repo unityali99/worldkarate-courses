@@ -1,19 +1,19 @@
 import { passwordRegex } from "@/utils/passwordRegex";
+import { lang } from "@/lang";
 import { z } from "zod";
-
-const requiredError = "لطفا رمز عبور خود را انتخاب کنید";
-const regexError =
-  "رمز عبور باید حداقل 8 کاراکتر شامل حداقل یک حرف و یک عدد باشد";
 
 const ResetPassword = z
   .object({
     newPassword: z
-      .string({ required_error: requiredError })
-      .regex(passwordRegex, regexError),
-    repeatPassword: z.string(),
+      .string({ required_error: lang.fa.validation.newPasswordRequired })
+      .min(1, lang.fa.validation.newPasswordRequired)
+      .regex(passwordRegex, lang.fa.validation.newPasswordInvalidFormat),
+    repeatPassword: z
+      .string({ required_error: lang.fa.validation.repeatPasswordRequired })
+      .min(1, lang.fa.validation.repeatPasswordRequired),
   })
   .refine((data) => data.newPassword === data.repeatPassword, {
-    message: "تکرار رمز عبور همخوانی ندارد",
+    message: lang.fa.validation.repeatPasswordMismatch,
     path: ["repeatPassword"],
   });
 

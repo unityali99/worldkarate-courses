@@ -10,7 +10,7 @@ function FormFooter({
   href: string;
 }) {
   return (
-    <Text className="text-start text-sm font-light" dir="rtl">
+    <Text className="text-start text-md md:text-lg font-light" dir="rtl">
       {text}{" "}
       <Link href={href} className="inline-block hover:underline font-medium">
         {linkText}

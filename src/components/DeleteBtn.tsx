@@ -36,7 +36,7 @@ function DeleteBtn({ text, courseId }: { text: string; courseId: string }) {
 
   return (
     <Box>
-      <Button colorScheme="red" onClick={onOpen}>
+      <Button w="full" size="lg" rounded="xl" colorScheme="red" onClick={onOpen}>
         {text}
       </Button>
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>

@@ -56,6 +56,40 @@ export const en = {
     goBack: "Go Back to Home",
     send: "Send",
     clear: "Clear All",
+    courses: "Courses",
+
+    // Landing Page
+    landing: {
+      heroTitle: "Master Karate with Sensei Amir Yari",
+      heroDesc:
+        "Join the ultimate platform for learning Kata and advancing your martial arts journey. Expert guidance, comprehensive courses, and a legacy of excellence.",
+      ctaButton: "Explore Courses",
+      aboutTitle: "Meet Sensei Amir Yari",
+      aboutDesc:
+        "A dedicated master with decades of experience in shaping champions. Sensei Yari combines traditional techniques with modern teaching methodologies to bring out the best in every student.",
+      methodologyTitle: "Our Methodology",
+      methodologyDesc:
+        "We focus on precision, discipline, and the deeper understanding of Kata. Our structured approach ensures steady progress and mastery of fundamental to advanced techniques.",
+      legacyTitle: "A Legacy of Excellence",
+      legacyDesc:
+        "Since 2012, we have been committed to the art of Karate. Join a community built on respect, strength, and continuous improvement.",
+      experience: "10+ Years Experience",
+      experienceDesc: "Expert instruction and proven methodology",
+      training: "Personalized Training",
+      trainingDesc: "Customized programs for all skill levels",
+      environment: "Safe Environment",
+      environmentDesc: "Trained professionals ensuring safety",
+      learnMore: "Learn More",
+      meetSensei: "Meet Sensei",
+      structuredApproach: "Structured learning approach",
+      progressiveSkill: "Progressive skill building",
+      traditionalModern: "Traditional techniques with modern methods",
+      exploreHistory: "Explore History",
+      viewAchievements: "View Achievements",
+      readyToBegin: "Ready to Begin Your Journey?",
+      joinCommunity:
+        "Join our community of martial artists and start your transformation today",
+    },
 
     // Form labels
     firstName: "First Name",
@@ -95,6 +129,21 @@ export const en = {
     cartCleared: "Cart successfully cleared",
     alreadyPurchased: "You have already purchased this course",
     confirmDelete: "Are you sure you want to delete this item?",
+
+    // Footer
+    footer: {
+      address:
+        "Tehran, District 22, Rah Ahan settlement , Qaem St, Sadra academy",
+      phone: "Phone: 09191257020",
+      designer: "Designed by:",
+      designerName: "Ali Ahmadi",
+      contactUs: "Contact Us",
+      socialMedias: "Social Medias",
+      instagram: "Instagram",
+      telegram: "Telegram",
+      whatsapp: "WhatsApp",
+      rights: "All rights reserved.",
+    },
 
     // Status
     success: "Success",

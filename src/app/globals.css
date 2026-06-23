@@ -31,3 +31,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.font-lalezar {
+  font-family: var(--font-lalezar), sans-serif;
+}
+
+.font-iran-sans {
+  font-family: var(--font-iran-sans), sans-serif;
+}

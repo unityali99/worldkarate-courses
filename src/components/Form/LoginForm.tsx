@@ -47,8 +47,10 @@ function LoginForm() {
   };
 
   return (
-    <FormContainer>
-      <Text className="font-bold text-xl my-5">{t.ui.userLogin}</Text>
+    <FormContainer my={8}>
+      <Text className="font-bold text-2xl md:text-3xl my-5">
+        {t.ui.userLogin}
+      </Text>
       <FormInput
         dir="ltr"
         register={register("email")}
@@ -57,7 +59,7 @@ function LoginForm() {
       />
       {errors.email && (
         <Alert
-          className="rounded-md text-sm"
+          className="rounded-md text-sm md:text-lg"
           textColor={"red"}
           colorScheme="red"
         >
@@ -73,7 +75,7 @@ function LoginForm() {
       />
       {errors.password && (
         <Alert
-          className="rounded-md text-sm"
+          className="rounded-md text-sm md:text-lg"
           textColor={"red"}
           colorScheme="red"
         >

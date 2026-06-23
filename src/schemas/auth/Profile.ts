@@ -4,8 +4,10 @@ import { lang } from "@/lang";
 const Profile = z.object({
   firstName: z
     .string({
+      required_error: lang.fa.validation.firstNameRequired,
       invalid_type_error: lang.fa.validation.firstNameInvalidType,
     })
+    .min(1, { message: lang.fa.validation.firstNameRequired })
     .min(3, { message: lang.fa.validation.firstNameMinLength })
     .max(20, lang.fa.validation.firstNameMaxLength)
     .regex(
@@ -15,8 +17,10 @@ const Profile = z.object({
 
   lastName: z
     .string({
+      required_error: lang.fa.validation.lastNameRequired,
       invalid_type_error: lang.fa.validation.lastNameInvalidType,
     })
+    .min(1, { message: lang.fa.validation.lastNameRequired })
     .min(3, { message: lang.fa.validation.lastNameMinLength })
     .max(20, lang.fa.validation.lastNameMaxLength)
     .regex(
@@ -26,6 +30,7 @@ const Profile = z.object({
 
   email: z
     .string({ required_error: lang.fa.validation.emailRequired })
+    .min(1, { message: lang.fa.validation.emailRequired })
     .email({ message: lang.fa.validation.emailInvalid }),
 });
 

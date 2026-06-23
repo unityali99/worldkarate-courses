@@ -1,6 +1,7 @@
 import { ResponseData } from "@/layouts/CheckoutLogic";
 import PanelContainer from "@/layouts/PanelContainer";
 import PanelTableContainer from "@/layouts/PanelTableContainer";
+import { getExternalUrl } from "@/utils/externalUrl";
 import {
   Badge,
   Button,
@@ -61,9 +62,17 @@ function PaidOrder({
                   <Tr key={i}>
                     <Td p={{ base: "0", md: "25px" }}>{c.title}</Td>
                     <Td p={{ base: "0", md: "25px" }}>
-                      <Link target="_blank" href={c.link}>
-                        <Text className="text-blue-700">{"دانلود"}</Text>
-                      </Link>
+                      {getExternalUrl(c.link) ? (
+                        <Link
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={getExternalUrl(c.link)}
+                        >
+                          <Text className="text-blue-700">{"دانلود"}</Text>
+                        </Link>
+                      ) : (
+                        <Text color="gray.500">{"لینک موجود نیست"}</Text>
+                      )}
                     </Td>
                   </Tr>
                 ))

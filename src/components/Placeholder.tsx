@@ -3,9 +3,9 @@ import React from "react";
 
 function Placeholder() {
   return (
-    <Stack>
-      <Skeleton height="20px" className="w-full md:w-8/12" />
-      <Skeleton height="20px" className="w-full md:w-8/12" />
+    <Stack w="full">
+      <Skeleton w="full" height="20px" />
+      <Skeleton w="full" height="20px" />
     </Stack>
   );
 }

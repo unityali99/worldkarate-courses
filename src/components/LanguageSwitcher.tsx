@@ -13,7 +13,12 @@ function LanguageSwitcher() {
 
   return (
     <HStack spacing={2}>
-      <Text fontSize="sm" color="gray.600">
+      <Text
+        fontSize="sm"
+        fontWeight="bold"
+        color="whiteAlpha.800"
+        fontFamily="sans-serif"
+      >
         {currentLanguage === "fa" ? "فا" : "En"}
       </Text>
       <Button
@@ -21,8 +26,20 @@ function LanguageSwitcher() {
         variant="outline"
         onClick={toggleLanguage}
         fontSize="xs"
-        px={2}
+        fontWeight="bold"
+        fontFamily="sans-serif"
+        px={3}
         py={1}
+        rounded="full"
+        color="white"
+        borderColor="whiteAlpha.400"
+        _hover={{
+          borderColor: "whiteAlpha.700",
+          bg: "whiteAlpha.100",
+          transform: "translateY(-1px)",
+        }}
+        _active={{ bg: "whiteAlpha.200" }}
+        transition="all 0.2s ease"
       >
         {currentLanguage === "fa" ? "English" : "فارسی"}
       </Button>

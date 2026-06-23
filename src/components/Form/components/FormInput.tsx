@@ -40,7 +40,7 @@ function FormInput({
 }) {
   return (
     <Box className="space-y-1">
-      {label && <Text className="text-start">{label}</Text>}
+      {label && <Text className="text-start text-md md:text-lg">{label}</Text>}
       <Input
         className={className}
         {...register}

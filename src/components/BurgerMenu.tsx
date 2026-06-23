@@ -13,7 +13,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import { LuMenu, LuUser, LuLock, LuInstagram, LuLogOut } from "react-icons/lu";
+import {
+  LuMenu,
+  LuUser,
+  LuLock,
+  LuInstagram,
+  LuLogOut,
+  LuBookOpen,
+} from "react-icons/lu";
 import { redirect } from "next/navigation";
 import Cart from "./Cart";
 
@@ -64,6 +71,15 @@ function BurgerMenu({ hydrated }: { hydrated: boolean }) {
                 <Text color="white">{t.ui.login + " / " + t.ui.register}</Text>
               </MenuItem>
             )}
+            <MenuItem
+              as={Link}
+              href="/courses"
+              bg="transparent"
+              _hover={{ bg: "rgba(255, 255, 255, 0.1)" }}
+              icon={<LuBookOpen size={20} style={{ color: "white" }} />}
+            >
+              <Text color="white">{t.ui.courses}</Text>
+            </MenuItem>
             <MenuItem
               as={Link}
               target="_blank"

@@ -8,6 +8,20 @@ import "react-toastify/dist/ReactToastify.css";
 import { keywords } from "@/utils/keywords";
 import { lang } from "@/lang";
 import { Box } from "@chakra-ui/react";
+import Footer from "@/components/Footer";
+import { usePathname } from "next/navigation";
+import { headers } from "next/headers";
+
+const lalezar = localFont({
+  src: [
+    {
+      path: "./fonts/Lalezar-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-lalezar",
+});
 
 const iranSans = localFont({
   src: [
@@ -32,6 +46,7 @@ const iranSans = localFont({
       style: "normal",
     },
   ],
+  variable: "--font-iran-sans",
 });
 
 export const metadata: Metadata = {
@@ -46,11 +61,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={iranSans.className}>
+    <html lang="fa">
+      <body className={`${iranSans.variable} ${lalezar.variable} font-sans`}>
         <Providers>
           <Navbar />
           {children}
+          <Footer />
           <ToastContainer
             className={"text-right font-bold"}
             position="top-right"
@@ -58,7 +74,7 @@ export default function RootLayout({
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick
-            rtl={false}
+            rtl={true}
             pauseOnFocusLoss
             draggable
             pauseOnHover
