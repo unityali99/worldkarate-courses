@@ -1,0 +1,867 @@
+<!doctype html><html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><style>@page { size: A4; margin: 18mm 16mm 20mm; }
+* { box-sizing: border-box; }
+html { background: #fff; }
+body { margin: 0; color: #17212b; font-family: Arial, Tahoma, "Segoe UI", sans-serif; font-size: 10.5pt; line-height: 1.65; }
+main { max-width: 100%; }
+h1 { color: #8b1111; font-size: 25pt; line-height: 1.2; border-bottom: 3px solid #c53030; padding-bottom: 10px; margin: 0 0 20px; }
+h2 { color: #8b1111; font-size: 17pt; line-height: 1.3; border-bottom: 1px solid #e4b7b7; padding-bottom: 5px; margin: 28px 0 12px; break-after: avoid-page; }
+h3 { color: #1f4f4f; font-size: 13pt; margin: 20px 0 8px; break-after: avoid-page; }
+p { margin: 7px 0 11px; orphans: 3; widows: 3; }
+ul, ol { margin: 6px 0 12px; padding-inline-start: 25px; }
+li { margin: 3px 0; }
+a { color: #1261a0; text-decoration: none; overflow-wrap: anywhere; }
+blockquote { margin: 14px 0; padding: 10px 14px; border-inline-start: 4px solid #d69e2e; background: #fff8df; break-inside: avoid; }
+blockquote p { margin: 0; }
+code { font-family: Consolas, "Courier New", monospace; font-size: 9pt; background: #f2f4f7; color: #8b1111; padding: 1px 4px; border-radius: 3px; direction: ltr; unicode-bidi: embed; }
+pre { background: #16212b; color: #f7fafc; padding: 12px 14px; border-radius: 6px; overflow-wrap: anywhere; white-space: pre-wrap; direction: ltr; text-align: left; break-inside: avoid-page; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0 18px; font-size: 9.2pt; break-inside: auto; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+th { background: #263746; color: white; font-weight: 700; }
+th, td { border: 1px solid #aeb8c2; padding: 6px 7px; vertical-align: top; text-align: start; overflow-wrap: anywhere; }
+tbody tr:nth-child(even) { background: #f5f7f9; }
+hr { border: 0; border-top: 1px solid #ccd3da; margin: 22px 0; }
+strong { color: #101820; }
+.pdf-meta { color: #5a6570; font-size: 9pt; margin-bottom: 18px; }
+@media print { h1, h2, h3, h4 { break-after: avoid-page; } img, table, pre, blockquote { max-width: 100%; } }</style></head><body><main><h1 id="karate-courses-frontend-complete-project-guide">Karate Courses Frontend — Complete Project Guide</h1>
+<blockquote>
+<p>Last reviewed against the repository: 23 June 2026<br />
+Application: Sensei Yari Karate Academy course storefront and student portal<br />
+Scope: this repository contains the <strong>Next.js frontend</strong>. Authentication, database, email/OTP, course ownership, and payment operations require a separate backend.</p>
+</blockquote>
+<h2 id="table-of-contents">Table of contents</h2>
+<ol>
+<li><a href="#1-project-overview">Project overview</a></li>
+<li><a href="#2-quick-start">Quick start</a></li>
+<li><a href="#3-demo-accounts-and-roles">Demo accounts and roles</a></li>
+<li><a href="#4-technology-stack">Technology stack</a></li>
+<li><a href="#5-frontend-architecture">Frontend architecture</a></li>
+<li><a href="#6-directory-structure">Directory structure</a></li>
+<li><a href="#7-routes-and-access-rules">Routes and access rules</a></li>
+<li><a href="#8-core-user-flows">Core user flows</a></li>
+<li><a href="#9-state-management-and-persistence">State management and persistence</a></li>
+<li><a href="#10-backend-integration-and-api-contract">Backend integration and API contract</a></li>
+<li><a href="#11-data-models-and-validation">Data models and validation</a></li>
+<li><a href="#12-authentication-authorization-and-security">Authentication, authorization, and security</a></li>
+<li><a href="#13-internationalization">Internationalization</a></li>
+<li><a href="#14-ui-styling-assets-and-responsive-behavior">UI, styling, assets, and responsive behavior</a></li>
+<li><a href="#15-rendering-and-data-fetching-strategy">Rendering and data-fetching strategy</a></li>
+<li><a href="#16-environment-variables">Environment variables</a></li>
+<li><a href="#17-scripts-and-developer-workflow">Scripts and developer workflow</a></li>
+<li><a href="#18-production-build-and-deployment">Production build and deployment</a></li>
+<li><a href="#19-testing-and-verification">Testing and verification</a></li>
+<li><a href="#20-troubleshooting">Troubleshooting</a></li>
+<li><a href="#21-known-constraints-and-maintenance-notes">Known constraints and maintenance notes</a></li>
+<li><a href="#22-contribution-checklist">Contribution checklist</a></li>
+</ol>
+<h2 id="project-overview">1. Project overview</h2>
+<p>This application is the public website and account portal for an online karate course platform. It provides:</p>
+<ul>
+<li>A bilingual Persian/English landing page.</li>
+<li>A course catalog and individual course pages.</li>
+<li>Browser-persisted shopping cart functionality.</li>
+<li>Registration, login, logout, password recovery with OTP, and password change.</li>
+<li>A protected user profile with editable account information.</li>
+<li>Access to purchased course links.</li>
+<li>Checkout and Zarinpal-style payment redirection/verification.</li>
+<li>An administrator panel for creating/deleting courses and looking up a user's purchased courses.</li>
+<li>Newsletter registration.</li>
+</ul>
+<p>The frontend does <strong>not</strong> contain the backend server, database schema, mail service, or payment gateway implementation. It communicates with the backend configured by <code>NEXT_PUBLIC_BACKEND_URL</code>.</p>
+<h3 id="system-boundary">System boundary</h3>
+<pre><code class="language-text">Browser
+  ├─ Next.js pages and React client components
+  ├─ Zustand state (user, cart, language)
+  └─ auth-token cookie + localStorage
+          │ HTTP/JSON with credentials
+          ▼
+External backend (not in this repository)
+  ├─ Authentication and JWT cookie issuance
+  ├─ User/course/order persistence
+  ├─ Authorization enforcement
+  ├─ OTP email delivery
+  └─ Payment gateway creation and verification
+          │
+          ▼
+Database / email provider / Zarinpal / course hosting
+</code></pre>
+<h2 id="quick-start">2. Quick start</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>Node.js 20 LTS is recommended. Next.js 14 requires Node.js 18.17 or newer.</li>
+<li>npm (the repository includes <code>package-lock.json</code>; use npm for reproducible installs).</li>
+<li>Git.</li>
+<li>The separate backend running and reachable. The current local convention is <code>http://localhost:3001</code>.</li>
+</ul>
+<h3 id="install-and-run-locally">Install and run locally</h3>
+<pre><code class="language-bash">git clone &lt;repository-url&gt;
+cd karate-courses
+npm ci
+</code></pre>
+<p>Create <code>.env.local</code>:</p>
+<pre><code class="language-dotenv">NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
+</code></pre>
+<p>Start the backend first, then start this frontend:</p>
+<pre><code class="language-bash">npm run dev
+</code></pre>
+<p>Open <code>http://localhost:3000</code>.</p>
+<p>Use <code>npm ci</code> for clean/CI installations because it installs the exact versions in <code>package-lock.json</code>. Use <code>npm install</code> only when intentionally changing dependencies.</p>
+<h3 id="basic-smoke-test">Basic smoke test</h3>
+<ol>
+<li>Open the landing page.</li>
+<li>Visit <code>/courses</code> and confirm that backend courses appear.</li>
+<li>Register a normal user, then log in.</li>
+<li>Add a course to the cart and open checkout.</li>
+<li>Open <code>/profile</code> and confirm profile data and purchased courses.</li>
+<li>Log in with the demo administrator account and open <code>/profile/admin</code>.</li>
+</ol>
+<h2 id="demo-accounts-and-roles">3. Demo accounts and roles</h2>
+<h3 id="administrator-developmentdemo">Administrator (development/demo)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Email</td>
+<td><code>ali@gmail.com</code></td>
+</tr>
+<tr>
+<td>Password</td>
+<td><code>Ali13831383</code></td>
+</tr>
+</tbody>
+</table>
+<p>Use this account to exercise administrator-only UI, including course creation, course deletion, and user-course lookup.</p>
+<blockquote>
+<p>Security warning: these are shared demo credentials. They must not protect a production environment. Replace the password, store credentials outside the repository, and have the backend seed/administer production accounts securely.</p>
+</blockquote>
+<h3 id="normal-users">Normal users</h3>
+<p>Normal users must register themselves at <code>/auth/register</code>; there is no shared normal-user account. Registration requires first name, last name, email, and password. After successful registration, the UI redirects to <code>/auth/login</code>.</p>
+<h3 id="role-behavior">Role behavior</h3>
+<ul>
+<li>Guests can browse the landing page and course catalog and can maintain a local cart.</li>
+<li>Authenticated users can access profile, checkout, payment verification, and purchased courses.</li>
+<li>Administrators receive an <code>isAdmin: true</code> claim in the JWT and can access <code>/profile/admin</code>.</li>
+<li>The course detail page shows delete/admin actions to administrators and add-to-cart behavior to non-administrators.</li>
+</ul>
+<h2 id="technology-stack">4. Technology stack</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Technology</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework</td>
+<td>Next.js 14.2.4, App Router</td>
+<td>Routing, server/client rendering, middleware, metadata</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>TypeScript 5, strict mode</td>
+<td>Static typing</td>
+</tr>
+<tr>
+<td>UI runtime</td>
+<td>React 18</td>
+<td>Component model and hooks</td>
+</tr>
+<tr>
+<td>Component library</td>
+<td>Chakra UI 2</td>
+<td>Layout, forms, dialogs, tables, responsive props</td>
+</tr>
+<tr>
+<td>Utility CSS</td>
+<td>Tailwind CSS 3 + PostCSS</td>
+<td>Utility classes and global styling</td>
+</tr>
+<tr>
+<td>Animation</td>
+<td>Framer Motion</td>
+<td>Landing-page motion</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Zustand 4</td>
+<td>Auth mirror, cart, and language stores</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>Axios</td>
+<td>Credentialed backend requests</td>
+</tr>
+<tr>
+<td>Forms</td>
+<td>React Hook Form</td>
+<td>Form state and submission</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>Zod + Hook Form resolver</td>
+<td>Client-side schemas and messages</td>
+</tr>
+<tr>
+<td>Notifications</td>
+<td>React Toastify</td>
+<td>Success/error feedback</td>
+</tr>
+<tr>
+<td>Authentication helpers</td>
+<td><code>jwt-decode</code>, <code>cookie</code></td>
+<td>JWT claim reading and cookie-related types</td>
+</tr>
+<tr>
+<td>Images</td>
+<td>Next Image, Chakra Image, Sharp</td>
+<td>Image display and production optimization support</td>
+</tr>
+<tr>
+<td>Icons</td>
+<td>React Icons + Chakra icons</td>
+<td>UI iconography</td>
+</tr>
+</tbody>
+</table>
+<p>The project deliberately combines Chakra UI and Tailwind. Chakra is the main component/layout system; Tailwind utilities are used for compact spacing, sizing, typography, and flex/grid adjustments.</p>
+<h2 id="frontend-architecture">5. Frontend architecture</h2>
+<h3 id="architectural-layers">Architectural layers</h3>
+<pre><code class="language-text">src/app            Route tree, root layout, server pages, route composition
+    ↓
+src/components     Feature UI and client-side interaction
+src/layouts        Reusable structural wrappers and provider composition
+    ↓
+src/stores         Browser state and persistence
+src/services       Axios instance, typed API wrapper, server action
+    ↓
+src/schemas        Zod validation and TypeScript data types
+src/utils          JWT, URL, image, password, and metadata helpers
+src/lang           Persian and English dictionaries
+</code></pre>
+<h3 id="server-and-client-component-split">Server and client component split</h3>
+<ul>
+<li>Components without <code>&quot;use client&quot;</code> run as React Server Components by default.</li>
+<li>Course catalog and individual course data are fetched from server-rendered route components.</li>
+<li>Interactive forms, cart, navbar, language switching, payment verification, and profile widgets are client components.</li>
+<li>The root layout is a server component and wraps the application with the client-side Chakra provider.</li>
+<li><code>registerNewsletter</code> is a server action (<code>&quot;use server&quot;</code>) used by <code>useFormState</code>.</li>
+</ul>
+<h3 id="shared-providers-and-shell">Shared providers and shell</h3>
+<p><code>src/app/layout.tsx</code> establishes:</p>
+<ul>
+<li>Local IRANSans and Lalezar fonts.</li>
+<li>Global CSS and Tailwind layers.</li>
+<li>Chakra's <code>ChakraProvider</code> through <code>src/layouts/Providers.tsx</code>.</li>
+<li>Navbar and footer around every route.</li>
+<li>A global RTL Toastify notification container.</li>
+<li>Persian metadata and <code>&lt;html lang=&quot;fa&quot;&gt;</code> as the initial document language.</li>
+</ul>
+<h2 id="directory-structure">6. Directory structure</h2>
+<pre><code class="language-text">karate-courses/
+├─ public/                    Static WebP images and branding
+├─ src/
+│  ├─ app/                   App Router routes, root layout, CSS, local fonts
+│  │  ├─ auth/               Login, registration, forgot-password flow
+│  │  ├─ courses/            Catalog and dynamic course detail route
+│  │  ├─ payment/            Checkout and gateway callback verification
+│  │  └─ profile/            User profile and nested admin panel
+│  ├─ components/            Navbar, footer, landing, cart, course and user UI
+│  │  └─ Form/               Feature forms and reusable form primitives
+│  ├─ lang/                  `fa` and `en` translation dictionaries
+│  ├─ layouts/               Panels, form wrappers, background, providers
+│  ├─ schemas/               Course/payment/auth Zod schemas and types
+│  ├─ services/              Axios client and newsletter server action
+│  ├─ stores/                Auth, cart, and language Zustand stores
+│  ├─ utils/                 Focused transformation/validation helpers
+│  └─ middleware.ts          Route protection and role redirects
+├─ next.config.mjs           Next image configuration
+├─ tailwind.config.ts        Tailwind scanning and custom colors
+├─ theme.ts                  Empty Chakra theme extension placeholder
+├─ tsconfig.json             Strict TS and `@/*` → `src/*` alias
+├─ package.json              Scripts and dependencies
+└─ .env / .env.local         Runtime configuration (see security notes)
+</code></pre>
+<h3 id="important-component-responsibilities">Important component responsibilities</h3>
+<ul>
+<li><code>LandingPage</code>: large marketing homepage and role-aware calls to action.</li>
+<li><code>Navbar</code> / <code>BurgerMenu</code>: responsive navigation, auth actions, cart, language selector.</li>
+<li><code>CourseCard</code>: catalog presentation and course-detail link.</li>
+<li><code>AddToCartBtn</code>: checks purchased courses, then offers access or cart addition.</li>
+<li><code>Cart</code>: persistent drawer and checkout navigation.</li>
+<li><code>Checkout</code>: builds the payment request and redirects to the returned gateway URL.</li>
+<li><code>UserCourses</code>: loads the current user's courses or, for admins, courses by email.</li>
+<li><code>AdminForm</code>: creates courses; <code>DeleteBtn</code> removes a course after confirmation.</li>
+<li><code>ProfileForm</code> / <code>ChangePasswordForm</code>: account maintenance.</li>
+</ul>
+<h2 id="routes-and-access-rules">7. Routes and access rules</h2>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Rendering</th>
+<th>Access</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/</code></td>
+<td>Static</td>
+<td>Public</td>
+<td>Landing/marketing page</td>
+</tr>
+<tr>
+<td><code>/courses</code></td>
+<td>Forced static</td>
+<td>Public</td>
+<td>Fetch and list all courses; newsletter form</td>
+</tr>
+<tr>
+<td><code>/courses/[courseId]</code></td>
+<td>Forced dynamic</td>
+<td>Public</td>
+<td>Course detail; role-aware course action</td>
+</tr>
+<tr>
+<td><code>/auth/login</code></td>
+<td>Static</td>
+<td>Guests only</td>
+<td>Login and auth-cookie creation through backend</td>
+</tr>
+<tr>
+<td><code>/auth/register</code></td>
+<td>Static</td>
+<td>Guests only</td>
+<td>New normal-user registration</td>
+</tr>
+<tr>
+<td><code>/auth/forget-password</code></td>
+<td>Static client flow</td>
+<td>Guests only</td>
+<td>Email → OTP validation → new password</td>
+</tr>
+<tr>
+<td><code>/profile</code></td>
+<td>Dynamic/no-store</td>
+<td>Authenticated</td>
+<td>Profile edit, password change, purchased courses</td>
+</tr>
+<tr>
+<td><code>/profile/admin</code></td>
+<td>Dynamic/no-store</td>
+<td>Admin only</td>
+<td>Course creation and user-course lookup</td>
+</tr>
+<tr>
+<td><code>/payment/checkout</code></td>
+<td>Dynamic/no-store</td>
+<td>Authenticated</td>
+<td>Cart summary and payment initialization</td>
+</tr>
+<tr>
+<td><code>/payment/verify</code></td>
+<td>Static shell + client verification</td>
+<td>Authenticated</td>
+<td>Validate gateway callback and display order</td>
+</tr>
+</tbody>
+</table>
+<p><code>src/middleware.ts</code> applies to <code>/profile/:path*</code>, <code>/auth/:path*</code>, and <code>/payment/:path*</code>:</p>
+<ul>
+<li>Missing <code>auth-token</code> on profile/payment routes redirects to <code>/auth/login</code>.</li>
+<li>An authenticated user visiting <code>/auth/*</code> is redirected to <code>/profile</code>.</li>
+<li>A non-admin JWT visiting <code>/profile/admin</code> is redirected to <code>/profile</code>.</li>
+</ul>
+<h2 id="core-user-flows">8. Core user flows</h2>
+<h3 id="registration-and-login">Registration and login</h3>
+<ol>
+<li>A normal user submits <code>POST /register</code>.</li>
+<li>On success, the frontend redirects to <code>/auth/login</code>.</li>
+<li>Login submits <code>POST /login</code> with credentials enabled.</li>
+<li>The backend must set the <code>auth-token</code> cookie and return a public <code>user</code> object.</li>
+<li>The user object is mirrored into browser local storage by the auth store.</li>
+<li>Middleware uses the cookie; interactive UI uses the local user mirror.</li>
+</ol>
+<h3 id="password-recovery">Password recovery</h3>
+<ol>
+<li><code>PUT /forget-password</code> sends the email.</li>
+<li>The current frontend expects an <code>OTP</code> value in the response and shows it in a toast.</li>
+<li><code>POST /validate-otp</code> submits <code>{ OTP, email }</code>.</li>
+<li><code>PUT /reset-password</code> submits matching new passwords.</li>
+<li>The app logs out and redirects to login.</li>
+</ol>
+<p>For production, OTP should be delivered out-of-band by email/SMS and should not be returned to or displayed by the client.</p>
+<h3 id="cart-and-checkout">Cart and checkout</h3>
+<ol>
+<li>Course detail calls <code>GET /user/fetch-course</code> to detect existing ownership.</li>
+<li>A non-owned course can be added to the Zustand cart.</li>
+<li>Cart contents are saved in local storage under <code>cart</code>.</li>
+<li>Checkout submits <code>POST /payment/checkout</code> with string course IDs.</li>
+<li>The backend returns a <code>paymentUrl</code>; the browser performs a full redirect.</li>
+<li>The gateway returns to <code>/payment/verify?Authority=...&amp;Status=...</code>.</li>
+<li>For <code>Status=OK</code>, the frontend calls <code>POST /payment/verify</code> with <code>authority</code>.</li>
+<li>The verified order and external course links are displayed.</li>
+</ol>
+<p>The backend must calculate prices and course eligibility itself; never trust cart prices or IDs solely because they came from the frontend.</p>
+<h3 id="admin-course-management">Admin course management</h3>
+<ol>
+<li>Log in with an administrator account.</li>
+<li>Open <code>/profile/admin</code> from the profile card.</li>
+<li>Submit title, description, numeric price, base64 image, and course link to <code>POST /create-course</code>.</li>
+<li>Open a course detail page and use the delete action, which calls <code>DELETE /delete-course/:courseId</code>.</li>
+<li>Search by email to call <code>GET /admin/fetch-course/:email</code> and inspect that user's purchased courses.</li>
+</ol>
+<h2 id="state-management-and-persistence">9. State management and persistence</h2>
+<h3 id="auth-store-srcstoresauthstore.ts">Auth store (<code>src/stores/authStore.ts</code>)</h3>
+<ul>
+<li>Key: <code>user</code> in local storage.</li>
+<li>State: <code>{ email, firstName, lastName } | null</code>.</li>
+<li><code>login</code> persists the public user object.</li>
+<li><code>logout</code> clears local storage, calls <code>POST /logout</code>, shows a toast, then reloads <code>/</code>.</li>
+<li>The cookie is not set by this store; it must be set/cleared by the backend.</li>
+</ul>
+<h3 id="cart-store-srcstorescartstore.ts">Cart store (<code>src/stores/cartStore.ts</code>)</h3>
+<ul>
+<li>Key: <code>cart</code> in local storage.</li>
+<li>Stores complete course objects for display convenience.</li>
+<li>Prevents duplicate IDs, supports remove/clear, and exposes a hydration flag.</li>
+<li>Persistence is browser-specific and not synchronized to the backend.</li>
+</ul>
+<h3 id="language-store-srcstoreslanguagestore.ts">Language store (<code>src/stores/languageStore.ts</code>)</h3>
+<ul>
+<li>Key: <code>language</code> in local storage.</li>
+<li>Values: <code>fa</code> or <code>en</code>.</li>
+<li>Exposes the active dictionary as <code>t</code>.</li>
+</ul>
+<h3 id="hydration-pattern">Hydration pattern</h3>
+<p>Persisted browser state is unavailable during server rendering. Components such as <code>Navbar</code>, <code>Cart</code>, profile forms, checkout, and user courses delay browser-dependent output until mounted, often showing placeholders/spinners. Follow this pattern when adding browser-persisted state to avoid hydration mismatches.</p>
+<h2 id="backend-integration-and-api-contract">10. Backend integration and API contract</h2>
+<p>All calls use the Axios instance in <code>src/services/httpService.ts</code>:</p>
+<ul>
+<li>Base URL: <code>NEXT_PUBLIC_BACKEND_URL</code>.</li>
+<li>JSON content type.</li>
+<li><code>withCredentials: true</code>, allowing cookies on browser requests.</li>
+<li>No configured timeout or interceptor.</li>
+</ul>
+<p><code>ApiClient&lt;T&gt;</code> adds generic <code>get</code>, <code>post</code>, <code>put</code>, and <code>delete</code> methods around one endpoint. The generic currently describes request/domain data but does not strongly type every response envelope.</p>
+<h3 id="inferred-endpoints">Inferred endpoints</h3>
+<p>The following contract is inferred from frontend usage; the backend remains the source of truth.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Request</th>
+<th>Frontend expects</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/register</code></td>
+<td><code>{ firstName, lastName, email, password }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/login</code></td>
+<td><code>{ email, password }</code></td>
+<td><code>{ message, user }</code> + <code>auth-token</code> cookie</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/logout</code></td>
+<td>—</td>
+<td><code>{ message }</code> and cleared cookie</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/forget-password</code></td>
+<td><code>{ email }</code></td>
+<td><code>{ OTP, message? }</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/validate-otp</code></td>
+<td><code>{ OTP: number, email }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/reset-password</code></td>
+<td><code>{ newPassword, repeatPassword }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/profile</code></td>
+<td><code>{ firstName, lastName, email }</code></td>
+<td><code>{ message }</code>; refreshed claims/cookie may be needed</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/fetch-course</code></td>
+<td>—</td>
+<td><code>Course[]</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/fetch-course/:id</code></td>
+<td>—</td>
+<td><code>Course</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/create-course</code></td>
+<td><code>{ title, description, price, img, link }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/delete-course/:id</code></td>
+<td>—</td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/user/fetch-course</code></td>
+<td>Cookie</td>
+<td>Purchased <code>Course[]</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/admin/fetch-course/:email</code></td>
+<td>Admin cookie</td>
+<td>User's purchased course array</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/payment/checkout</code></td>
+<td><code>{ courseIds: string[] }</code></td>
+<td><code>{ message, paymentUrl }</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/payment/verify</code></td>
+<td><code>{ authority }</code></td>
+<td><code>{ courses, transaction, message? }</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/register-newsletter</code></td>
+<td><code>{ email }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="backend-requirements">Backend requirements</h3>
+<ul>
+<li>Parse JSON request bodies.</li>
+<li>Allow the frontend origin with credentialed CORS. With credentials, <code>Access-Control-Allow-Origin</code> must be the explicit frontend origin, not <code>*</code>.</li>
+<li>Set a cookie named exactly <code>auth-token</code> with an appropriate domain/path/SameSite/Secure policy.</li>
+<li>Return a JWT containing <code>email</code>, <code>firstName</code>, <code>lastName</code>, and boolean <code>isAdmin</code> claims.</li>
+<li>Enforce authentication and administrator authorization independently of the UI and middleware.</li>
+<li>Validate all inputs and return human-readable <code>{ message }</code> error bodies where possible.</li>
+<li>Recompute order totals and verify payment authority server-side.</li>
+</ul>
+<p>The <code>Access-Control-Allow-*</code> values currently attached to Axios request headers do not configure browser CORS; CORS must be configured on the backend response.</p>
+<h2 id="data-models-and-validation">11. Data models and validation</h2>
+<h3 id="public-course">Public course</h3>
+<pre><code class="language-ts">{
+  id: string;
+  title: string;       // 5–50 characters
+  description: string; // 20–150 characters in Course schema
+  price: number;       // non-negative
+  img: string;
+}
+</code></pre>
+<h3 id="course-creation">Course creation</h3>
+<p>Adds <code>link: string</code>, permits descriptions up to 1000 characters, and expects <code>img</code> as a string. Images may be:</p>
+<ul>
+<li>A <code>data:image/...</code> URI.</li>
+<li>An HTTP(S) URL.</li>
+<li>A root-relative public path.</li>
+<li>Raw base64; the helper infers PNG, WebP, GIF, or defaults to JPEG.</li>
+</ul>
+<p>Course links missing a scheme are normalized to <code>https://</code>.</p>
+<h3 id="userjwt-claims">User/JWT claims</h3>
+<pre><code class="language-ts">{
+  email: string;
+  firstName: string;
+  lastName: string;
+  isAdmin: boolean;
+}
+</code></pre>
+<h3 id="password-rule">Password rule</h3>
+<p>The shared regex is <code>^(?=.*[a-z])(?=.*\d).{8,}$</code>:</p>
+<ul>
+<li>At least 8 characters.</li>
+<li>At least one lowercase English letter.</li>
+<li>At least one digit.</li>
+</ul>
+<p>Despite some UI wording saying “one letter,” uppercase-only or Persian-only passwords do not satisfy the current regex.</p>
+<h3 id="payment-request-and-response">Payment request and response</h3>
+<p>Checkout sends at least one string course ID. Verification expects:</p>
+<pre><code class="language-ts">{
+  courses: CreateCourseType[];
+  transaction: {
+    transactionId: string;
+    isPaid: boolean;
+    totalPrice: number;
+  };
+}
+</code></pre>
+<h2 id="authentication-authorization-and-security">12. Authentication, authorization, and security</h2>
+<h3 id="current-model">Current model</h3>
+<ul>
+<li><code>auth-token</code> cookie is the route-access signal.</li>
+<li>Middleware decodes the JWT to read <code>isAdmin</code> but does not cryptographically verify it.</li>
+<li>Local-storage <code>user</code> controls interactive display only.</li>
+<li>All Axios requests include credentials.</li>
+</ul>
+<h3 id="mandatory-production-rules">Mandatory production rules</h3>
+<ul>
+<li>The backend must verify JWT signature, expiry, issuer/audience as applicable, and role on every protected API.</li>
+<li>Use <code>HttpOnly</code>, <code>Secure</code> in HTTPS, and a deliberate <code>SameSite</code> policy for the auth cookie.</li>
+<li>Add CSRF protection if cross-site credentialed requests are possible.</li>
+<li>Never authorize based on the frontend's <code>isAdmin</code> display state.</li>
+<li>Sanitize and validate course URLs and base64 image size/type server-side.</li>
+<li>Do not expose OTPs in API responses in production.</li>
+<li>Apply login/OTP rate limits and avoid account-enumeration messages.</li>
+<li>Rotate the documented demo password before a public deployment.</li>
+<li>Store payment merchant credentials only in the backend/hosting secret store. Any variable prefixed <code>NEXT_PUBLIC_</code> is bundled for browsers.</li>
+</ul>
+<h3 id="repository-secret-hygiene">Repository secret hygiene</h3>
+<p>The root <code>.env</code> is currently tracked by Git, while <code>.gitignore</code> only ignores <code>.env*.local</code>. Treat any value ever committed there as exposed: rotate real secrets, remove them from the tracked file/history as appropriate, and use <code>.env.local</code> locally plus hosting-platform secrets in production. Commit only a safe <code>.env.example</code> if a template is needed.</p>
+<h2 id="internationalization">13. Internationalization</h2>
+<p>Translation dictionaries are in <code>src/lang/fa.ts</code> and <code>src/lang/en.ts</code>. <code>useLanguageStore()</code> provides <code>t</code> and persists the chosen language.</p>
+<p>Current coverage is partial:</p>
+<ul>
+<li>The landing page, navbar, profile fields, and several common actions use dictionaries.</li>
+<li>A number of course, checkout, admin, password-recovery, footer, toast, and validation strings remain hard-coded in Persian.</li>
+<li>Root metadata, document <code>lang</code>, and Toastify <code>rtl</code> remain Persian even after switching to English.</li>
+</ul>
+<p>When adding a string, add the same key to both dictionaries and use <code>t</code> rather than embedding text. A complete i18n implementation should also update document <code>lang</code>, <code>dir</code>, metadata, and toast direction based on the active locale, ideally with locale-aware routes or server-readable locale state.</p>
+<h2 id="ui-styling-assets-and-responsive-behavior">14. UI, styling, assets, and responsive behavior</h2>
+<ul>
+<li>Chakra responsive props use breakpoints such as <code>base</code>, <code>sm</code>, <code>md</code>, and <code>lg</code>.</li>
+<li>Tailwind scans <code>src/pages</code>, <code>src/components</code>, <code>src/layouts</code>, and <code>src/app</code>.</li>
+<li>Custom Tailwind colors are <code>primary: #ff0000</code> and <code>heading: #0d161b</code>.</li>
+<li><code>theme.ts</code> is currently an empty Chakra extension point.</li>
+<li>Local fonts reside in <code>src/app/fonts</code>; IRANSans is the primary sans font and Lalezar is used for display headings.</li>
+<li>Static images live under <code>public/</code>.</li>
+<li>Next remote image configuration permits <code>https://placehold.co/**</code>; course images also use <code>unoptimized</code>, allowing URL/data sources without Next optimization.</li>
+<li>Navigation adapts between desktop and burger-menu layouts; the cart drawer opens at the bottom on mobile and right side on larger screens.</li>
+<li>The design frequently uses dark translucent panels, backdrop blur, red action colors, and teal profile/course accents.</li>
+</ul>
+<h2 id="rendering-and-data-fetching-strategy">15. Rendering and data-fetching strategy</h2>
+<ul>
+<li><code>/courses</code> exports <code>dynamic = &quot;force-static&quot;</code>. It calls <code>/fetch-course</code> while building/prerendering.</li>
+<li><code>/courses/[courseId]</code> is forced dynamic because it reads cookies and course-specific backend data.</li>
+<li><code>/profile</code>, <code>/profile/admin</code>, and checkout are dynamic/no-store.</li>
+<li>Payment verification reads query parameters on the client inside <code>Suspense</code>.</li>
+<li>Browser-only data is explicitly hydrated after mount.</li>
+</ul>
+<h3 id="course-catalog-build-implication">Course catalog build implication</h3>
+<p>The production build can complete while the backend is unavailable because the catalog catches fetch errors and renders an empty array. That means:</p>
+<ul>
+<li>CI may show <code>ECONNREFUSED</code> but still exit successfully.</li>
+<li>A deployment built without backend access can ship an empty static catalog.</li>
+<li>Course changes will not automatically appear until the page is rebuilt/revalidated under the current forced-static strategy.</li>
+</ul>
+<p>If courses must always be current, consider dynamic rendering, timed revalidation, or explicit on-demand revalidation after admin changes.</p>
+<h2 id="environment-variables">16. Environment variables</h2>
+<h3 id="frontend-variable">Frontend variable</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Required</th>
+<th>Visibility</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NEXT_PUBLIC_BACKEND_URL</code></td>
+<td>Yes</td>
+<td>Browser and server bundle</td>
+<td>Absolute backend base URL, e.g. <code>http://localhost:3001</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="backend-only-variable">Backend-only variable</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Location</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ZARINPAL_MERCHANT_ID</code></td>
+<td>Backend secret store</td>
+<td>Merchant identity for payment requests; this frontend source does not read it</td>
+</tr>
+</tbody>
+</table>
+<p>Suggested local <code>.env.local</code>:</p>
+<pre><code class="language-dotenv">NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
+</code></pre>
+<p>Do not add a payment secret to a <code>NEXT_PUBLIC_*</code> variable. Restart <code>next dev</code> after changing environment variables.</p>
+<h2 id="scripts-and-developer-workflow">17. Scripts and developer workflow</h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npm ci</code></td>
+<td>Exact clean dependency installation</td>
+</tr>
+<tr>
+<td><code>npm run dev</code></td>
+<td>Start Next development server</td>
+</tr>
+<tr>
+<td><code>npm run build</code></td>
+<td>Compile, type-check, lint, and generate production output</td>
+</tr>
+<tr>
+<td><code>npm run start</code></td>
+<td>Serve the existing production build</td>
+</tr>
+<tr>
+<td><code>npm run lint</code></td>
+<td>Run the Next.js ESLint integration</td>
+</tr>
+</tbody>
+</table>
+<p>Recommended change cycle:</p>
+<pre><code class="language-bash">npm ci
+npm run dev
+# implement and test the change
+npm run lint
+npm run build
+</code></pre>
+<p>The <code>@/*</code> path alias resolves to <code>src/*</code>. Keep feature code within the existing layer boundaries and prefer the shared form, panel, API, schema, and URL/image helpers.</p>
+<h2 id="production-build-and-deployment">18. Production build and deployment</h2>
+<h3 id="generic-node-deployment">Generic Node deployment</h3>
+<pre><code class="language-bash">npm ci
+npm run build
+npm run start
+</code></pre>
+<p>The default production port is 3000. Set <code>PORT</code> at process level if the hosting environment requires another port.</p>
+<h3 id="deployment-checklist">Deployment checklist</h3>
+<ul>
+<li>Configure <code>NEXT_PUBLIC_BACKEND_URL</code> before building; public variables are compiled into client bundles.</li>
+<li>Ensure the backend is reachable during the build if the static course catalog must contain data.</li>
+<li>Configure the backend's allowed frontend origin and credentialed CORS.</li>
+<li>Configure the auth cookie for the production frontend/backend domains.</li>
+<li>Configure the payment callback URL to end at <code>/payment/verify</code> and preserve <code>Authority</code> and <code>Status</code> query parameters.</li>
+<li>Serve over HTTPS.</li>
+<li>Rotate/remove demo and committed credentials.</li>
+<li>Run <code>npm run build</code> in CI.</li>
+<li>Confirm external course links and image payload sizes.</li>
+</ul>
+<h3 id="verified-repository-status">Verified repository status</h3>
+<p>On 23 June 2026, <code>npm run build</code> completed successfully with Next.js 14.2.4. Because the local backend on port 3001 was not running, the build logged <code>ECONNREFUSED</code> for <code>/fetch-course</code>, but the catalog's error handling allowed the build to finish.</p>
+<h2 id="testing-and-verification">19. Testing and verification</h2>
+<p>There is currently no automated unit, integration, or end-to-end test suite in the repository. Until one is added, verify at least:</p>
+<ul>
+<li>Public rendering at mobile and desktop widths.</li>
+<li>Persian/English switch and persistence after reload.</li>
+<li>Registration validation and successful redirect.</li>
+<li>Login cookie behavior, logout, and auth-route redirect.</li>
+<li>Guest redirect from profile/payment routes.</li>
+<li>Non-admin redirect away from <code>/profile/admin</code>.</li>
+<li>Profile edit and password change.</li>
+<li>Course list/detail, image variants, duplicate cart prevention, remove/clear.</li>
+<li>Empty and populated checkout.</li>
+<li>Payment cancellation, missing query parameters, backend verification failure, and success.</li>
+<li>Admin create/delete and user-email lookup.</li>
+<li>Backend downtime behavior and readable error messages.</li>
+</ul>
+<p>Recommended future tooling: Vitest + React Testing Library for units/components, MSW for API mocks, and Playwright for role/payment navigation flows.</p>
+<h2 id="troubleshooting">20. Troubleshooting</h2>
+<h3 id="courses-are-empty-or-build-logs-econnrefused-localhost3001">Courses are empty or build logs <code>ECONNREFUSED localhost:3001</code></h3>
+<ul>
+<li>Start the backend on port 3001, or update <code>NEXT_PUBLIC_BACKEND_URL</code>.</li>
+<li>Restart the frontend after environment changes.</li>
+<li>For production builds, make the backend reachable during prerendering or change the catalog rendering strategy.</li>
+</ul>
+<h3 id="login-succeeds-but-protected-routes-redirect-to-login">Login succeeds but protected routes redirect to login</h3>
+<ul>
+<li>Inspect the response and confirm a cookie named <code>auth-token</code> was set.</li>
+<li>Check cookie domain, path, expiry, SameSite, and Secure flags.</li>
+<li>Confirm browser requests include credentials and backend CORS allows the exact frontend origin.</li>
+</ul>
+<h3 id="cors-errors">CORS errors</h3>
+<ul>
+<li>Fix CORS on the backend; client <code>Access-Control-Allow-*</code> request headers do not grant permission.</li>
+<li>For credentialed requests, do not return wildcard <code>Access-Control-Allow-Origin: *</code>.</li>
+</ul>
+<h3 id="admin-route-redirects-to-profile">Admin route redirects to profile</h3>
+<ul>
+<li>Decode the issued JWT and confirm it includes boolean <code>isAdmin: true</code>.</li>
+<li>Confirm the cookie contains the current token and is visible to Next middleware.</li>
+<li>Still enforce admin access on the backend, regardless of middleware behavior.</li>
+</ul>
+<h3 id="cartuserlanguage-content-appears-late">Cart/user/language content appears late</h3>
+<p>This is expected during local-storage hydration. If it never appears, inspect local storage values for malformed JSON and check browser console errors.</p>
+<h3 id="npm-run-lint-reports-an.nextcacheeslint-permission-error"><code>npm run lint</code> reports an <code>.next/cache/eslint</code> permission error</h3>
+<ul>
+<li>Ensure another build/lint process is not using <code>.next</code>.</li>
+<li>Close processes holding the file and run lint again.</li>
+<li>Avoid launching lint and build concurrently because both write to <code>.next</code>.</li>
+</ul>
+<h3 id="payment-returns-an-error">Payment returns an error</h3>
+<ul>
+<li>Confirm the gateway returns both <code>Authority</code> and <code>Status</code>.</li>
+<li>Only <code>Status=OK</code> triggers backend verification.</li>
+<li>Confirm <code>/payment/verify</code> accepts <code>{ authority }</code>, validates it with the gateway, and returns the expected transaction/course shape.</li>
+</ul>
+<h2 id="known-constraints-and-maintenance-notes">21. Known constraints and maintenance notes</h2>
+<ul>
+<li>Frontend and backend are tightly coupled through inferred response shapes without a generated/shared API contract.</li>
+<li>JWT middleware decodes but does not verify the token; it is navigation convenience, not a security boundary.</li>
+<li>The auth UI mirror can become stale if the cookie changes elsewhere.</li>
+<li>Profile updates may require the backend to refresh JWT claims, otherwise server-rendered profile claims can lag behind local state.</li>
+<li>Course create and public course schemas allow different maximum description lengths (1000 vs 150).</li>
+<li>The forced-static catalog can become stale and can silently build empty.</li>
+<li>Cart toasts currently use Persian dictionary entries directly in the store for some actions.</li>
+<li>Translation coverage and document direction switching are incomplete.</li>
+<li>OTP is currently expected in a frontend-visible response.</li>
+<li>No API timeout, retry policy, centralized error normalization, error boundary, or automated tests are configured.</li>
+<li><code>ZARINPAL_MERCHANT_ID</code> is not consumed by this frontend and belongs in backend configuration.</li>
+<li>The checked-in <code>.env</code> policy needs hardening.</li>
+</ul>
+<p>These notes describe the current implementation; they are not requirements to preserve problematic behavior.</p>
+<h2 id="contribution-checklist">22. Contribution checklist</h2>
+<p>Before opening a change:</p>
+<ul>
+<li>Keep secrets and real credentials out of commits.</li>
+<li>Add/update Zod schemas with form or API shape changes.</li>
+<li>Add both Persian and English strings.</li>
+<li>Check server/client component boundaries before using browser APIs.</li>
+<li>Preserve hydration guards for local-storage state.</li>
+<li>Enforce permissions on the backend, even if UI/middleware also checks them.</li>
+<li>Verify mobile and desktop layouts.</li>
+<li>Verify guest, user, and admin behavior.</li>
+<li>Run <code>npm run lint</code> and <code>npm run build</code> sequentially.</li>
+<li>Update this guide and its Persian counterpart when routes, environment variables, API endpoints, or workflows change.</li>
+</ul>
+</main></body></html>

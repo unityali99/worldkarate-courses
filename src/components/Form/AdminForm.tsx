@@ -9,8 +9,8 @@ import FormButton from "./components/FormButton";
 import ApiClient from "@/services/ApiClient";
 import CreateCourse, { CreateCourseType } from "@/schemas/CreateCourse";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 import { getExternalUrl } from "@/utils/externalUrl";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 const courseCreationApi = new ApiClient<CreateCourseType>("/create-course");
 
@@ -31,17 +31,8 @@ function AdminForm() {
       .then((res) => {
         toast.success(res.data.message);
       })
-      .catch((error: AxiosError) => {
-        const errorData = error.response?.data as
-          | { message?: string; error?: string }
-          | undefined;
-        const errorMessage =
-          errorData?.message ||
-          errorData?.error ||
-          error.message ||
-          "خطا در ایجاد دوره";
-
-        toast.error(errorMessage);
+      .catch((error) => {
+        toast.error(getErrorMessage(error, "خطا در ایجاد دوره"));
       })
       .finally(() => setIsLoading(false));
   };

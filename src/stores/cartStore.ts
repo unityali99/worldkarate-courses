@@ -24,8 +24,15 @@ const useCart = create<cartType>()((set, get) => ({
   hydrated: false,
   setHydrated: () => {
     if (typeof window !== "undefined") {
+      let courses: CourseType[] = [];
+      try {
+        courses = JSON.parse(getItem(cartStorageKey)) || [];
+      } catch {
+        removeItem(cartStorageKey);
+      }
+
       set(() => ({
-        courses: JSON.parse(getItem(cartStorageKey)) || [],
+        courses,
         hydrated: true,
       }));
     }

@@ -4,6 +4,7 @@ import PanelContainer from "@/layouts/PanelContainer";
 import ResetPassword, { ResetPasswordType } from "@/schemas/auth/ResetPassword";
 import ApiClient from "@/services/ApiClient";
 import useLanguageStore from "@/stores/languageStore";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import {
   Box,
   Button,
@@ -22,7 +23,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LuEye, LuEyeOff, LuKeyRound, LuLockKeyhole } from "react-icons/lu";
@@ -57,9 +57,8 @@ function ChangePasswordForm() {
         toast.success(res.data.message);
         reset();
       })
-      .catch((error: AxiosError) => {
-        const message = (error.response?.data as { message?: string })?.message;
-        toast.error(message || "تغییر رمز عبور با خطا روبه‌رو شد");
+      .catch((error) => {
+        toast.error(getErrorMessage(error, "تغییر رمز عبور با خطا روبه‌رو شد"));
       })
       .finally(() => setIsLoading(false));
   };

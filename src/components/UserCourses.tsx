@@ -4,6 +4,7 @@ import PanelContainer from "@/layouts/PanelContainer";
 import { CreateCourseType } from "@/schemas/CreateCourse";
 import ApiClient from "@/services/ApiClient";
 import { getExternalUrl } from "@/utils/externalUrl";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import {
   Alert,
   Box,
@@ -14,7 +15,6 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { LuBookOpen, LuExternalLink } from "react-icons/lu";
 import { toast } from "react-toastify";
@@ -32,8 +32,8 @@ function UserCourses({ email }: { email?: string }) {
     apiClient
       .get()
       .then((res) => setCourses(res.data))
-      .catch((error: AxiosError) =>
-        toast.error((error.response?.data as { message: string }).message)
+      .catch((error) =>
+        toast.error(getErrorMessage(error, "خطا در دریافت دوره‌ها"))
       )
       .finally(() => setHydrated(true));
   }, [email]);

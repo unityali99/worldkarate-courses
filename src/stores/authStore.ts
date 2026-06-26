@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { get as getItem, set as setItem, remove } from "local-storage";
 import ApiClient from "@/services/ApiClient";
-import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 type User = {
   email: string;
@@ -19,8 +19,17 @@ type LoginState = {
 export const cookieKey = "auth-token";
 export const userStorageKey = "user";
 
+function getStoredUser() {
+  try {
+    return JSON.parse(getItem(userStorageKey)) || null;
+  } catch {
+    remove(userStorageKey);
+    return null;
+  }
+}
+
 const useAuth = create<LoginState>()((set, get) => ({
-  user: JSON.parse(getItem(userStorageKey)),
+  user: getStoredUser(),
   login: (user) => {
     setItem(userStorageKey, JSON.stringify(user));
     set(() => ({ user }));
@@ -33,7 +42,7 @@ const useAuth = create<LoginState>()((set, get) => ({
         toast.success(res.data.message as string);
         window.location.replace("/");
       })
-      .catch((error: AxiosError) => toast.error(error.message));
+      .catch((error) => toast.error(getErrorMessage(error, "خروج با خطا روبه‌رو شد")));
   },
 }));
 

@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ResetPassword, { ResetPasswordType } from "@/schemas/auth/ResetPassword";
 import ApiClient from "@/services/ApiClient";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 
 function ResetPasswordForm() {
@@ -32,8 +32,8 @@ function ResetPasswordForm() {
         ApiClient.logout();
         replace("/auth/login");
       })
-      .catch((error: AxiosError) =>
-        toast.error((error.response?.data as { message: string })?.message)
+      .catch((error) =>
+        toast.error(getErrorMessage(error, "تغییر رمز عبور با خطا روبه‌رو شد"))
       )
       .finally(() => setIsLoading(false));
   };

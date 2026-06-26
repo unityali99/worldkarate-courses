@@ -3,8 +3,8 @@ import { CourseType } from "@/schemas/Course";
 import ApiClient from "@/services/ApiClient";
 import useAuth from "@/stores/authStore";
 import useCart from "@/stores/cartStore";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { Alert, Box, Button, Link, Spinner } from "@chakra-ui/react";
-import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -19,8 +19,8 @@ function AddToCartBtn({ course }: { course: CourseType }) {
     apiClient
       .get()
       .then((res) => setUserCourses(res.data))
-      .catch((error: AxiosError) =>
-        toast.error((error.response?.data as { message: string }).message)
+      .catch((error) =>
+        toast.error(getErrorMessage(error, "خطا در دریافت دوره‌های کاربر"))
       )
       .finally(() => setHydrated(true));
   }, []);

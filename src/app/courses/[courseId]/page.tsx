@@ -35,7 +35,14 @@ async function SingleCoursePage({ params }: { params: { courseId: string } }) {
   const user: UserType | undefined = authToken
     ? decodeJwt(authToken)
     : undefined;
-  const course = (await apiClient.get()).data;
+
+  let course: CourseType | null = null;
+  try {
+    course = (await apiClient.get()).data;
+  } catch (error) {
+    console.error("Failed to fetch course:", error);
+    return notFound();
+  }
 
   if (!course) return notFound();
 
@@ -229,3 +236,4 @@ async function SingleCoursePage({ params }: { params: { courseId: string } }) {
 export default SingleCoursePage;
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";

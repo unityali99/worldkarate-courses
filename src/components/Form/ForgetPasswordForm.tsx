@@ -11,7 +11,7 @@ import ForgetPassword, {
 import { zodResolver } from "@hookform/resolvers/zod";
 import ApiClient from "@/services/ApiClient";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 function ForgetPasswordForm({
   setOtp,
@@ -38,8 +38,8 @@ function ForgetPasswordForm({
         setOtp(res.data.OTP);
         setEmail(data.email);
       })
-      .catch((error: AxiosError) =>
-        toast.error((error.response?.data as { message: string })?.message)
+      .catch((error) =>
+        toast.error(getErrorMessage(error, "ارسال کد با خطا روبه‌رو شد"))
       )
       .finally(() => setIsLoading(false));
   };

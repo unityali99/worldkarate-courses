@@ -1,8 +1,8 @@
 "use client";
 import Register, { RegisterType } from "@/schemas/auth/Register";
 import ApiClient from "@/services/ApiClient";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -34,8 +34,8 @@ function RegisterForm() {
         toast.success(res.data.message);
         replace("/auth/login");
       })
-      .catch((error: AxiosError) =>
-        toast.error((error.response?.data as { message: string }).message)
+      .catch((error) =>
+        toast.error(getErrorMessage(error, "ثبت نام با خطا روبه‌رو شد"))
       )
       .finally(() => setIsLoading(false));
   };

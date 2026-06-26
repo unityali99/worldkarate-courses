@@ -4,9 +4,9 @@ import Login, { LoginType } from "@/schemas/auth/Login";
 import ApiClient from "@/services/ApiClient";
 import useAuth from "@/stores/authStore";
 import useLanguageStore from "@/stores/languageStore";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { Alert, Box, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -40,8 +40,8 @@ function LoginForm() {
         toast.success(res.data.message);
         replace("/");
       })
-      .catch((error: AxiosError) => {
-        toast.error((error.response?.data as { message: string })?.message);
+      .catch((error) => {
+        toast.error(getErrorMessage(error, "ورود با خطا روبه‌رو شد"));
       })
       .finally(() => setIsLoading(false));
   };

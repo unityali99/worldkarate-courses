@@ -1,6 +1,7 @@
 "use server";
 import ApiClient from "@/services/ApiClient";
 import { ForgetPasswordType as NewsletterType } from "@/schemas/auth/ForgetPassword";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 export async function registerNewsletter(prevState: any, formData: FormData) {
   try {
@@ -19,9 +20,9 @@ export async function registerNewsletter(prevState: any, formData: FormData) {
       message: res.data.message,
       successful: true,
     };
-  } catch (error: any) {
+  } catch (error) {
     return {
-      message: (error.response?.data as { message: string }).message,
+      message: getErrorMessage(error, "ثبت ایمیل با خطا روبه‌رو شد"),
       successful: false,
     };
   }

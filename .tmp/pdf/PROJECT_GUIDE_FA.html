@@ -1,0 +1,845 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><style>@page { size: A4; margin: 18mm 16mm 20mm; }
+* { box-sizing: border-box; }
+html { background: #fff; }
+body { margin: 0; color: #17212b; font-family: Arial, Tahoma, "Segoe UI", sans-serif; font-size: 10.5pt; line-height: 1.65; }
+main { max-width: 100%; }
+h1 { color: #8b1111; font-size: 25pt; line-height: 1.2; border-bottom: 3px solid #c53030; padding-bottom: 10px; margin: 0 0 20px; }
+h2 { color: #8b1111; font-size: 17pt; line-height: 1.3; border-bottom: 1px solid #e4b7b7; padding-bottom: 5px; margin: 28px 0 12px; break-after: avoid-page; }
+h3 { color: #1f4f4f; font-size: 13pt; margin: 20px 0 8px; break-after: avoid-page; }
+p { margin: 7px 0 11px; orphans: 3; widows: 3; }
+ul, ol { margin: 6px 0 12px; padding-inline-start: 25px; }
+li { margin: 3px 0; }
+a { color: #1261a0; text-decoration: none; overflow-wrap: anywhere; }
+blockquote { margin: 14px 0; padding: 10px 14px; border-inline-start: 4px solid #d69e2e; background: #fff8df; break-inside: avoid; }
+blockquote p { margin: 0; }
+code { font-family: Consolas, "Courier New", monospace; font-size: 9pt; background: #f2f4f7; color: #8b1111; padding: 1px 4px; border-radius: 3px; direction: ltr; unicode-bidi: embed; }
+pre { background: #16212b; color: #f7fafc; padding: 12px 14px; border-radius: 6px; overflow-wrap: anywhere; white-space: pre-wrap; direction: ltr; text-align: left; break-inside: avoid-page; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0 18px; font-size: 9.2pt; break-inside: auto; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+th { background: #263746; color: white; font-weight: 700; }
+th, td { border: 1px solid #aeb8c2; padding: 6px 7px; vertical-align: top; text-align: start; overflow-wrap: anywhere; }
+tbody tr:nth-child(even) { background: #f5f7f9; }
+hr { border: 0; border-top: 1px solid #ccd3da; margin: 22px 0; }
+strong { color: #101820; }
+.pdf-meta { color: #5a6570; font-size: 9pt; margin-bottom: 18px; }
+@media print { h1, h2, h3, h4 { break-after: avoid-page; } img, table, pre, blockquote { max-width: 100%; } }</style></head><body><main><h1 id="section">راهنمای جامع فرانت‌اند دوره‌های کاراته</h1>
+<blockquote>
+<p>آخرین بررسی بر اساس کد مخزن: ۲۳ ژوئن ۲۰۲۶<br />
+برنامه: فروشگاه دوره‌ها و پنل هنرجویان آکادمی کاراته سنسی یاری<br />
+محدوده: این مخزن فقط <strong>فرانت‌اند Next.js</strong> است. احراز هویت، پایگاه داده، ایمیل/OTP، مالکیت دوره‌ها و پرداخت به بک‌اند جداگانه نیاز دارند.</p>
+</blockquote>
+<h2 id="section-1">فهرست مطالب</h2>
+<p>۱. <a href="#%DB%B1-%D9%85%D8%B9%D8%B1%D9%81%DB%8C-%D9%BE%D8%B1%D9%88%DA%98%D9%87">معرفی پروژه</a><br />
+۲. <a href="#%DB%B2-%D8%B1%D8%A7%D9%87%D8%A7%D9%86%D8%AF%D8%A7%D8%B2%DB%8C-%D8%B3%D8%B1%DB%8C%D8%B9">راه‌اندازی سریع</a><br />
+۳. <a href="#%DB%B3-%D8%AD%D8%B3%D8%A7%D8%A8%D9%87%D8%A7%DB%8C-%D8%A2%D8%B2%D9%85%D8%A7%DB%8C%D8%B4%DB%8C-%D9%88-%D9%86%D9%82%D8%B4%D9%87%D8%A7">حساب‌های آزمایشی و نقش‌ها</a><br />
+۴. <a href="#%DB%B4-%D9%81%D9%86%D8%A7%D9%88%D8%B1%DB%8C%D9%87%D8%A7%DB%8C-%D9%BE%D8%B1%D9%88%DA%98%D9%87">فناوری‌های پروژه</a><br />
+۵. <a href="#%DB%B5-%D9%85%D8%B9%D9%85%D8%A7%D8%B1%DB%8C-%D9%81%D8%B1%D8%A7%D9%86%D8%AA%D8%A7%D9%86%D8%AF">معماری فرانت‌اند</a><br />
+۶. <a href="#%DB%B6-%D8%B3%D8%A7%D8%AE%D8%AA%D8%A7%D8%B1-%D9%BE%D9%88%D8%B4%D9%87%D9%87%D8%A7">ساختار پوشه‌ها</a><br />
+۷. <a href="#%DB%B7-%D9%85%D8%B3%DB%8C%D8%B1%D9%87%D8%A7-%D9%88-%D9%82%D9%88%D8%A7%D9%86%DB%8C%D9%86-%D8%AF%D8%B3%D8%AA%D8%B1%D8%B3%DB%8C">مسیرها و قوانین دسترسی</a><br />
+۸. <a href="#%DB%B8-%D8%AC%D8%B1%DB%8C%D8%A7%D9%86%D9%87%D8%A7%DB%8C-%D8%A7%D8%B5%D9%84%DB%8C-%DA%A9%D8%A7%D8%B1%D8%A8%D8%B1">جریان‌های اصلی کاربر</a><br />
+۹. <a href="#%DB%B9-%D9%85%D8%AF%DB%8C%D8%B1%DB%8C%D8%AA-%D9%88-%D9%85%D8%A7%D9%86%D8%AF%DA%AF%D8%A7%D8%B1%DB%8C-%D9%88%D8%B6%D8%B9%DB%8C%D8%AA">مدیریت و ماندگاری وضعیت</a><br />
+۱۰. <a href="#%DB%B1%DB%B0-%D8%A7%D8%B1%D8%AA%D8%A8%D8%A7%D8%B7-%D8%A8%D8%A7-%D8%A8%DA%A9%D8%A7%D9%86%D8%AF-%D9%88-%D9%82%D8%B1%D8%A7%D8%B1%D8%AF%D8%A7%D8%AF-api">ارتباط با بک‌اند و قرارداد API</a><br />
+۱۱. <a href="#%DB%B1%DB%B1-%D9%85%D8%AF%D9%84-%D8%AF%D8%A7%D8%AF%D9%87-%D9%88-%D8%A7%D8%B9%D8%AA%D8%A8%D8%A7%D8%B1%D8%B3%D9%86%D8%AC%DB%8C">مدل داده و اعتبارسنجی</a><br />
+۱۲. <a href="#%DB%B1%DB%B2-%D8%A7%D8%AD%D8%B1%D8%A7%D8%B2-%D9%87%D9%88%DB%8C%D8%AA-%D9%85%D8%AC%D9%88%D8%B2-%D9%88-%D8%A7%D9%85%D9%86%DB%8C%D8%AA">احراز هویت، مجوز و امنیت</a><br />
+۱۳. <a href="#%DB%B1%DB%B3-%DA%86%D9%86%D8%AF%D8%B2%D8%A8%D8%A7%D9%86%D9%87%D8%B3%D8%A7%D8%B2%DB%8C">چندزبانه‌سازی</a><br />
+۱۴. <a href="#%DB%B1%DB%B4-%D8%B1%D8%A7%D8%A8%D8%B7-%DA%A9%D8%A7%D8%B1%D8%A8%D8%B1%DB%8C-%D8%A7%D8%B3%D8%AA%D8%A7%DB%8C%D9%84-%D9%88-%D9%81%D8%A7%DB%8C%D9%84%D9%87%D8%A7%DB%8C-%D8%AB%D8%A7%D8%A8%D8%AA">رابط کاربری، استایل و فایل‌های ثابت</a><br />
+۱۵. <a href="#%DB%B1%DB%B5-%D8%B1%D9%88%D8%B4-%D8%B1%D9%86%D8%AF%D8%B1-%D9%88-%D8%AF%D8%B1%DB%8C%D8%A7%D9%81%D8%AA-%D8%AF%D8%A7%D8%AF%D9%87">روش رندر و دریافت داده</a><br />
+۱۶. <a href="#%DB%B1%DB%B6-%D9%85%D8%AA%D8%BA%DB%8C%D8%B1%D9%87%D8%A7%DB%8C-%D9%85%D8%AD%DB%8C%D8%B7%DB%8C">متغیرهای محیطی</a><br />
+۱۷. <a href="#%DB%B1%DB%B7-%D8%A7%D8%B3%DA%A9%D8%B1%DB%8C%D9%BE%D8%AA%D9%87%D8%A7-%D9%88-%D8%B1%D9%88%D8%A7%D9%84-%D8%AA%D9%88%D8%B3%D8%B9%D9%87">اسکریپت‌ها و روال توسعه</a><br />
+۱۸. <a href="#%DB%B1%DB%B8-%D8%A8%DB%8C%D9%84%D8%AF-%D9%88-%D8%A7%D8%B3%D8%AA%D9%82%D8%B1%D8%A7%D8%B1">بیلد و استقرار</a><br />
+۱۹. <a href="#%DB%B1%DB%B9-%D8%AA%D8%B3%D8%AA-%D9%88-%D8%A8%D8%B1%D8%B1%D8%B3%DB%8C">تست و بررسی</a><br />
+۲۰. <a href="#%DB%B2%DB%B0-%D8%B1%D9%81%D8%B9-%D8%A7%D8%B4%DA%A9%D8%A7%D9%84">رفع اشکال</a><br />
+۲۱. <a href="#%DB%B2%DB%B1-%D9%85%D8%AD%D8%AF%D9%88%D8%AF%DB%8C%D8%AA%D9%87%D8%A7-%D9%88-%D9%86%DA%A9%D8%A7%D8%AA-%D9%86%DA%AF%D9%87%D8%AF%D8%A7%D8%B1%DB%8C">محدودیت‌ها و نکات نگهداری</a><br />
+۲۲. <a href="#%DB%B2%DB%B2-%DA%86%DA%A9%D9%84%DB%8C%D8%B3%D8%AA-%D9%85%D8%B4%D8%A7%D8%B1%DA%A9%D8%AA">چک‌لیست مشارکت</a></p>
+<h2 id="section-2">۱. معرفی پروژه</h2>
+<p>این برنامه وب‌سایت عمومی و پنل حساب کاربری یک پلتفرم فروش دوره‌های آنلاین کاراته است. امکانات اصلی آن عبارت‌اند از:</p>
+<ul>
+<li>صفحه فرود فارسی/انگلیسی.</li>
+<li>فهرست دوره‌ها و صفحه جزئیات هر دوره.</li>
+<li>سبد خرید پایدار در مرورگر.</li>
+<li>ثبت‌نام، ورود، خروج، بازیابی رمز با OTP و تغییر رمز.</li>
+<li>پروفایل محافظت‌شده و قابل ویرایش.</li>
+<li>مشاهده لینک دوره‌های خریداری‌شده.</li>
+<li>تسویه‌حساب و هدایت/تأیید پرداخت به سبک درگاه زرین‌پال.</li>
+<li>پنل مدیر برای ایجاد و حذف دوره و مشاهده دوره‌های یک کاربر.</li>
+<li>عضویت در خبرنامه.</li>
+</ul>
+<p>این مخزن شامل سرور بک‌اند، طرح پایگاه داده، سرویس ارسال ایمیل یا پیاده‌سازی درگاه پرداخت نیست. آدرس بک‌اند از <code>NEXT_PUBLIC_BACKEND_URL</code> خوانده می‌شود.</p>
+<h3 id="section-3">مرز سامانه</h3>
+<pre><code class="language-text">مرورگر
+  ├─ صفحات Next.js و کامپوننت‌های React
+  ├─ وضعیت Zustand: کاربر، سبد، زبان
+  └─ کوکی auth-token و localStorage
+          │ درخواست HTTP/JSON همراه کوکی
+          ▼
+بک‌اند خارجی (خارج از این مخزن)
+  ├─ احراز هویت و صدور کوکی JWT
+  ├─ ذخیره کاربران، دوره‌ها و سفارش‌ها
+  ├─ اعمال مجوزها
+  ├─ ارسال OTP
+  └─ ساخت و تأیید پرداخت
+          │
+          ▼
+پایگاه داده / ایمیل / زرین‌پال / میزبان محتوای دوره
+</code></pre>
+<h2 id="section-4">۲. راه‌اندازی سریع</h2>
+<h3 id="section-5">پیش‌نیازها</h3>
+<ul>
+<li>Node.js نسخه ۲۰ LTS پیشنهاد می‌شود. Next.js 14 حداقل به Node.js 18.17 نیاز دارد.</li>
+<li>npm؛ فایل <code>package-lock.json</code> در مخزن وجود دارد و مدیر بسته مرجع پروژه npm است.</li>
+<li>Git.</li>
+<li>بک‌اند جداگانه و قابل دسترس؛ قرارداد فعلی توسعه محلی <code>http://localhost:3001</code> است.</li>
+</ul>
+<h3 id="section-6">نصب و اجرای محلی</h3>
+<pre><code class="language-bash">git clone &lt;repository-url&gt;
+cd karate-courses
+npm ci
+</code></pre>
+<p>فایل <code>.env.local</code> را ایجاد کنید:</p>
+<pre><code class="language-dotenv">NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
+</code></pre>
+<p>ابتدا بک‌اند و سپس فرانت‌اند را اجرا کنید:</p>
+<pre><code class="language-bash">npm run dev
+</code></pre>
+<p>مرورگر را در <code>http://localhost:3000</code> باز کنید.</p>
+<p>برای نصب تمیز و قابل تکرار، به‌ویژه در CI، از <code>npm ci</code> استفاده کنید. <code>npm install</code> را زمانی اجرا کنید که قصد تغییر وابستگی‌ها و lockfile را دارید.</p>
+<h3 id="section-7">بررسی سریع بعد از اجرا</h3>
+<p>۱. صفحه اصلی را باز کنید.<br />
+۲. به <code>/courses</code> بروید و نمایش دوره‌های بک‌اند را بررسی کنید.<br />
+۳. یک کاربر عادی ثبت‌نام کرده و وارد شوید.<br />
+۴. دوره‌ای را به سبد اضافه کرده و تسویه‌حساب را باز کنید.<br />
+۵. در <code>/profile</code> اطلاعات و دوره‌های خریداری‌شده را ببینید.<br />
+۶. با حساب مدیر وارد شده و <code>/profile/admin</code> را بررسی کنید.</p>
+<h2 id="section-8">۳. حساب‌های آزمایشی و نقش‌ها</h2>
+<h3 id="section-9">مدیر (ویژه توسعه و نمایش)</h3>
+<table>
+<thead>
+<tr>
+<th>فیلد</th>
+<th>مقدار</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ایمیل</td>
+<td><code>ali@gmail.com</code></td>
+</tr>
+<tr>
+<td>رمز عبور</td>
+<td><code>Ali13831383</code></td>
+</tr>
+</tbody>
+</table>
+<p>از این حساب برای بررسی رابط مدیر، ایجاد/حذف دوره و جستجوی دوره‌های کاربران استفاده کنید.</p>
+<blockquote>
+<p>هشدار امنیتی: این اطلاعات یک حساب آزمایشی مشترک است و نباید از محیط تولید محافظت کند. پیش از انتشار عمومی رمز را تغییر دهید و حساب‌های مدیر تولید را به‌صورت امن در بک‌اند مدیریت کنید.</p>
+</blockquote>
+<h3 id="section-10">کاربران عادی</h3>
+<p>کاربر عادی باید در <code>/auth/register</code> حساب خودش را بسازد و حساب مشترک از پیش آماده‌ای برای او وجود ندارد. فرم ثبت‌نام شامل نام، نام خانوادگی، ایمیل و رمز عبور است و پس از موفقیت به <code>/auth/login</code> هدایت می‌شود.</p>
+<h3 id="section-11">رفتار نقش‌ها</h3>
+<ul>
+<li>مهمان صفحه اصلی و دوره‌ها را می‌بیند و می‌تواند یک سبد محلی داشته باشد.</li>
+<li>کاربر واردشده به پروفایل، تسویه‌حساب، تأیید پرداخت و دوره‌های خریداری‌شده دسترسی دارد.</li>
+<li>مدیر در JWT مقدار <code>isAdmin: true</code> دارد و می‌تواند <code>/profile/admin</code> را باز کند.</li>
+<li>صفحه جزئیات دوره برای مدیر عملیات حذف/مدیریت و برای کاربر عادی افزودن به سبد را نمایش می‌دهد.</li>
+</ul>
+<h2 id="section-12">۴. فناوری‌های پروژه</h2>
+<table>
+<thead>
+<tr>
+<th>حوزه</th>
+<th>فناوری</th>
+<th>کاربرد</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>فریم‌ورک</td>
+<td>Next.js 14.2.4 با App Router</td>
+<td>مسیرها، رندر سرور/کلاینت، middleware و metadata</td>
+</tr>
+<tr>
+<td>زبان</td>
+<td>TypeScript 5 در حالت strict</td>
+<td>بررسی نوع ایستا</td>
+</tr>
+<tr>
+<td>رابط</td>
+<td>React 18</td>
+<td>کامپوننت‌ها و hookها</td>
+</tr>
+<tr>
+<td>کتابخانه UI</td>
+<td>Chakra UI 2</td>
+<td>چیدمان، فرم، modal، جدول و responsive props</td>
+</tr>
+<tr>
+<td>CSS ابزاری</td>
+<td>Tailwind CSS 3 و PostCSS</td>
+<td>کلاس‌های کمکی و استایل عمومی</td>
+</tr>
+<tr>
+<td>انیمیشن</td>
+<td>Framer Motion</td>
+<td>حرکت‌های صفحه فرود</td>
+</tr>
+<tr>
+<td>وضعیت</td>
+<td>Zustand 4</td>
+<td>کاربر، سبد خرید و زبان</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>Axios</td>
+<td>درخواست به بک‌اند همراه کوکی</td>
+</tr>
+<tr>
+<td>فرم</td>
+<td>React Hook Form</td>
+<td>وضعیت و ارسال فرم</td>
+</tr>
+<tr>
+<td>اعتبارسنجی</td>
+<td>Zod و resolver</td>
+<td>طرح اعتبارسنجی سمت کلاینت</td>
+</tr>
+<tr>
+<td>اعلان</td>
+<td>React Toastify</td>
+<td>پیام موفقیت و خطا</td>
+</tr>
+<tr>
+<td>احراز هویت</td>
+<td><code>jwt-decode</code> و <code>cookie</code></td>
+<td>خواندن claimهای JWT و انواع کوکی</td>
+</tr>
+<tr>
+<td>تصویر</td>
+<td>Next Image، Chakra Image و Sharp</td>
+<td>نمایش و پشتیبانی بهینه‌سازی تصویر</td>
+</tr>
+<tr>
+<td>آیکن</td>
+<td>React Icons و Chakra Icons</td>
+<td>آیکن‌های رابط</td>
+</tr>
+</tbody>
+</table>
+<p>پروژه به‌صورت آگاهانه Chakra و Tailwind را ترکیب می‌کند: Chakra سامانه اصلی کامپوننت و چیدمان است و Tailwind برای فاصله، اندازه، تایپوگرافی و تنظیمات کوتاه flex/grid به‌کار می‌رود.</p>
+<h2 id="section-13">۵. معماری فرانت‌اند</h2>
+<h3 id="section-14">لایه‌ها</h3>
+<pre><code class="language-text">src/app            درخت مسیرها، layout اصلی و صفحات سروری
+    ↓
+src/components     رابط قابلیت‌ها و تعاملات کلاینت
+src/layouts        پوسته‌ها و providerهای مشترک
+    ↓
+src/stores         وضعیت مرورگر و ماندگاری آن
+src/services       Axios، کلاینت API و server action
+    ↓
+src/schemas        طرح‌های Zod و انواع TypeScript
+src/utils          ابزار JWT، URL، تصویر، رمز و metadata
+src/lang           فرهنگ لغت فارسی و انگلیسی
+</code></pre>
+<h3 id="server-component-client-component">مرز Server Component و Client Component</h3>
+<ul>
+<li>فایل بدون <code>&quot;use client&quot;</code> به‌طور پیش‌فرض React Server Component است.</li>
+<li>فهرست و جزئیات دوره از route componentهای سروری دریافت می‌شوند.</li>
+<li>فرم‌های تعاملی، سبد، navbar، تغییر زبان، تأیید پرداخت و ابزارهای پروفایل کلاینتی هستند.</li>
+<li>layout ریشه سروری است و برنامه را با Chakra provider کلاینتی می‌پوشاند.</li>
+<li><code>registerNewsletter</code> یک server action با <code>&quot;use server&quot;</code> است و توسط <code>useFormState</code> استفاده می‌شود.</li>
+</ul>
+<h3 id="section-15">پوسته مشترک</h3>
+<p><code>src/app/layout.tsx</code> این موارد را در تمام صفحات برقرار می‌کند:</p>
+<ul>
+<li>فونت محلی IRANSans و Lalezar.</li>
+<li>CSS عمومی و لایه‌های Tailwind.</li>
+<li><code>ChakraProvider</code> از طریق <code>src/layouts/Providers.tsx</code>.</li>
+<li>Navbar و Footer.</li>
+<li>کانتینر سراسری و RTL برای Toastify.</li>
+<li>metadata فارسی و مقدار اولیه <code>&lt;html lang=&quot;fa&quot;&gt;</code>.</li>
+</ul>
+<h2 id="section-16">۶. ساختار پوشه‌ها</h2>
+<pre><code class="language-text">karate-courses/
+├─ public/                    تصاویر WebP و برندینگ
+├─ src/
+│  ├─ app/                   مسیرهای App Router، layout، CSS و فونت‌ها
+│  │  ├─ auth/               ورود، ثبت‌نام و فراموشی رمز
+│  │  ├─ courses/            فهرست و مسیر پویای جزئیات دوره
+│  │  ├─ payment/            تسویه و تأیید callback درگاه
+│  │  └─ profile/            پروفایل و پنل مدیر
+│  ├─ components/            ناوبری، سبد، دوره و اجزای رابط
+│  │  └─ Form/               فرم‌ها و اجزای پایه مشترک آن‌ها
+│  ├─ lang/                  فرهنگ‌های `fa` و `en`
+│  ├─ layouts/               پنل‌ها، پوسته فرم، پس‌زمینه و provider
+│  ├─ schemas/               طرح‌های Zod مربوط به auth، دوره و پرداخت
+│  ├─ services/              Axios و server action خبرنامه
+│  ├─ stores/                storeهای auth، cart و language
+│  ├─ utils/                 ابزارهای تبدیل و اعتبارسنجی
+│  └─ middleware.ts          حفاظت مسیر و هدایت نقش‌ها
+├─ next.config.mjs           تنظیم تصویر Next
+├─ tailwind.config.ts        اسکن فایل‌ها و رنگ‌های سفارشی
+├─ theme.ts                  محل توسعه theme چاکرا؛ اکنون خالی
+├─ tsconfig.json             TypeScript strict و alias مسیر `@/*`
+├─ package.json              اسکریپت‌ها و وابستگی‌ها
+└─ .env / .env.local         پیکربندی اجرا؛ بخش امنیت را ببینید
+</code></pre>
+<h3 id="section-17">مسئولیت اجزای مهم</h3>
+<ul>
+<li><code>LandingPage</code>: صفحه بازاریابی و CTA وابسته به نقش.</li>
+<li><code>Navbar</code> و <code>BurgerMenu</code>: ناوبری responsive، عملیات auth، سبد و زبان.</li>
+<li><code>CourseCard</code>: نمایش دوره و لینک جزئیات.</li>
+<li><code>AddToCartBtn</code>: بررسی مالکیت قبلی و سپس نمایش لینک دسترسی یا افزودن به سبد.</li>
+<li><code>Cart</code>: drawer پایدار و هدایت به پرداخت.</li>
+<li><code>Checkout</code>: ساخت درخواست پرداخت و هدایت کامل مرورگر به درگاه.</li>
+<li><code>UserCourses</code>: دریافت دوره‌های کاربر فعلی یا دوره‌های یک ایمیل برای مدیر.</li>
+<li><code>AdminForm</code> و <code>DeleteBtn</code>: ایجاد و حذف دوره.</li>
+<li><code>ProfileForm</code> و <code>ChangePasswordForm</code>: نگهداری حساب.</li>
+</ul>
+<h2 id="section-18">۷. مسیرها و قوانین دسترسی</h2>
+<table>
+<thead>
+<tr>
+<th>مسیر</th>
+<th>روش رندر</th>
+<th>دسترسی</th>
+<th>مسئولیت</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/</code></td>
+<td>Static</td>
+<td>عمومی</td>
+<td>صفحه فرود</td>
+</tr>
+<tr>
+<td><code>/courses</code></td>
+<td>Force Static</td>
+<td>عمومی</td>
+<td>دریافت و نمایش دوره‌ها و خبرنامه</td>
+</tr>
+<tr>
+<td><code>/courses/[courseId]</code></td>
+<td>Force Dynamic</td>
+<td>عمومی</td>
+<td>جزئیات و عملیات وابسته به نقش</td>
+</tr>
+<tr>
+<td><code>/auth/login</code></td>
+<td>Static</td>
+<td>فقط مهمان</td>
+<td>ورود و دریافت کوکی از بک‌اند</td>
+</tr>
+<tr>
+<td><code>/auth/register</code></td>
+<td>Static</td>
+<td>فقط مهمان</td>
+<td>ثبت‌نام کاربر عادی</td>
+</tr>
+<tr>
+<td><code>/auth/forget-password</code></td>
+<td>جریان کلاینتی</td>
+<td>فقط مهمان</td>
+<td>ایمیل ← OTP ← رمز جدید</td>
+</tr>
+<tr>
+<td><code>/profile</code></td>
+<td>Dynamic/No-store</td>
+<td>واردشده</td>
+<td>ویرایش حساب، رمز و دوره‌های خریداری‌شده</td>
+</tr>
+<tr>
+<td><code>/profile/admin</code></td>
+<td>Dynamic/No-store</td>
+<td>فقط مدیر</td>
+<td>ایجاد دوره و جستجوی دوره‌های کاربر</td>
+</tr>
+<tr>
+<td><code>/payment/checkout</code></td>
+<td>Dynamic/No-store</td>
+<td>واردشده</td>
+<td>خلاصه سبد و آغاز پرداخت</td>
+</tr>
+<tr>
+<td><code>/payment/verify</code></td>
+<td>پوسته ثابت + تأیید کلاینت</td>
+<td>واردشده</td>
+<td>بررسی callback و نمایش سفارش</td>
+</tr>
+</tbody>
+</table>
+<p><code>src/middleware.ts</code> برای <code>/profile/:path*</code>، <code>/auth/:path*</code> و <code>/payment/:path*</code> اجرا می‌شود:</p>
+<ul>
+<li>نبود کوکی <code>auth-token</code> در پروفایل/پرداخت باعث هدایت به <code>/auth/login</code> است.</li>
+<li>کاربر واردشده از <code>/auth/*</code> به <code>/profile</code> هدایت می‌شود.</li>
+<li>JWT غیرمدیر از <code>/profile/admin</code> به <code>/profile</code> هدایت می‌شود.</li>
+</ul>
+<h2 id="section-19">۸. جریان‌های اصلی کاربر</h2>
+<h3 id="section-20">ثبت‌نام و ورود</h3>
+<p>۱. کاربر عادی اطلاعات را با <code>POST /register</code> ارسال می‌کند.<br />
+۲. پس از موفقیت به <code>/auth/login</code> می‌رود.<br />
+۳. فرم ورود <code>POST /login</code> را با credentials فعال ارسال می‌کند.<br />
+۴. بک‌اند باید کوکی <code>auth-token</code> را تنظیم و شیء عمومی <code>user</code> را برگرداند.<br />
+۵. auth store نسخه‌ای از کاربر را در localStorage ذخیره می‌کند.<br />
+۶. Middleware کوکی را می‌خواند و رابط تعاملی از نسخه محلی کاربر استفاده می‌کند.</p>
+<h3 id="section-21">بازیابی رمز</h3>
+<p>۱. <code>PUT /forget-password</code> ایمیل را ارسال می‌کند.<br />
+۲. فرانت‌اند فعلی انتظار دارد پاسخ دارای <code>OTP</code> باشد و آن را در toast نشان می‌دهد.<br />
+۳. <code>POST /validate-otp</code> بدنه <code>{ OTP, email }</code> را می‌فرستد.<br />
+۴. <code>PUT /reset-password</code> رمز جدید و تکرار آن را می‌فرستد.<br />
+۵. برنامه خروج را انجام داده و به ورود هدایت می‌کند.</p>
+<p>در تولید، OTP باید از کانال جداگانه مانند ایمیل/SMS برسد و در پاسخ یا رابط نمایش داده نشود.</p>
+<h3 id="section-22">سبد و پرداخت</h3>
+<p>۱. جزئیات دوره با <code>GET /user/fetch-course</code> مالکیت قبلی را بررسی می‌کند.<br />
+۲. دوره خریداری‌نشده به سبد Zustand افزوده می‌شود.<br />
+۳. سبد با کلید <code>cart</code> در localStorage ماندگار است.<br />
+۴. تسویه <code>POST /payment/checkout</code> را با شناسه‌های رشته‌ای دوره می‌فرستد.<br />
+۵. بک‌اند <code>paymentUrl</code> می‌دهد و مرورگر کامل به آن هدایت می‌شود.<br />
+۶. درگاه به <code>/payment/verify?Authority=...&amp;Status=...</code> بازمی‌گردد.<br />
+۷. در حالت <code>Status=OK</code>، فرانت <code>POST /payment/verify</code> را با <code>authority</code> می‌فرستد.<br />
+۸. سفارش تأییدشده و لینک خارجی دوره‌ها نمایش داده می‌شوند.</p>
+<p>بک‌اند باید قیمت، مالکیت و امکان خرید را دوباره محاسبه کند؛ قیمت و شناسه ارسالی کلاینت قابل اعتماد نیستند.</p>
+<h3 id="section-23">مدیریت دوره</h3>
+<p>۱. با حساب مدیر وارد شوید.<br />
+۲. از پروفایل <code>/profile/admin</code> را باز کنید.<br />
+۳. عنوان، توضیح، قیمت عددی، تصویر base64 و لینک را با <code>POST /create-course</code> ارسال کنید.<br />
+۴. در صفحه جزئیات حذف را بزنید؛ <code>DELETE /delete-course/:courseId</code> اجرا می‌شود.<br />
+۵. جستجوی ایمیل، <code>GET /admin/fetch-course/:email</code> را برای مشاهده خریدهای کاربر فراخوانی می‌کند.</p>
+<h2 id="section-24">۹. مدیریت و ماندگاری وضعیت</h2>
+<h3 id="auth-store">Auth store</h3>
+<ul>
+<li>کلید localStorage: <code>user</code>.</li>
+<li>وضعیت: <code>{ email, firstName, lastName } | null</code>.</li>
+<li><code>login</code> شیء عمومی کاربر را ذخیره می‌کند.</li>
+<li><code>logout</code> ذخیره محلی را پاک، <code>POST /logout</code> را فراخوانی و صفحه اصلی را reload می‌کند.</li>
+<li>کوکی را store تنظیم نمی‌کند؛ این کار بر عهده بک‌اند است.</li>
+</ul>
+<h3 id="cart-store">Cart store</h3>
+<ul>
+<li>کلید localStorage: <code>cart</code>.</li>
+<li>برای نمایش آسان، کل شیء دوره ذخیره می‌شود.</li>
+<li>شناسه تکراری را نمی‌پذیرد و remove، clear و وضعیت hydration دارد.</li>
+<li>سبد مخصوص همان مرورگر است و با بک‌اند همگام نمی‌شود.</li>
+</ul>
+<h3 id="language-store">Language store</h3>
+<ul>
+<li>کلید localStorage: <code>language</code>.</li>
+<li>مقدار <code>fa</code> یا <code>en</code>.</li>
+<li>فرهنگ فعال را با <code>t</code> در اختیار کامپوننت می‌گذارد.</li>
+</ul>
+<h3 id="hydration">الگوی hydration</h3>
+<p>localStorage هنگام رندر سرور وجود ندارد. Navbar، Cart، فرم‌های پروفایل، checkout و UserCourses تا پس از mount خروجی وابسته به مرورگر را به تأخیر می‌اندازند و placeholder/spinner نشان می‌دهند. برای وضعیت‌های مرورگری جدید همین الگو را رعایت کنید تا hydration mismatch ایجاد نشود.</p>
+<h2 id="api">۱۰. ارتباط با بک‌اند و قرارداد API</h2>
+<p>تمام درخواست‌ها از Axios موجود در <code>src/services/httpService.ts</code> استفاده می‌کنند:</p>
+<ul>
+<li>base URL برابر <code>NEXT_PUBLIC_BACKEND_URL</code>.</li>
+<li>قالب JSON.</li>
+<li><code>withCredentials: true</code> برای ارسال کوکی.</li>
+<li>بدون timeout یا interceptor.</li>
+</ul>
+<p><code>ApiClient&lt;T&gt;</code> متدهای عمومی <code>get</code>، <code>post</code>، <code>put</code> و <code>delete</code> را برای یک endpoint ارائه می‌کند. Generic فعلی همه envelopeهای پاسخ را به‌طور کامل type-safe نمی‌کند.</p>
+<h3 id="endpoint">endpointهای استنباط‌شده از فرانت‌اند</h3>
+<p>قرارداد زیر از نحوه مصرف فرانت استنباط شده و مرجع نهایی باید بک‌اند باشد.</p>
+<table>
+<thead>
+<tr>
+<th>متد</th>
+<th>endpoint</th>
+<th>درخواست</th>
+<th>پاسخ مورد انتظار فرانت</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/register</code></td>
+<td><code>{ firstName, lastName, email, password }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/login</code></td>
+<td><code>{ email, password }</code></td>
+<td><code>{ message, user }</code> و کوکی <code>auth-token</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/logout</code></td>
+<td>—</td>
+<td><code>{ message }</code> و حذف کوکی</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/forget-password</code></td>
+<td><code>{ email }</code></td>
+<td><code>{ OTP, message? }</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/validate-otp</code></td>
+<td><code>{ OTP: number, email }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/reset-password</code></td>
+<td><code>{ newPassword, repeatPassword }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/profile</code></td>
+<td><code>{ firstName, lastName, email }</code></td>
+<td><code>{ message }</code>؛ ممکن است توکن جدید لازم باشد</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/fetch-course</code></td>
+<td>—</td>
+<td><code>Course[]</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/fetch-course/:id</code></td>
+<td>—</td>
+<td><code>Course</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/create-course</code></td>
+<td><code>{ title, description, price, img, link }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/delete-course/:id</code></td>
+<td>—</td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/user/fetch-course</code></td>
+<td>کوکی</td>
+<td><code>Course[]</code> خریداری‌شده</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/admin/fetch-course/:email</code></td>
+<td>کوکی مدیر</td>
+<td>دوره‌های خریداری‌شده کاربر</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/payment/checkout</code></td>
+<td><code>{ courseIds: string[] }</code></td>
+<td><code>{ message, paymentUrl }</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/payment/verify</code></td>
+<td><code>{ authority }</code></td>
+<td><code>{ courses, transaction, message? }</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/register-newsletter</code></td>
+<td><code>{ email }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="section-25">الزامات بک‌اند</h3>
+<ul>
+<li>دریافت JSON.</li>
+<li>CORS همراه credentials برای origin دقیق فرانت؛ در این حالت origin نمی‌تواند <code>*</code> باشد.</li>
+<li>تنظیم کوکی دقیقاً با نام <code>auth-token</code> و Domain/Path/SameSite/Secure مناسب.</li>
+<li>JWT شامل <code>email</code>، <code>firstName</code>، <code>lastName</code> و <code>isAdmin</code> بولی.</li>
+<li>اعمال مستقل احراز هویت و مجوز مدیر در تمام APIهای محافظت‌شده.</li>
+<li>اعتبارسنجی کامل ورودی و ترجیحاً خطا با ساختار <code>{ message }</code>.</li>
+<li>محاسبه مجدد مبلغ و تأیید authority در سرور.</li>
+</ul>
+<p>هدرهای <code>Access-Control-Allow-*</code> که اکنون به درخواست Axios افزوده شده‌اند، CORS مرورگر را تنظیم نمی‌کنند؛ CORS باید در پاسخ بک‌اند پیکربندی شود.</p>
+<h2 id="section-26">۱۱. مدل داده و اعتبارسنجی</h2>
+<h3 id="section-27">دوره عمومی</h3>
+<pre><code class="language-ts">{
+  id: string;
+  title: string;       // بین ۵ تا ۵۰ کاراکتر
+  description: string; // بین ۲۰ تا ۱۵۰ کاراکتر در Course
+  price: number;       // نامنفی
+  img: string;
+}
+</code></pre>
+<p>مدل ایجاد دوره <code>link</code> را اضافه می‌کند و توضیح تا ۱۰۰۰ کاراکتر می‌پذیرد. تصویر می‌تواند data URI، آدرس HTTP(S)، مسیر <code>/public</code> یا base64 خام باشد. helper با پیشوند base64 نوع PNG، WebP یا GIF را تشخیص می‌دهد و در غیر این صورت JPEG فرض می‌کند. لینک بدون scheme با <code>https://</code> کامل می‌شود.</p>
+<h3 id="claim-jwt">claimهای کاربر/JWT</h3>
+<pre><code class="language-ts">{
+  email: string;
+  firstName: string;
+  lastName: string;
+  isAdmin: boolean;
+}
+</code></pre>
+<h3 id="section-28">قانون رمز عبور</h3>
+<p>Regex مشترک <code>^(?=.*[a-z])(?=.*\d).{8,}$</code> است:</p>
+<ul>
+<li>حداقل ۸ کاراکتر.</li>
+<li>حداقل یک حرف کوچک انگلیسی.</li>
+<li>حداقل یک رقم.</li>
+</ul>
+<p>با وجود متن «یک حرف»، رمز فقط با حرف بزرگ یا فقط حروف فارسی در پیاده‌سازی فعلی پذیرفته نمی‌شود.</p>
+<h3 id="section-29">پاسخ تأیید پرداخت</h3>
+<pre><code class="language-ts">{
+  courses: CreateCourseType[];
+  transaction: {
+    transactionId: string;
+    isPaid: boolean;
+    totalPrice: number;
+  };
+}
+</code></pre>
+<h2 id="section-30">۱۲. احراز هویت، مجوز و امنیت</h2>
+<h3 id="section-31">مدل فعلی</h3>
+<ul>
+<li>وجود <code>auth-token</code> نشانه دسترسی به مسیر است.</li>
+<li>Middleware توکن را برای خواندن <code>isAdmin</code> decode می‌کند، ولی امضای آن را بررسی نمی‌کند.</li>
+<li><code>user</code> در localStorage فقط برای نمایش تعاملی است.</li>
+<li>تمام درخواست‌های Axios credentials دارند.</li>
+</ul>
+<h3 id="section-32">قواعد ضروری تولید</h3>
+<ul>
+<li>بک‌اند در هر API محافظت‌شده امضا، انقضا، issuer/audience لازم و نقش JWT را بررسی کند.</li>
+<li>کوکی <code>HttpOnly</code>، در HTTPS دارای <code>Secure</code> و با سیاست آگاهانه <code>SameSite</code> باشد.</li>
+<li>در صورت امکان درخواست cross-site دارای کوکی، حفاظت CSRF اضافه شود.</li>
+<li>هرگز <code>isAdmin</code> رابط را مبنای مجوز قرار ندهید.</li>
+<li>URL و اندازه/نوع تصویر base64 در سرور بررسی شود.</li>
+<li>OTP در تولید به کلاینت برگردانده نشود.</li>
+<li>برای ورود و OTP rate limit و پیام‌های ضد account enumeration در نظر گرفته شود.</li>
+<li>رمز حساب آزمایشی پیش از انتشار عمومی عوض شود.</li>
+<li>شناسه/راز پرداخت فقط در بک‌اند یا secret store باشد. هر <code>NEXT_PUBLIC_*</code> در bundle مرورگر قرار می‌گیرد.</li>
+</ul>
+<h3 id="secret">بهداشت secret در مخزن</h3>
+<p>در حال حاضر <code>.env</code> ریشه توسط Git دنبال می‌شود و <code>.gitignore</code> فقط <code>.env*.local</code> را نادیده می‌گیرد. هر مقدار واقعی که commit شده را افشاشده در نظر بگیرید: secretها را rotate کنید، در صورت نیاز از تاریخچه حذف کنید، در توسعه از <code>.env.local</code> و در تولید از secretهای میزبان استفاده کنید. فقط یک <code>.env.example</code> بی‌خطر باید به‌عنوان الگو commit شود.</p>
+<h2 id="section-33">۱۳. چندزبانه‌سازی</h2>
+<p>فرهنگ‌ها در <code>src/lang/fa.ts</code> و <code>src/lang/en.ts</code> هستند و <code>useLanguageStore()</code> مقدار <code>t</code> و زبان ماندگار را ارائه می‌دهد.</p>
+<p>پوشش فعلی کامل نیست:</p>
+<ul>
+<li>صفحه فرود، navbar، تعدادی از فیلدهای پروفایل و عملیات عمومی از فرهنگ استفاده می‌کنند.</li>
+<li>رشته‌های زیادی در دوره، checkout، admin، بازیابی رمز، footer، toast و validation هنوز فارسی hard-code هستند.</li>
+<li>metadata، مقدار <code>lang</code> سند و RTL بودن Toastify با انتخاب انگلیسی همچنان فارسی می‌ماند.</li>
+</ul>
+<p>برای متن جدید، کلید یکسان را به هر دو فرهنگ اضافه و از <code>t</code> استفاده کنید. پیاده‌سازی کامل‌تر باید <code>lang</code>، <code>dir</code>، metadata و جهت toast را نیز بر اساس locale تغییر دهد؛ مسیرهای localeدار یا state قابل خواندن در سرور گزینه مناسبی هستند.</p>
+<h2 id="section-34">۱۴. رابط کاربری، استایل و فایل‌های ثابت</h2>
+<ul>
+<li>Chakra از breakpointهای <code>base</code>، <code>sm</code>، <code>md</code> و <code>lg</code> استفاده می‌کند.</li>
+<li>Tailwind فایل‌های <code>src/pages</code>، <code>src/components</code>، <code>src/layouts</code> و <code>src/app</code> را اسکن می‌کند.</li>
+<li>رنگ سفارشی Tailwind: <code>primary: #ff0000</code> و <code>heading: #0d161b</code>.</li>
+<li><code>theme.ts</code> اکنون خالی و محل توسعه theme چاکرا است.</li>
+<li>فونت‌ها در <code>src/app/fonts</code>؛ IRANSans فونت اصلی و Lalezar برای تیترهای نمایشی است.</li>
+<li>تصاویر ثابت در <code>public/</code> قرار دارند.</li>
+<li><code>next.config.mjs</code> تصویرهای <code>https://placehold.co/**</code> را مجاز می‌کند. تصویر دوره با <code>unoptimized</code> نمایش داده می‌شود و URL/data source را می‌پذیرد.</li>
+<li>ناوبری در دسکتاپ و موبایل متفاوت است و drawer سبد در موبایل از پایین و در صفحه بزرگ از راست باز می‌شود.</li>
+<li>زبان بصری عمدتاً پنل تیره شفاف، blur، اقدام قرمز و accent سبزآبی است.</li>
+</ul>
+<h2 id="section-35">۱۵. روش رندر و دریافت داده</h2>
+<ul>
+<li><code>/courses</code> دارای <code>dynamic = &quot;force-static&quot;</code> است و هنگام build از <code>/fetch-course</code> داده می‌گیرد.</li>
+<li><code>/courses/[courseId]</code> به علت خواندن کوکی و داده مخصوص دوره dynamic است.</li>
+<li>پروفایل، مدیر و checkout به‌صورت dynamic/no-store اجرا می‌شوند.</li>
+<li>تأیید پرداخت query string را در کلاینت و داخل <code>Suspense</code> می‌خواند.</li>
+<li>داده مخصوص مرورگر بعد از mount hydrate می‌شود.</li>
+</ul>
+<h3 id="static">اثر static بودن فهرست دوره</h3>
+<p>اگر بک‌اند در زمان build خاموش باشد، catch صفحه فهرست خطا را می‌گیرد و آرایه خالی رندر می‌کند؛ بنابراین:</p>
+<ul>
+<li>CI ممکن است <code>ECONNREFUSED</code> نشان دهد ولی موفق تمام شود.</li>
+<li>deploy ساخته‌شده بدون دسترسی به بک‌اند می‌تواند فهرست دوره خالی داشته باشد.</li>
+<li>تغییر دوره تا build/revalidation بعدی دیده نمی‌شود.</li>
+</ul>
+<p>اگر تازگی داده ضروری است، dynamic rendering، revalidation زمان‌دار یا on-demand revalidation پس از عملیات مدیر را بررسی کنید.</p>
+<h2 id="section-36">۱۶. متغیرهای محیطی</h2>
+<h3 id="section-37">متغیر فرانت‌اند</h3>
+<table>
+<thead>
+<tr>
+<th>متغیر</th>
+<th>اجباری</th>
+<th>قابل مشاهده در</th>
+<th>توضیح</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NEXT_PUBLIC_BACKEND_URL</code></td>
+<td>بله</td>
+<td>مرورگر و سرور</td>
+<td>URL کامل بک‌اند، مثل <code>http://localhost:3001</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="section-38">متغیر مخصوص بک‌اند</h3>
+<table>
+<thead>
+<tr>
+<th>متغیر</th>
+<th>محل صحیح</th>
+<th>توضیح</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ZARINPAL_MERCHANT_ID</code></td>
+<td>secret store بک‌اند</td>
+<td>شناسه پذیرنده؛ کد این فرانت آن را مصرف نمی‌کند</td>
+</tr>
+</tbody>
+</table>
+<p>نمونه <code>.env.local</code>:</p>
+<pre><code class="language-dotenv">NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
+</code></pre>
+<p>secret پرداخت را در متغیر <code>NEXT_PUBLIC_*</code> قرار ندهید. پس از تغییر environment، سرور dev را restart کنید.</p>
+<h2 id="section-39">۱۷. اسکریپت‌ها و روال توسعه</h2>
+<table>
+<thead>
+<tr>
+<th>دستور</th>
+<th>کاربرد</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npm ci</code></td>
+<td>نصب دقیق و تمیز وابستگی‌ها</td>
+</tr>
+<tr>
+<td><code>npm run dev</code></td>
+<td>اجرای سرور توسعه Next</td>
+</tr>
+<tr>
+<td><code>npm run build</code></td>
+<td>compile، type-check، lint و ساخت خروجی تولید</td>
+</tr>
+<tr>
+<td><code>npm run start</code></td>
+<td>اجرای build تولید موجود</td>
+</tr>
+<tr>
+<td><code>npm run lint</code></td>
+<td>اجرای ESLint یکپارچه Next</td>
+</tr>
+</tbody>
+</table>
+<p>روال پیشنهادی:</p>
+<pre><code class="language-bash">npm ci
+npm run dev
+# تغییر و بررسی دستی
+npm run lint
+npm run build
+</code></pre>
+<p>alias مسیر <code>@/*</code> به <code>src/*</code> اشاره می‌کند. قابلیت‌ها را در مرز لایه‌های موجود نگه دارید و از اجزای مشترک فرم، panel، API، schema و helperهای URL/تصویر استفاده کنید.</p>
+<h2 id="section-40">۱۸. بیلد و استقرار</h2>
+<h3 id="node">استقرار عمومی Node</h3>
+<pre><code class="language-bash">npm ci
+npm run build
+npm run start
+</code></pre>
+<p>پورت پیش‌فرض تولید ۳۰۰۰ است. اگر میزبان پورت دیگری می‌خواهد، <code>PORT</code> را در سطح process تنظیم کنید.</p>
+<h3 id="deploy">چک‌لیست deploy</h3>
+<ul>
+<li>پیش از build مقدار <code>NEXT_PUBLIC_BACKEND_URL</code> را تنظیم کنید؛ متغیر عمومی در bundle compile می‌شود.</li>
+<li>اگر فهرست ثابت باید داده داشته باشد، بک‌اند در زمان build قابل دسترس باشد.</li>
+<li>origin دقیق فرانت و CORS دارای credentials را در بک‌اند تنظیم کنید.</li>
+<li>cookie را برای دامنه‌های واقعی فرانت/بک‌اند تنظیم کنید.</li>
+<li>callback پرداخت را روی <code>/payment/verify</code> قرار دهید و queryهای <code>Authority</code> و <code>Status</code> را حفظ کنید.</li>
+<li>HTTPS فعال باشد.</li>
+<li>حساب/secret آزمایشی یا commit‌شده حذف و rotate شود.</li>
+<li><code>npm run build</code> در CI اجرا شود.</li>
+<li>لینک‌های خارجی دوره و اندازه تصویرها بررسی شوند.</li>
+</ul>
+<h3 id="section-41">وضعیت بررسی‌شده مخزن</h3>
+<p>در ۲۳ ژوئن ۲۰۲۶، <code>npm run build</code> با Next.js 14.2.4 موفق بود. چون بک‌اند محلی پورت 3001 اجرا نبود، build برای <code>/fetch-course</code> خطای <code>ECONNREFUSED</code> ثبت کرد؛ مدیریت خطای فهرست باعث شد build با موفقیت تمام شود.</p>
+<h2 id="section-42">۱۹. تست و بررسی</h2>
+<p>در حال حاضر تست خودکار unit، integration یا end-to-end در مخزن وجود ندارد. حداقل این موارد دستی بررسی شوند:</p>
+<ul>
+<li>رندر عمومی در موبایل و دسکتاپ.</li>
+<li>تعویض فارسی/انگلیسی و ماندگاری بعد از reload.</li>
+<li>validation ثبت‌نام و redirect موفق.</li>
+<li>کوکی ورود، خروج و redirect مسیرهای auth.</li>
+<li>هدایت مهمان از profile/payment و غیرمدیر از admin.</li>
+<li>ویرایش پروفایل و تغییر رمز.</li>
+<li>فهرست/جزئیات، انواع تصویر، جلوگیری از سبد تکراری و remove/clear.</li>
+<li>checkout خالی و پر.</li>
+<li>لغو پرداخت، query ناقص، خطای verify و پرداخت موفق.</li>
+<li>ایجاد/حذف مدیر و جستجو با ایمیل.</li>
+<li>رفتار هنگام خاموش بودن بک‌اند.</li>
+</ul>
+<p>ابزار پیشنهادی آینده: Vitest و React Testing Library برای unit/component، MSW برای mock API و Playwright برای جریان نقش‌ها و پرداخت.</p>
+<h2 id="section-43">۲۰. رفع اشکال</h2>
+<h3 id="build-econnrefused-localhost3001">دوره‌ها خالی هستند یا build خطای <code>ECONNREFUSED localhost:3001</code> دارد</h3>
+<ul>
+<li>بک‌اند را روی 3001 اجرا یا <code>NEXT_PUBLIC_BACKEND_URL</code> را اصلاح کنید.</li>
+<li>پس از تغییر environment فرانت را restart کنید.</li>
+<li>در تولید، بک‌اند را هنگام prerender قابل دسترس کنید یا روش رندر catalog را عوض کنید.</li>
+</ul>
+<h3 id="login">ورود موفق است ولی مسیر محافظت‌شده به login برمی‌گردد</h3>
+<ul>
+<li>در پاسخ بررسی کنید کوکی دقیقاً با نام <code>auth-token</code> تنظیم شده باشد.</li>
+<li>Domain، Path، Expiry، SameSite و Secure را بررسی کنید.</li>
+<li>credentials درخواست و CORS origin دقیق بک‌اند را بررسی کنید.</li>
+</ul>
+<h3 id="cors">خطای CORS</h3>
+<ul>
+<li>CORS را در بک‌اند اصلاح کنید؛ هدر درخواست کلاینت مجوز ایجاد نمی‌کند.</li>
+<li>برای credentials از <code>Access-Control-Allow-Origin: *</code> استفاده نکنید.</li>
+</ul>
+<h3 id="section-44">مسیر مدیر به پروفایل برمی‌گردد</h3>
+<ul>
+<li>JWT صادرشده باید <code>isAdmin: true</code> بولی داشته باشد.</li>
+<li>مطمئن شوید کوکی دارای توکن فعلی و برای middleware قابل دیدن است.</li>
+<li>بدون توجه به middleware، مجوز API مدیر را در بک‌اند اعمال کنید.</li>
+</ul>
+<h3 id="section-45">سبد/کاربر/زبان با تأخیر دیده می‌شود</h3>
+<p>این تأخیر hydration localStorage عادی است. اگر هرگز نمایش داده نشد، JSON خراب localStorage و console مرورگر را بررسی کنید.</p>
+<h3 id="permission.nextcacheeslint">خطای permission در <code>.next/cache/eslint</code></h3>
+<ul>
+<li>مطمئن شوید build یا lint دیگری از <code>.next</code> استفاده نمی‌کند.</li>
+<li>process نگهدارنده فایل را ببندید و دوباره lint بگیرید.</li>
+<li>build و lint را هم‌زمان اجرا نکنید؛ هر دو در <code>.next</code> می‌نویسند.</li>
+</ul>
+<h3 id="section-46">خطای پرداخت</h3>
+<ul>
+<li>callback باید هر دو <code>Authority</code> و <code>Status</code> را داشته باشد.</li>
+<li>فقط <code>Status=OK</code> باعث verify بک‌اند می‌شود.</li>
+<li><code>/payment/verify</code> باید <code>{ authority }</code> را بپذیرد، با درگاه بررسی کند و شکل transaction/course مورد انتظار را برگرداند.</li>
+</ul>
+<h2 id="section-47">۲۱. محدودیت‌ها و نکات نگهداری</h2>
+<ul>
+<li>فرانت و بک‌اند بدون قرارداد API تولیدشده/مشترک به response shapeها وابسته‌اند.</li>
+<li>Middleware فقط JWT را decode می‌کند؛ مرز امنیتی نیست.</li>
+<li>نسخه user در localStorage ممکن است با کوکی همگام نباشد.</li>
+<li>پس از ویرایش پروفایل، بک‌اند ممکن است نیاز داشته باشد claimهای JWT را تازه کند؛ در غیر این صورت رندر سرور اطلاعات قدیمی می‌بیند.</li>
+<li>بیشینه توضیح در schema ایجاد دوره ۱۰۰۰ و در schema عمومی دوره ۱۵۰ است.</li>
+<li>catalog ثابت ممکن است قدیمی یا بدون خطای نهایی خالی build شود.</li>
+<li>بعضی toastهای cart مستقیماً فرهنگ فارسی را استفاده می‌کنند.</li>
+<li>پوشش ترجمه و تغییر جهت سند کامل نیست.</li>
+<li>OTP فعلاً در پاسخ قابل مشاهده فرانت انتظار می‌رود.</li>
+<li>timeout، retry، نرمال‌سازی متمرکز خطا، error boundary و تست خودکار وجود ندارد.</li>
+<li><code>ZARINPAL_MERCHANT_ID</code> توسط فرانت خوانده نمی‌شود و باید تنظیم بک‌اند باشد.</li>
+<li>سیاست <code>.env</code> ردیابی‌شده نیازمند امن‌سازی است.</li>
+</ul>
+<p>این موارد توصیف وضعیت فعلی‌اند و الزام به حفظ رفتار نامناسب نیستند.</p>
+<h2 id="section-48">۲۲. چک‌لیست مشارکت</h2>
+<p>پیش از ارائه تغییر:</p>
+<ul>
+<li>secret و اطلاعات واقعی حساب را commit نکنید.</li>
+<li>همراه تغییر فرم/API، schema زود را به‌روز کنید.</li>
+<li>متن را هم‌زمان به فارسی و انگلیسی اضافه کنید.</li>
+<li>پیش از استفاده از API مرورگر، مرز server/client component را بررسی کنید.</li>
+<li>guardهای hydration را برای localStorage حفظ کنید.</li>
+<li>حتی با check رابط و middleware، مجوز را در بک‌اند اعمال کنید.</li>
+<li>موبایل و دسکتاپ را بررسی کنید.</li>
+<li>رفتار مهمان، کاربر و مدیر را بررسی کنید.</li>
+<li><code>npm run lint</code> و سپس <code>npm run build</code> را به‌صورت ترتیبی اجرا کنید.</li>
+<li>با تغییر مسیر، environment، endpoint یا workflow، این راهنما و نسخه انگلیسی آن را به‌روز کنید.</li>
+</ul>
+</main></body></html>

@@ -22,7 +22,7 @@ import Placeholder from "./Placeholder";
 import ApiClient from "@/services/ApiClient";
 import { PaymentType } from "@/schemas/Payment";
 import { toast } from "react-toastify";
-import { AxiosError, AxiosResponse } from "axios";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 function Checkout({ hydrated }: { hydrated: boolean }) {
   const { courses, clear } = useCart();
@@ -45,8 +45,8 @@ function Checkout({ hydrated }: { hydrated: boolean }) {
         window.location.href = res.data.paymentUrl;
         // clear();
       })
-      .catch((error: AxiosError) =>
-        toast.error((error.response?.data as { message: string }).message)
+      .catch((error) =>
+        toast.error(getErrorMessage(error, "خطا در شروع پرداخت"))
       )
       .finally(() => setIsLoading(false));
   };

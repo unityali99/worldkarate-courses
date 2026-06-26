@@ -5,6 +5,7 @@ import Profile, { ProfileType } from "@/schemas/auth/Profile";
 import ApiClient from "@/services/ApiClient";
 import useAuth from "@/stores/authStore";
 import useLanguageStore from "@/stores/languageStore";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import {
   Box,
   Button,
@@ -20,7 +21,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -80,9 +80,8 @@ function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
         setIsEditing(false);
         refresh();
       })
-      .catch((error: AxiosError) => {
-        const message = (error.response?.data as { message?: string })?.message;
-        toast.error(message || "ویرایش اطلاعات با خطا روبه‌رو شد");
+      .catch((error) => {
+        toast.error(getErrorMessage(error, "ویرایش اطلاعات با خطا روبه‌رو شد"));
       })
       .finally(() => setIsLoading(false));
   };

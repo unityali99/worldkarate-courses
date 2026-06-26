@@ -4,10 +4,10 @@ import { Alert, Box, Button, Spinner, Text } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import httpService from "@/services/httpService";
-import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import PaidOrder from "@/components/Form/PaidOrder";
 import { ResponseData } from "@/layouts/CheckoutLogic";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 function VerifyContent() {
   const searchParams = useSearchParams();
@@ -43,10 +43,8 @@ function VerifyContent() {
         setOrder(res.data);
         toast.success(res.data.message || "پرداخت با موفقیت انجام شد");
       })
-      .catch((error: AxiosError) => {
-        const errorMessage =
-          (error.response?.data as { message: string })?.message ||
-          "خطا در تایید پرداخت";
+      .catch((error) => {
+        const errorMessage = getErrorMessage(error, "خطا در تایید پرداخت");
         setError(errorMessage);
         toast.error(errorMessage);
       })

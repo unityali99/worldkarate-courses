@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import OTP, { OTPType } from "@/schemas/auth/OTP";
 import ApiClient from "@/services/ApiClient";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 import FormContainer from "@/layouts/FormContainer";
 import { Alert, Text } from "@chakra-ui/react";
 import FormInput from "./components/FormInput";
@@ -37,8 +37,8 @@ function OTPForm({
         toast.success(res.data.message);
         setIsOtpValid(true);
       })
-      .catch((error: AxiosError) =>
-        toast.error((error.response?.data as { message: string })?.message)
+      .catch((error) =>
+        toast.error(getErrorMessage(error, "اعتبارسنجی کد با خطا روبه‌رو شد"))
       )
       .finally(() => setIsLoading(false));
   };

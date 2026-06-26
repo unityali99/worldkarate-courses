@@ -1,5 +1,6 @@
 "use client";
 import ApiClient from "@/services/ApiClient";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import {
   Box,
   Button,
@@ -12,7 +13,6 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
@@ -29,8 +29,8 @@ function DeleteBtn({ text, courseId }: { text: string; courseId: string }) {
         toast.success(res.data.message);
         replace("/");
       })
-      .catch((error: AxiosError) =>
-        toast.error((error.response?.data as { message: string }).message)
+      .catch((error) =>
+        toast.error(getErrorMessage(error, "خطا در حذف دوره"))
       );
   };
 
