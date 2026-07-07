@@ -1,21 +1,12 @@
 import CourseCard from "@/components/CourseCard";
 import NewsLetterForm from "@/components/Form/NewsLetterForm";
+import CoursesPlaceholder from "@/components/placeholders/CoursesPlaceholder";
 import BackgroundImage from "@/layouts/BackgroundImage";
 import { CourseType } from "@/schemas/Course";
-import ApiClient from "@/services/ApiClient";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Suspense } from "react";
 
-export default async function CoursesPage() {
-  const apiClient = new ApiClient<CourseType[]>("/fetch-course");
-
-  let courses: CourseType[] = [];
-  try {
-    const response = await apiClient.get();
-    courses = response.data || [];
-  } catch (error) {
-    console.error("Failed to fetch courses:", error);
-    // courses will remain empty array, so the page will still render
-  }
+export default function CoursesPage() {
   return (
     <BackgroundImage image="/kyuna.webp">
       <Box className="w-full pt-40 pb-20 px-4">
@@ -77,12 +68,91 @@ export default async function CoursesPage() {
         pt={{ base: 8, md: 12 }}
         pb={{ base: 20, md: 28 }}
       >
-        {courses?.map((course) => (
-          <CourseCard key={course.id} course={course} />
-        ))}
+        <Suspense fallback={<CoursesPlaceholder itemsCount={5} />}>
+          <CoursesList />
+        </Suspense>
       </Box>
     </BackgroundImage>
   );
 }
 
-export const dynamic = "force-dynamic";
+async function CoursesList() {
+  const courses = await getCourses();
+
+  if (courses.length === 0) {
+    return (
+      <Box
+        dir="rtl"
+        w="full"
+        maxW="760px"
+        px={{ base: 5, md: 8 }}
+        py={{ base: 8, md: 10 }}
+        rounded="2xl"
+        bg="rgba(13, 22, 27, 0.68)"
+        border="1px solid"
+        borderColor="rgba(255, 255, 255, 0.14)"
+        shadow="0 12px 32px rgba(0, 0, 0, 0.2)"
+        backdropFilter="blur(10px)"
+        textAlign="center"
+      >
+        <Text fontSize={{ base: "md", md: "lg" }} color="white">
+          فعلا دوره‌ای برای نمایش وجود ندارد.
+        </Text>
+      </Box>
+    );
+  }
+
+  return (
+    <>
+      {courses.map((course) => (
+        <CourseCard key={course.id} course={course} />
+      ))}
+    </>
+  );
+}
+
+async function getCourses() {
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  if (!backendUrl) throw new Error("NEXT_PUBLIC_BACKEND_URL is not configured");
+
+  const url = `${backendUrl.replace(/\/$/, "")}/fetch-course`;
+  const retryDelays = [1000, 2000, 4000, 8000, 12000, 16000];
+
+  for (let attempt = 0; attempt <= retryDelays.length; attempt += 1) {
+    try {
+      const response = await fetch(url, { next: { revalidate } });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch courses: ${response.status}`);
+      }
+
+      const courses = (await response.json()) as CourseType[];
+
+      if (!Array.isArray(courses)) {
+        throw new Error("Courses response must be an array");
+      }
+
+      if (courses.length === 0 && attempt === retryDelays.length) {
+        throw new Error("Courses response stayed empty after retries");
+      }
+
+      if (courses.length === 0) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, retryDelays[attempt]),
+        );
+        continue;
+      }
+
+      return courses;
+    } catch (error) {
+      if (attempt === retryDelays.length) throw error;
+      await new Promise((resolve) => setTimeout(resolve, retryDelays[attempt]));
+    }
+  }
+
+  return [];
+}
+
+export const dynamic = "force-static";
+export const revalidate = 21600;
