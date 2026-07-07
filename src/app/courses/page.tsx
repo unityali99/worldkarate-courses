@@ -3,6 +3,7 @@ import NewsLetterForm from "@/components/Form/NewsLetterForm";
 import CoursesPlaceholder from "@/components/placeholders/CoursesPlaceholder";
 import BackgroundImage from "@/layouts/BackgroundImage";
 import { CourseType } from "@/schemas/Course";
+import ApiClient from "@/services/ApiClient";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { Suspense } from "react";
 
@@ -112,22 +113,12 @@ async function CoursesList() {
 }
 
 async function getCourses() {
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-  if (!backendUrl) throw new Error("NEXT_PUBLIC_BACKEND_URL is not configured");
-
-  const url = `${backendUrl.replace(/\/$/, "")}/fetch-course`;
+  const apiClient = new ApiClient<CourseType[]>("/fetch-course");
   const retryDelays = [1000, 2000, 4000, 8000, 12000, 16000];
 
   for (let attempt = 0; attempt <= retryDelays.length; attempt += 1) {
     try {
-      const response = await fetch(url, { next: { revalidate } });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch courses: ${response.status}`);
-      }
-
-      const courses = (await response.json()) as CourseType[];
+      const courses = (await apiClient.get()).data;
 
       if (!Array.isArray(courses)) {
         throw new Error("Courses response must be an array");

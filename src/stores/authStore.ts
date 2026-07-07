@@ -3,16 +3,11 @@ import { get as getItem, set as setItem, remove } from "local-storage";
 import ApiClient from "@/services/ApiClient";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "@/utils/getErrorMessage";
-
-type User = {
-  email: string;
-  firstName: string;
-  lastName: string;
-};
+import UserType from "@/schemas/UserType";
 
 type LoginState = {
-  user: User | null;
-  login: (user: User) => void;
+  user: UserType | null;
+  login: (user: UserType) => void;
   logout: () => void;
 };
 

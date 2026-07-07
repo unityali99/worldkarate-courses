@@ -30,7 +30,13 @@ function AddToCartBtn({ course }: { course: CourseType }) {
   if (user && userCourses.find((c) => c.id === course.id))
     return (
       <Box className="space-y-5">
-        <Alert colorScheme="teal" className="rounded-lg">
+        <Alert
+          bg="rgba(20, 184, 166, 0.14)"
+          color="teal.50"
+          border="1px solid"
+          borderColor="teal.300"
+          className="rounded-lg"
+        >
           {"شما این دوره را خریداری نموده اید"}
         </Alert>
         <Link className="block" href="/profile">
