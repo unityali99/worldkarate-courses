@@ -75,7 +75,7 @@ function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
       .put(data)
       .then((res) => {
         toast.success(res.data.message);
-        login(data);
+        login({ ...data, isAdmin: user?.isAdmin ?? isAdmin });
         reset(data);
         setIsEditing(false);
         refresh();
@@ -125,7 +125,12 @@ function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
           </Flex>
           <Box>
             <Heading size="md">{t.ui.profile}</Heading>
-            <Text mt={1} color="whiteAlpha.600" fontSize="xs" fontWeight="normal">
+            <Text
+              mt={1}
+              color="whiteAlpha.600"
+              fontSize="xs"
+              fontWeight="normal"
+            >
               اطلاعات حساب کاربری شما
             </Text>
           </Box>

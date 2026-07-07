@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const Course = z.object({
-  id: z.string(),
+  id: z.union([z.string(), z.number()]),
   title: z
     .string({ required_error: "Title is required" })
     .min(5, "Title should not be less than 5 characters")

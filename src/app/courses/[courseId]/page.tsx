@@ -1,9 +1,10 @@
 import CourseActions from "@/components/CourseActions";
 import PriceBadge from "@/components/PriceBadge";
-import CourseDetailsPlaceholder from "@/components/placeholders/CourseDetailsPlaceholder";
 import BackgroundImage from "@/layouts/BackgroundImage";
-import { CourseType } from "@/schemas/Course";
-import ApiClient from "@/services/ApiClient";
+import {
+  fetchCourseWithRetry,
+  fetchCoursesWithRetry,
+} from "@/services/courseService";
 import { getCourseImageSource } from "@/utils/courseImage";
 import {
   Badge,
@@ -18,7 +19,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import { Suspense } from "react";
 import { LuArrowLeft, LuBookOpen } from "react-icons/lu";
 
 export default function SingleCoursePage({
@@ -34,16 +34,22 @@ export default function SingleCoursePage({
         pt={{ base: 36, md: 48 }}
         pb={{ base: 20, md: 28 }}
       >
-        <Suspense fallback={<CourseDetailsPlaceholder />}>
-          <CourseDetails courseId={params.courseId} />
-        </Suspense>
+        <CourseDetails courseId={params.courseId} />
       </Box>
     </BackgroundImage>
   );
 }
 
+export async function generateStaticParams() {
+  const courses = await fetchCoursesWithRetry();
+
+  return courses.map((course) => ({
+    courseId: String(course.id),
+  }));
+}
+
 async function CourseDetails({ courseId }: { courseId: string }) {
-  const course = await getCourse(courseId);
+  const course = await fetchCourseWithRetry(courseId);
   const imageSource = getCourseImageSource(course.img);
 
   return (
@@ -191,28 +197,6 @@ async function CourseDetails({ courseId }: { courseId: string }) {
       </SimpleGrid>
     </Box>
   );
-}
-
-async function getCourse(courseId: string) {
-  const apiClient = new ApiClient<CourseType>(`/fetch-course/${courseId}`);
-  const retryDelays = [1000, 2000, 4000, 8000, 12000, 16000];
-
-  for (let attempt = 0; attempt <= retryDelays.length; attempt += 1) {
-    try {
-      const course = (await apiClient.get()).data;
-
-      if (!course?.id || !course.title || !course.description || !course.img) {
-        throw new Error("Course response is empty or invalid");
-      }
-
-      return course;
-    } catch (error) {
-      if (attempt === retryDelays.length) throw error;
-      await new Promise((resolve) => setTimeout(resolve, retryDelays[attempt]));
-    }
-  }
-
-  throw new Error("Failed to fetch course");
 }
 
 export const dynamic = "force-static";

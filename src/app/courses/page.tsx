@@ -1,11 +1,8 @@
 import CourseCard from "@/components/CourseCard";
 import NewsLetterForm from "@/components/Form/NewsLetterForm";
-import CoursesPlaceholder from "@/components/placeholders/CoursesPlaceholder";
 import BackgroundImage from "@/layouts/BackgroundImage";
-import { CourseType } from "@/schemas/Course";
-import ApiClient from "@/services/ApiClient";
+import { fetchCoursesWithRetry } from "@/services/courseService";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { Suspense } from "react";
 
 export default function CoursesPage() {
   return (
@@ -69,16 +66,14 @@ export default function CoursesPage() {
         pt={{ base: 8, md: 12 }}
         pb={{ base: 20, md: 28 }}
       >
-        <Suspense fallback={<CoursesPlaceholder itemsCount={5} />}>
-          <CoursesList />
-        </Suspense>
+        <CoursesList />
       </Box>
     </BackgroundImage>
   );
 }
 
 async function CoursesList() {
-  const courses = await getCourses();
+  const courses = await fetchCoursesWithRetry();
 
   if (courses.length === 0) {
     return (
@@ -110,39 +105,6 @@ async function CoursesList() {
       ))}
     </>
   );
-}
-
-async function getCourses() {
-  const apiClient = new ApiClient<CourseType[]>("/fetch-course");
-  const retryDelays = [1000, 2000, 4000, 8000, 12000, 16000];
-
-  for (let attempt = 0; attempt <= retryDelays.length; attempt += 1) {
-    try {
-      const courses = (await apiClient.get()).data;
-
-      if (!Array.isArray(courses)) {
-        throw new Error("Courses response must be an array");
-      }
-
-      if (courses.length === 0 && attempt === retryDelays.length) {
-        throw new Error("Courses response stayed empty after retries");
-      }
-
-      if (courses.length === 0) {
-        await new Promise((resolve) =>
-          setTimeout(resolve, retryDelays[attempt]),
-        );
-        continue;
-      }
-
-      return courses;
-    } catch (error) {
-      if (attempt === retryDelays.length) throw error;
-      await new Promise((resolve) => setTimeout(resolve, retryDelays[attempt]));
-    }
-  }
-
-  return [];
 }
 
 export const dynamic = "force-static";

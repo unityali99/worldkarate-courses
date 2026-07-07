@@ -72,7 +72,7 @@ function Cart() {
                   <MdClose
                     size={20}
                     className="cursor-pointer"
-                    onClick={() => remove(course.id)}
+                    onClick={() => remove(String(course.id))}
                   />
                 </Flex>
               ))

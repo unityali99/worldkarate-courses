@@ -38,7 +38,7 @@ const useCart = create<cartType>()((set, get) => ({
     }
   },
   add: (course: CourseType) => {
-    if (get().courses.find((c) => c.id === course.id))
+    if (get().courses.find((c) => String(c.id) === String(course.id)))
       return toast.warning(lang.fa.ui.alreadyInCart);
     set(() => ({
       courses: [...get().courses, course],
@@ -48,7 +48,7 @@ const useCart = create<cartType>()((set, get) => ({
   },
   remove: (id) => {
     set(() => ({
-      courses: get().courses.filter((course) => course.id !== id),
+      courses: get().courses.filter((course) => String(course.id) !== id),
     }));
     setItem(cartStorageKey, JSON.stringify(get().courses));
     toast.success(lang.fa.ui.removedFromCart);
