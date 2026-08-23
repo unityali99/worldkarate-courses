@@ -1,31 +1,19 @@
 "use client";
+
+import React, { useState } from "react";
 import PanelContainer from "@/layouts/PanelContainer";
 import PanelTableContainer from "@/layouts/PanelTableContainer";
 import useCart from "@/stores/cartStore";
-import {
-  Alert,
-  Box,
-  Button,
-  Spinner,
-  Table,
-  TableCaption,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
-
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import Placeholder from "./Placeholder";
 import ApiClient from "@/services/ApiClient";
 import { PaymentType } from "@/schemas/Payment";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { LuCreditCard } from "react-icons/lu";
 
-function Checkout({ hydrated }: { hydrated: boolean }) {
-  const { courses, clear } = useCart();
+export default function Checkout({ hydrated }: { hydrated: boolean }) {
+  const { courses } = useCart();
   const [isLoading, setIsLoading] = useState(false);
 
   const apiClient = new ApiClient<PaymentType>("/payment/checkout");
@@ -43,7 +31,6 @@ function Checkout({ hydrated }: { hydrated: boolean }) {
       .then((res) => {
         toast.success(res.data.message);
         window.location.href = res.data.paymentUrl;
-        // clear();
       })
       .catch((error) =>
         toast.error(getErrorMessage(error, "خطا در شروع پرداخت"))
@@ -51,75 +38,74 @@ function Checkout({ hydrated }: { hydrated: boolean }) {
       .finally(() => setIsLoading(false));
   };
 
-  if (hydrated && courses.length === 0)
+  if (hydrated && courses.length === 0) {
     return (
-      <Box className="w-10/12 md:w-6/12 mx-auto text-center">
-        <Alert colorScheme="red" textColor={"red"} className="rounded-lg">
-          <Text mx={"auto"}>{"شما هیچ موردی برای پرداخت ندارید"}</Text>
-        </Alert>
-      </Box>
+      <div className="w-11/12 sm:w-8/12 md:w-6/12 mx-auto text-center">
+        <div className="p-8 rounded-3xl bg-slate-950/80 border border-white/15 backdrop-blur-xl text-slate-300">
+          <p className="text-base font-semibold">شما هیچ موردی در سبد خرید برای پرداخت ندارید.</p>
+        </div>
+      </div>
     );
+  }
 
   return (
     <PanelContainer>
-      <Text className="text-lg md:text-2xl" dir="rtl">
-        {"سفارش خود را نهایی کنید"}
-      </Text>
+      <div className="space-y-6" dir="rtl">
+        <h2 className="font-lalezar text-3xl text-white font-normal">
+          نهایی‌سازی سفارش
+        </h2>
 
-      <PanelTableContainer>
-        <Table variant="striped" size={{ base: "md", md: "lg" }}>
-          <TableCaption>
+        <PanelTableContainer>
+          <table className="w-full text-right border-collapse">
+            <thead>
+              <tr className="border-b border-white/10 text-slate-400 text-xs sm:text-sm">
+                <th className="py-3 px-4 font-semibold">عنوان دوره</th>
+                <th className="py-3 px-4 font-semibold text-center">قیمت (تومان)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5 text-sm">
+              {hydrated
+                ? courses.map((c, i) => (
+                    <tr key={i} className="hover:bg-white/5 transition-colors">
+                      <td className="py-4 px-4 font-medium text-slate-100">{c.title}</td>
+                      <td className="py-4 px-4 text-center font-bold text-slate-200">
+                        {c.price.toLocaleString("fa-IR")}
+                      </td>
+                    </tr>
+                  ))
+                : [0, 1].map((v, i) => (
+                    <tr key={i}>
+                      <td className="py-4 px-4">
+                        <Placeholder />
+                      </td>
+                      <td className="py-4 px-4">
+                        <Placeholder />
+                      </td>
+                    </tr>
+                  ))}
+              <tr className="bg-white/5 font-bold text-base">
+                <td className="py-4 px-4 text-white">مجموع قابل پرداخت:</td>
+                <td className="py-4 px-4 text-center text-emerald-400 font-extrabold text-lg">
+                  {hydrated ? `${totalPrice.toLocaleString("fa-IR")} تومان` : <Placeholder />}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="pt-8 text-center">
             <Button
-              w={{ base: "70%", md: "40%" }}
-              size={{ base: "sm", md: "md" }}
-              mx="auto"
-              colorScheme="green"
+              variant="teal"
+              size="lg"
+              className="w-full sm:w-7/12 mx-auto gap-2 font-bold shadow-lg"
+              isLoading={isLoading}
               onClick={onClick}
             >
-              {isLoading ? <Spinner /> : "پرداخت"}
+              <LuCreditCard className="w-5 h-5 ml-1" />
+              <span>پرداخت آنلاین و نهایی کردن سفارش</span>
             </Button>
-          </TableCaption>
-          <Thead>
-            <Tr>
-              <Th>{"عنوان"}</Th>
-              <Th>{"قیمت (تومان)"}</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {hydrated
-              ? courses.map((c, i) => (
-                  <Tr key={i}>
-                    <Td p={{ base: "0", md: "25px" }}>{c.title}</Td>
-                    <Td p={{ base: "0", md: "25px" }}>
-                      {c.price.toLocaleString("en-US")}
-                    </Td>
-                  </Tr>
-                ))
-              : [0, 1, 2].map((v, i) => (
-                  <Tr key={i}>
-                    <Td>
-                      <Placeholder />
-                    </Td>
-                    <Td>
-                      <Placeholder />
-                    </Td>
-                  </Tr>
-                ))}
-            <Tr>
-              <Td>{"مجموع"}</Td>
-              <Td>
-                {hydrated ? (
-                  totalPrice.toLocaleString("en-US")
-                ) : (
-                  <Placeholder />
-                )}
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
-      </PanelTableContainer>
+          </div>
+        </PanelTableContainer>
+      </div>
     </PanelContainer>
   );
 }
-
-export default Checkout;

@@ -1,6 +1,5 @@
-import FormContainer from "@/layouts/FormContainer";
-import { Alert, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
+import FormContainer from "@/layouts/FormContainer";
 import FormInput from "./components/FormInput";
 import FormButton from "./components/FormButton";
 import FormFooter from "./components/FormFooter";
@@ -13,7 +12,7 @@ import ApiClient from "@/services/ApiClient";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 
-function ForgetPasswordForm({
+export default function ForgetPasswordForm({
   setOtp,
   setEmail,
 }: {
@@ -45,35 +44,42 @@ function ForgetPasswordForm({
   };
 
   return (
-    <FormContainer>
-      <Text className="font-bold text-xl my-5">ریست رمز عبور</Text>
-      <FormInput
-        dir="ltr"
-        register={register("email")}
-        label="ایمیل:"
-        placeholder="Email@example.com"
-      />
-      {errors.email && (
-        <Alert
-          className="rounded-md text-sm"
-          textColor={"red"}
-          colorScheme="red"
-        >
-          {errors.email.message}
-        </Alert>
-      )}
-      <FormButton
-        onClick={handleSubmit(onSubmit)}
-        text="ارسال"
-        isLoading={isLoading}
-      />
-      <FormFooter
-        text="ثبت نام نکرده اید؟"
-        linkText="ثبت نام"
-        href="/auth/register"
-      />
+    <FormContainer className="my-8">
+      <h2 className="font-lalezar text-3xl sm:text-4xl text-white font-normal text-center mb-6">
+        بازیابی رمز عبور
+      </h2>
+
+      <div className="space-y-4">
+        <div>
+          <FormInput
+            dir="ltr"
+            register={register("email")}
+            label="ایمیل شما:"
+            placeholder="Email@example.com"
+          />
+          {errors.email && (
+            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="pt-2">
+        <FormButton
+          onClick={handleSubmit(onSubmit)}
+          text="ارسال کد تایید"
+          isLoading={isLoading}
+        />
+      </div>
+
+      <div className="pt-4 border-t border-white/10">
+        <FormFooter
+          text="حساب کاربری ندارید؟"
+          linkText="ثبت نام"
+          href="/auth/register"
+        />
+      </div>
     </FormContainer>
   );
 }
-
-export default ForgetPasswordForm;

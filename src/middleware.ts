@@ -1,4 +1,4 @@
-import { cookieKey } from "@/stores/authStore";
+import { cookieKey } from "@/constants/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";

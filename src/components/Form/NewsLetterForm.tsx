@@ -1,63 +1,74 @@
 "use client";
-import { registerNewsletter } from "@/services/registerNewsletter";
-import { Alert, Button, Input, Spinner, Text } from "@chakra-ui/react";
-import React from "react";
-import { useFormState, useFormStatus } from "react-dom";
-import { IoNewspaperOutline } from "react-icons/io5";
 
-function NewsLetterForm() {
-  const { pending } = useFormStatus();
-  const [state, formAction] = useFormState(registerNewsletter, {
-    message: "",
-    successful: false,
-  });
+import React, { useActionState, useEffect, useRef } from "react";
+import { registerNewsletter, type NewsletterState } from "@/services/registerNewsletter";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { IoNewspaperOutline, IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
+
+const initialState: NewsletterState = {
+  message: "",
+  successful: false,
+};
+
+export default function NewsLetterForm() {
+  const [state, formAction, isPending] = useActionState(
+    registerNewsletter,
+    initialState
+  );
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (state.successful && formRef.current) {
+      formRef.current.reset();
+    }
+  }, [state.timestamp, state.successful]);
 
   return (
-    <form action={formAction} className="space-y-6 w-full md:w-auto min-w-80">
-      <Input
-        placeholder="ایمیل خود را وارد کنید"
-        size={{ base: "md", md: "lg" }}
-        bgColor={"white"}
-        textColor={"black"}
-        type="email"
-        name="email"
-        borderRadius="md"
-        border="2px solid"
-        borderColor="gray.300"
-        _hover={{
-          borderColor: "gray.400",
-        }}
-        _focus={{
-          borderColor: "red.500",
-          boxShadow: "0 0 0 1px var(--chakra-colors-red-500)",
-        }}
-      />
+    <form
+      ref={formRef}
+      action={formAction}
+      className="space-y-4 w-full md:w-auto min-w-[320px] max-w-md mx-auto"
+      dir="rtl"
+    >
+      <div className="relative">
+        <Input
+          placeholder="ایمیل خود را وارد کنید (مثال: sensei@karate.ir)"
+          type="email"
+          name="email"
+          required
+          autoComplete="email"
+          className="bg-slate-900/80 border-white/20 text-white placeholder:text-slate-400 focus-visible:border-red-500 focus-visible:ring-red-500/40 rounded-2xl h-12 text-sm shadow-inner"
+        />
+      </div>
+
       {state.message && (
-        <Alert
-          colorScheme={state.successful ? "green" : "red"}
-          textColor={"white"}
-          borderRadius="md"
-          fontSize="sm"
+        <div
+          className={`flex items-center gap-2 p-3.5 rounded-2xl text-xs font-medium border transition-all duration-300 ${
+            state.successful
+              ? "bg-emerald-950/80 text-emerald-200 border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+              : "bg-red-950/80 text-red-200 border-red-500/40 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
+          }`}
         >
-          <Text className="mx-auto">{state.message}</Text>
-        </Alert>
+          {state.successful ? (
+            <IoCheckmarkCircleOutline className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+          ) : (
+            <IoAlertCircleOutline className="w-5 h-5 text-red-400 flex-shrink-0" />
+          )}
+          <span className="flex-1 leading-relaxed">{state.message}</span>
+        </div>
       )}
+
       <Button
         type="submit"
-        colorScheme="red"
-        size={{ base: "md", md: "lg" }}
-        w="full"
-        borderRadius="md"
-        leftIcon={<IoNewspaperOutline className="ml-3" />}
+        variant="primary"
+        size="lg"
+        isLoading={isPending}
+        className="w-full gap-2 rounded-2xl h-12 text-sm font-bold shadow-glow-crimson hover:shadow-lg transition-all"
       >
-        {pending ? (
-          <Spinner as={"div"} color="white" />
-        ) : (
-          "اطلاع از بروزرسانی ها"
-        )}
+        <IoNewspaperOutline className="w-4 h-4 ml-1" />
+        <span>عضویت در خبرنامه دوجو</span>
       </Button>
     </form>
   );
 }
-
-export default NewsLetterForm;

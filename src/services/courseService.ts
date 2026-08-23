@@ -1,31 +1,26 @@
 import { CourseType } from "@/schemas/Course";
 import ApiClient from "@/services/ApiClient";
 
-const retryDelays = [1000, 2000, 4000, 8000, 12000, 16000];
+const retryDelays = [1000, 2000, 3000];
 
-export async function fetchCoursesWithRetry() {
+export async function fetchCoursesWithRetry(): Promise<CourseType[]> {
   const apiClient = new ApiClient<CourseType[]>("/fetch-course");
 
   for (let attempt = 0; attempt <= retryDelays.length; attempt += 1) {
     try {
-      const courses = (await apiClient.get()).data;
+      const response = await apiClient.get();
+      const courses = response.data;
 
-      if (!Array.isArray(courses)) {
-        throw new Error("Courses response must be an array");
+      if (Array.isArray(courses)) {
+        return courses;
       }
 
-      if (courses.length === 0 && attempt === retryDelays.length) {
-        throw new Error("Courses response stayed empty after retries");
-      }
-
-      if (courses.length === 0) {
-        await wait(retryDelays[attempt]);
-        continue;
-      }
-
-      return courses;
+      return [];
     } catch (error) {
-      if (attempt === retryDelays.length) throw error;
+      if (attempt === retryDelays.length) {
+        console.warn("Could not fetch courses after retries:", error);
+        return [];
+      }
       await wait(retryDelays[attempt]);
     }
   }

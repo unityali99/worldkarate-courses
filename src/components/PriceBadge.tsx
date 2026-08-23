@@ -1,42 +1,20 @@
-import { Badge, Text } from "@chakra-ui/react";
 import React from "react";
 
-function PriceBadge({ price }: { price: number }) {
-  return (
-    <Badge
-      display="inline-flex"
-      alignItems="baseline"
-      alignSelf="center"
-      gap={1.5}
-      px={4}
-      py={2.5}
-      rounded="xl"
-      bg="rgba(56, 178, 172, 0.16)"
-      color="teal.100"
-      border="1px solid"
-      borderColor="rgba(129, 230, 217, 0.35)"
-      textTransform="none"
-      dir="rtl"
-    >
-      <Text
-        as="span"
-        fontFamily="var(--font-lalezar)"
-        fontSize="2xl"
-        fontWeight="normal"
-        lineHeight="1"
-      >
-        {price.toLocaleString("fa-IR")}
-      </Text>
-      <Text
-        as="span"
-        fontFamily="var(--font-iran-sans)"
-        fontSize="xs"
-        fontWeight="bold"
-      >
-        تومان
-      </Text>
-    </Badge>
-  );
+interface PriceBadgeProps {
+  price: number;
+  className?: string;
 }
 
-export default PriceBadge;
+export default function PriceBadge({ price, className = "" }: PriceBadgeProps) {
+  return (
+    <div
+      dir="rtl"
+      className={`inline-flex items-baseline gap-1.5 px-4 py-2 rounded-2xl bg-teal-500/15 border border-teal-500/30 text-teal-200 shadow-[0_0_15px_rgba(20,184,166,0.15)] ${className}`}
+    >
+      <span className="font-lalezar text-2xl font-normal leading-none tracking-wide text-white">
+        {price.toLocaleString("fa-IR")}
+      </span>
+      <span className="text-xs font-bold text-teal-300/80">تومان</span>
+    </div>
+  );
+}

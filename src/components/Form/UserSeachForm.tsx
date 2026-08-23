@@ -1,6 +1,7 @@
 "use client";
-import FormContainer from "@/layouts/FormContainer";
+
 import React, { useState } from "react";
+import FormContainer from "@/layouts/FormContainer";
 import FormInput from "./components/FormInput";
 import FormButton from "./components/FormButton";
 import { useForm } from "react-hook-form";
@@ -9,18 +10,12 @@ import {
   default as SearchUser,
   ForgetPasswordType as SearchUserType,
 } from "@/schemas/auth/ForgetPassword";
-import ApiClient from "@/services/ApiClient";
-import { CreateCourseType } from "@/schemas/CreateCourse";
-import { Box } from "@chakra-ui/react";
 import UserCourses from "../UserCourses";
 
-const apiClient = new ApiClient<CreateCourseType>("");
-
-function UserSeachForm() {
+export default function UserSeachForm() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitSuccessful },
   } = useForm<SearchUserType>({
     resolver: zodResolver(SearchUser),
   });
@@ -29,23 +24,28 @@ function UserSeachForm() {
 
   const onSubmit = ({ email }: SearchUserType) => setEmail(email);
   return (
-    <Box className="space-y-10">
+    <div className="space-y-10">
       <FormContainer>
-        <FormInput
-          dir="ltr"
-          register={register("email")}
-          label="ایمیل"
-          placeholder="example@email.com"
-        />
-        <FormButton
-          onClick={handleSubmit(onSubmit)}
-          isLoading={false}
-          text="جستجو"
-        />
+        <h2 className="font-lalezar text-2xl sm:text-3xl text-white font-normal text-center mb-6">
+          جستجوی دوره‌های کاربر
+        </h2>
+        <div className="space-y-4">
+          <FormInput
+            dir="ltr"
+            register={register("email")}
+            label="ایمیل کاربر:"
+            placeholder="example@email.com"
+          />
+        </div>
+        <div className="pt-2">
+          <FormButton
+            onClick={handleSubmit(onSubmit)}
+            isLoading={false}
+            text="جستجو"
+          />
+        </div>
       </FormContainer>
       {email && <UserCourses email={email} />}
-    </Box>
+    </div>
   );
 }
-
-export default UserSeachForm;

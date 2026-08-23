@@ -1,26 +1,17 @@
 "use client";
 
-import PanelContainer from "@/layouts/PanelContainer";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { CreateCourseType } from "@/schemas/CreateCourse";
 import ApiClient from "@/services/ApiClient";
 import { getExternalUrl } from "@/utils/externalUrl";
 import { getErrorMessage } from "@/utils/getErrorMessage";
-import {
-  Alert,
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Link,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { LuBookOpen, LuExternalLink } from "react-icons/lu";
-import { toast } from "react-toastify";
+import { Button } from "@/components/ui/button";
 import Placeholder from "./Placeholder";
+import { toast } from "react-toastify";
+import { LuBookOpen, LuExternalLink } from "react-icons/lu";
 
-function UserCourses({ email }: { email?: string }) {
+export default function UserCourses({ email }: { email?: string }) {
   const [hydrated, setHydrated] = useState(false);
   const [courses, setCourses] = useState<CreateCourseType[]>([]);
 
@@ -39,114 +30,78 @@ function UserCourses({ email }: { email?: string }) {
   }, [email]);
 
   return (
-    <PanelContainer w="full">
-      <Stack
+    <div className="w-full">
+      <div
         dir="rtl"
-        spacing={6}
-        p={{ base: 6, md: 8 }}
-        rounded={{ base: "2xl", md: "3xl" }}
-        color="white"
-        bg="rgba(13, 22, 27, 0.76)"
-        border="1px solid"
-        borderColor="whiteAlpha.200"
-        backdropFilter="blur(12px)"
-        shadow="0 14px 38px rgba(0, 0, 0, 0.2)"
+        className="space-y-6 p-6 sm:p-8 rounded-3xl bg-slate-950/75 border border-white/15 backdrop-blur-xl shadow-glass text-white"
       >
-        <Flex align="center" gap={3}>
-          <Flex
-            align="center"
-            justify="center"
-            w={11}
-            h={11}
-            rounded="xl"
-            bg="whiteAlpha.100"
-            color="teal.100"
-          >
-            <LuBookOpen size={22} />
-          </Flex>
-          <Box>
-            <Heading size="md">دوره‌های خریداری شده</Heading>
-            <Text mt={1} color="whiteAlpha.600" fontSize="xs" fontWeight="normal">
+        {/* Header */}
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-teal-500/15 text-teal-300 border border-teal-500/30 flex items-center justify-center flex-shrink-0">
+            <LuBookOpen className="w-5 h-5 sm:w-6 sm:h-6" />
+          </div>
+          <div>
+            <h3 className="font-lalezar text-2xl text-white font-normal">
+              دوره‌های خریداری شده
+            </h3>
+            <p className="text-slate-400 text-xs font-normal">
               دسترسی سریع به محتوای آموزشی شما
-            </Text>
-          </Box>
-        </Flex>
+            </p>
+          </div>
+        </div>
 
+        {/* Content */}
         {!hydrated ? (
-          <Stack spacing={4}>
+          <div className="space-y-4">
             <Placeholder />
             <Placeholder />
             <Placeholder />
-          </Stack>
+          </div>
         ) : courses.length === 0 ? (
-          <Alert
-            status="info"
-            rounded="xl"
-            bg="whiteAlpha.100"
-            color="whiteAlpha.800"
-            border="1px solid"
-            borderColor="whiteAlpha.200"
-          >
-            <Text mx="auto">دوره‌ای خریداری نشده است</Text>
-          </Alert>
+          <div className="p-8 text-center rounded-2xl bg-white/5 border border-white/10">
+            <p className="text-slate-400 text-sm">دوره‌ای خریداری نشده است.</p>
+          </div>
         ) : (
-          <Stack spacing={3}>
+          <div className="space-y-3">
             {courses.map((course, index) => (
-              <Flex
+              <div
                 key={`${course.title}-${index}`}
-                align={{ base: "stretch", sm: "center" }}
-                justify="space-between"
-                direction={{ base: "column", sm: "row" }}
-                gap={4}
-                p={4}
-                rounded="xl"
-                bg="whiteAlpha.100"
-                border="1px solid"
-                borderColor="whiteAlpha.200"
-                transition="border-color 0.2s ease, background 0.2s ease"
-                _hover={{ bg: "whiteAlpha.200", borderColor: "teal.300" }}
+                className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-teal-400/40 hover:bg-white/10 transition-all"
               >
-                <Text fontWeight="bold">{course.title}</Text>
+                <span className="font-semibold text-slate-100 text-sm sm:text-base">
+                  {course.title}
+                </span>
+
                 {getExternalUrl(course.link) ? (
-                  <Link
+                  <a
                     href={getExternalUrl(course.link)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    _hover={{ textDecoration: "none" }}
+                    className="w-full sm:w-auto"
                   >
-                    <Button
-                      w={{ base: "full", sm: "auto" }}
-                      size="sm"
-                      rounded="lg"
-                      colorScheme="teal"
-                      rightIcon={<LuExternalLink />}
-                    >
-                      مشاهده دوره
+                    <Button variant="teal" size="sm" className="w-full sm:w-auto gap-2">
+                      <span>مشاهده دوره</span>
+                      <LuExternalLink className="w-3.5 h-3.5" />
                     </Button>
-                  </Link>
+                  </a>
                 ) : (
-                  <Button
-                    w={{ base: "full", sm: "auto" }}
-                    size="sm"
-                    rounded="lg"
-                    isDisabled
-                  >
+                  <Button variant="outline" size="sm" disabled className="w-full sm:w-auto text-xs">
                     لینک موجود نیست
                   </Button>
                 )}
-              </Flex>
+              </div>
             ))}
-          </Stack>
+          </div>
         )}
 
-        <Link href="/courses" _hover={{ textDecoration: "none" }}>
-          <Button w="full" variant="outline" colorScheme="teal" rounded="xl">
-            مشاهده همه دوره‌ها
-          </Button>
-        </Link>
-      </Stack>
-    </PanelContainer>
+        <div className="pt-2">
+          <Link href="/courses" className="block w-full">
+            <Button variant="outline" size="lg" className="w-full font-bold">
+              مشاهده همه دوره‌ها
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
-
-export default UserCourses;

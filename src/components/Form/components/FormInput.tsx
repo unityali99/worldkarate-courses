@@ -1,23 +1,6 @@
-import { ForgetPasswordType } from "@/schemas/auth/ForgetPassword";
-import { LoginType } from "@/schemas/auth/Login";
-import { OTPType } from "@/schemas/auth/OTP";
-import { ProfileType } from "@/schemas/auth/Profile";
-import { RegisterType } from "@/schemas/auth/Register";
-import { ResetPasswordType } from "@/schemas/auth/ResetPassword";
-import { CourseType } from "@/schemas/Course";
-import { CreateCourseType } from "@/schemas/CreateCourse";
-import { Box, Input, Text } from "@chakra-ui/react";
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
-
-type Inputs = LoginType &
-  RegisterType &
-  ProfileType &
-  ResetPasswordType &
-  ForgetPasswordType &
-  OTPType &
-  CourseType &
-  CreateCourseType;
+import { cn } from "@/utils/cn";
 
 function FormInput({
   className,
@@ -26,7 +9,7 @@ function FormInput({
   password = false,
   number = false,
   register,
-  dir,
+  dir = "rtl",
   autoComplete,
 }: {
   className?: string;
@@ -34,25 +17,29 @@ function FormInput({
   password?: boolean;
   number?: boolean;
   placeholder?: string;
-  register: ReturnType<UseFormRegister<Inputs>>;
+  register: ReturnType<UseFormRegister<any>>;
   dir: "ltr" | "rtl";
   autoComplete?: string;
 }) {
   return (
-    <Box className="space-y-1">
-      {label && <Text className="text-start text-md md:text-lg">{label}</Text>}
-      <Input
-        className={className}
+    <div className="space-y-1.5 text-right w-full" dir="rtl">
+      {label && (
+        <label className="block text-xs sm:text-sm font-semibold text-slate-200">
+          {label}
+        </label>
+      )}
+      <input
         {...register}
-        borderColor={"rgba(0,0,0,0.2)"}
         placeholder={placeholder}
-        focusBorderColor={"black"}
         dir={dir}
-        size="md"
-        type={password ? "password" : number ? "number" : ""}
+        type={password ? "password" : number ? "number" : "text"}
         autoComplete={autoComplete}
+        className={cn(
+          "flex h-11 w-full rounded-2xl border border-white/15 bg-slate-900/60 px-4 py-2 text-sm text-white shadow-inner backdrop-blur-md transition-all duration-200 placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-500/30",
+          className
+        )}
       />
-    </Box>
+    </div>
   );
 }
 

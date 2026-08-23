@@ -1,20 +1,20 @@
-import { Box, BoxProps } from "@chakra-ui/react";
-import React, { ReactNode } from "react";
+import React, { ReactNode, HTMLAttributes } from "react";
+import { cn } from "@/utils/cn";
 
-interface PanelContainerProps extends BoxProps {
+interface PanelContainerProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-function PanelContainer({ children, ...props }: PanelContainerProps) {
+export default function PanelContainer({ children, className, ...props }: PanelContainerProps) {
   return (
-    <Box
-      className="mx-auto text-xs md:text-base font-bold"
-      w={{ base: "100%", md: "75%", lg: "50%" }}
+    <div
+      className={cn(
+        "mx-auto w-full md:w-10/12 lg:w-8/12 text-xs md:text-base font-bold text-white",
+        className
+      )}
       {...props}
     >
       {children}
-    </Box>
+    </div>
   );
 }
-
-export default PanelContainer;

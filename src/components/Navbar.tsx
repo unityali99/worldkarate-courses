@@ -1,26 +1,19 @@
 "use client";
+
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import useAuth from "@/stores/authStore";
 import useLanguageStore from "@/stores/languageStore";
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  IconButton,
-  Link,
-  Spinner,
-  Stack,
-} from "@chakra-ui/react";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import BurgerMenu from "./BurgerMenu";
 import ProfileLink from "./ProfileLink";
 import Cart from "./Cart";
 import LanguageSwitcher from "./LanguageSwitcher";
-import { usePathname } from "next/navigation";
 import { LuBookOpen, LuInstagram, LuLogOut } from "react-icons/lu";
 
-function Navbar() {
+export default function Navbar() {
   const { user, logout } = useAuth();
   const { t } = useLanguageStore();
   const path = usePathname();
@@ -31,7 +24,7 @@ function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 40);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -41,185 +34,96 @@ function Navbar() {
   const hasTransparentHero =
     path === "/" || path === "/profile" || path.startsWith("/courses");
   const shouldShowBackground = isScrolled || !hasTransparentHero;
-  const navbarPosition = hasTransparentHero
-    ? isScrolled
-      ? "fixed"
-      : "absolute"
-    : "sticky";
-
-  // Add extra padding to the bottom of the navbar when it's sticky on special pages to push content down and avoid gaps.
 
   return (
-    <Flex
-      position={navbarPosition}
-      top={0}
-      left={0}
-      right={0}
-      zIndex={1000}
-      className={`w-full py-3 md:py-6 px-3 md:px-4 transition-all duration-300 md:text-white`}
-      bg={shouldShowBackground ? "rgba(13, 22, 27, 0.5)" : undefined}
-      backdropFilter={shouldShowBackground ? "blur(5px)" : "none"}
-      boxShadow={shouldShowBackground ? "lg" : "none"}
-      borderBottom={
-        shouldShowBackground ? "1px solid rgba(255, 255, 255, 0.1)" : "none"
-      }
-      suppressHydrationWarning={true}
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 py-3 md:py-4 px-4 sm:px-6 ${
+        shouldShowBackground
+          ? "bg-slate-950/85 backdrop-blur-xl border-b border-white/10 shadow-glass"
+          : "bg-transparent"
+      }`}
+      suppressHydrationWarning
     >
-      <Flex className="w-full md:max-w-6xl mx-auto justify-between items-center">
-        <HStack spacing={{ base: 0, md: 20, lg: 20 }}>
-          <Link href={"/"}>
-            <Box
-              position="relative"
-              width={{ base: "100px", md: "120px" }}
-              height={{ base: "100px", md: "120px" }}
-            >
-              <Image
-                priority
-                alt="Logo"
-                quality={100}
-                fill
-                className="object-contain"
-                src={"/logo.webp"}
-                unoptimized
-              />
-            </Box>
+      <div className="w-full max-w-6xl mx-auto flex justify-between items-center">
+        {/* Left Side: Logo & Navigation Links */}
+        <div className="flex items-center gap-6 lg:gap-10">
+          <Link href="/" className="relative block w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0">
+            <Image
+              priority
+              alt="Logo"
+              fill
+              className="object-contain drop-shadow-md"
+              src="/logo.webp"
+              unoptimized
+            />
           </Link>
-          <Stack
-            display={{ base: "none", md: "flex" }}
-            spacing={{ md: 3, lg: 5 }}
-            direction={{ md: "column", lg: "row" }}
-          >
+
+          <nav className="hidden md:flex items-center gap-4">
             {/* Instagram Link */}
-            <Link
+            <a
               href="https://www.instagram.com/amiryarikata/?hl=en"
-              isExternal
+              target="_blank"
+              rel="noreferrer"
               aria-label="Instagram"
-              _hover={{ textDecoration: "none" }}
+              className="group flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-200 hover:border-pink-400 hover:bg-white/10 hover:-translate-y-0.5"
             >
-              <HStack
-                spacing={3}
-                px={4}
-                py={2}
-                rounded="full"
-                border="1px solid"
-                borderColor="whiteAlpha.300"
-                transition="all 0.2s ease"
-                _hover={{
-                  borderColor: "pink.400",
-                  transform: "translateY(-2px)",
-                  opacity: 0.9,
-                }}
-              >
-                <Flex
-                  align="center"
-                  justify="center"
-                  w={8}
-                  h={8}
-                  rounded="full"
-                  bgGradient="linear(135deg, pink.400, pink.600, purple.500)"
-                  shadow="0 0 12px rgba(236,72,153,0.55)"
-                  flexShrink={0}
-                  transition="all 0.2s ease"
-                  _groupHover={{ shadow: "0 0 20px rgba(236,72,153,0.8)" }}
-                >
-                  <LuInstagram size={16} color="white" />
-                </Flex>
-                <Box
-                  fontWeight="bold"
-                  fontSize={"lg"}
-                  fontFamily="sans-serif"
-                  color="white"
-                  letterSpacing="wide"
-                >
-                  {t.ui.instagram}
-                </Box>
-              </HStack>
-            </Link>
+              <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-pink-500 via-pink-600 to-purple-600 flex items-center justify-center shadow-[0_0_10px_rgba(236,72,153,0.5)]">
+                <LuInstagram size={15} className="text-white" />
+              </div>
+              <span className="text-sm font-bold text-white tracking-wide">
+                {t.ui.instagram}
+              </span>
+            </a>
 
             {/* Courses Link */}
             <Link
               href="/courses"
               aria-label={t.ui.courses}
-              _hover={{ textDecoration: "none" }}
+              className="group flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-200 hover:border-teal-400 hover:bg-white/10 hover:-translate-y-0.5"
             >
-              <HStack
-                spacing={3}
-                px={4}
-                py={2}
-                rounded="full"
-                border="1px solid"
-                borderColor="whiteAlpha.300"
-                transition="all 0.2s ease"
-                _hover={{
-                  borderColor: "teal.400",
-                  transform: "translateY(-2px)",
-                  opacity: 0.9,
-                }}
-              >
-                <Flex
-                  align="center"
-                  justify="center"
-                  w={9}
-                  h={9}
-                  rounded="full"
-                  bgGradient="linear(135deg, cyan.400, teal.500, blue.600)"
-                  shadow="0 0 14px rgba(20,184,166,0.75)"
-                  flexShrink={0}
-                  transition="all 0.2s ease"
-                >
-                  <LuBookOpen size={18} color="white" />
-                </Flex>
-                <Box
-                  fontWeight="bold"
-                  fontSize={"lg"}
-                  fontFamily="sans-serif"
-                  color="white"
-                  letterSpacing="wide"
-                >
-                  {t.ui.courses}
-                </Box>
-              </HStack>
+              <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-400 to-teal-600 flex items-center justify-center shadow-[0_0_12px_rgba(20,184,166,0.5)]">
+                <LuBookOpen size={15} className="text-white" />
+              </div>
+              <span className="text-sm font-bold text-white tracking-wide">
+                {t.ui.courses}
+              </span>
             </Link>
-          </Stack>
-        </HStack>
-        {user && hydrated && (
-          <HStack
-            className="space-x-0 md:space-x-5"
-            display={{ base: "none", md: "flex" }}
-          >
-            <Cart />
-            <LanguageSwitcher />
-            <ProfileLink fullName={`${user.firstName} ${user.lastName}`} />
-            <IconButton
-              aria-label="Logout"
-              icon={<LuLogOut size={20} />}
-              colorScheme="red"
-              onClick={logout}
-              size="md"
-            />
-          </HStack>
-        )}
-        {!user && hydrated && (
-          <HStack
-            className="space-x-0 md:space-x-10"
-            display={{ base: "none", md: "flex" }}
-          >
-            <Cart />
-            <LanguageSwitcher />
-            <Link href={"/auth/login"}>
-              <Button colorScheme="red" p={6}>
+          </nav>
+        </div>
+
+        {/* Right Side: Auth / Cart / Profile Links */}
+        <div className="hidden md:flex items-center gap-4">
+          <Cart />
+          <LanguageSwitcher />
+
+          {hydrated && user ? (
+            <div className="flex items-center gap-3">
+              <ProfileLink fullName={`${user.firstName} ${user.lastName}`} />
+              <button
+                type="button"
+                onClick={logout}
+                title="خروج از حساب"
+                className="w-10 h-10 rounded-full bg-red-950/60 border border-red-800/60 text-red-300 hover:bg-red-900/80 hover:text-white flex items-center justify-center transition-all hover:scale-105"
+              >
+                <LuLogOut size={18} />
+              </button>
+            </div>
+          ) : hydrated && !user ? (
+            <Link href="/auth/login">
+              <Button variant="primary" size="default" className="px-5 font-bold shadow-glow-crimson">
                 {t.ui.login + " / " + t.ui.register}
               </Button>
             </Link>
-          </HStack>
-        )}
-        <Box className="md:hidden">
+          ) : (
+            <div className="w-24 h-10 rounded-full bg-white/5 animate-pulse" />
+          )}
+        </div>
+
+        {/* Mobile Burger Menu */}
+        <div className="md:hidden">
           <BurgerMenu hydrated={hydrated} />
-        </Box>
-        {!hydrated && <Spinner size={{ base: "sm", md: "lg" }} />}
-      </Flex>
-    </Flex>
+        </div>
+      </div>
+    </header>
   );
 }
-
-export default Navbar;

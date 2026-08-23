@@ -1,6 +1,7 @@
-import { Link, Text } from "@chakra-ui/react";
+import React from "react";
+import Link from "next/link";
 
-function FormFooter({
+export default function FormFooter({
   text,
   linkText,
   href,
@@ -10,13 +11,11 @@ function FormFooter({
   href: string;
 }) {
   return (
-    <Text className="text-start text-md md:text-lg font-light" dir="rtl">
+    <p className="text-right text-xs sm:text-sm font-light text-slate-300" dir="rtl">
       {text}{" "}
-      <Link href={href} className="inline-block hover:underline font-medium">
+      <Link href={href} className="inline-block text-teal-400 hover:text-teal-300 hover:underline font-semibold pr-1 transition-colors">
         {linkText}
       </Link>
-    </Text>
+    </p>
   );
 }
-
-export default FormFooter;

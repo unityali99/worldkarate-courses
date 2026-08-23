@@ -1,58 +1,45 @@
+import React from "react";
+import Link from "next/link";
 import BackgroundImage from "@/layouts/BackgroundImage";
-import { Box, Button, Heading, Link, Stack, Text } from "@chakra-ui/react";
-import NextLink from "next/link";
+import { Button } from "@/components/ui/button";
 import { LuArrowLeft, LuHouse } from "react-icons/lu";
 
 export default function NotFound() {
   return (
     <BackgroundImage image="/kyuna.webp">
-      <Box
-        minH="100vh"
-        px={{ base: 4, md: 6 }}
-        pt={{ base: 40, md: 52 }}
-        pb={{ base: 20, md: 28 }}
-      >
-        <Stack
+      <div className="min-h-screen px-4 sm:px-6 pt-40 md:pt-52 pb-24 flex items-center justify-center">
+        <div
           dir="rtl"
-          spacing={6}
-          maxW="720px"
-          mx="auto"
-          p={{ base: 7, md: 10 }}
-          rounded={{ base: "2xl", md: "3xl" }}
-          color="white"
-          textAlign="center"
-          bg="rgba(13, 22, 27, 0.76)"
-          border="1px solid"
-          borderColor="whiteAlpha.200"
-          backdropFilter="blur(12px)"
-          shadow="0 16px 45px rgba(0, 0, 0, 0.24)"
+          className="w-full max-w-xl mx-auto p-8 sm:p-12 rounded-3xl bg-slate-950/80 border border-white/15 backdrop-blur-xl shadow-glass text-center space-y-6 text-white"
         >
-          <Heading
-            as="h1"
-            fontFamily="var(--font-lalezar)"
-            fontWeight="normal"
-            fontSize={{ base: "3xl", md: "5xl" }}
-            lineHeight="1.5"
-          >
+          <span className="font-lalezar text-6xl md:text-8xl text-red-500 font-normal leading-none block">
+            ۴۰۴
+          </span>
+
+          <h1 className="font-lalezar text-3xl md:text-4xl text-white font-normal leading-tight">
             صفحه مورد نظر پیدا نشد
-          </Heading>
-          <Text color="whiteAlpha.800" lineHeight="2" fontSize={{ base: "md", md: "lg" }}>
-            ممکن است آدرس اشتباه باشد یا این دوره دیگر در دسترس نباشد.
-          </Text>
-          <Stack direction={{ base: "column", sm: "row" }} spacing={3} justify="center">
-            <Link as={NextLink} href="/courses" _hover={{ textDecoration: "none" }}>
-              <Button colorScheme="teal" rounded="xl" rightIcon={<LuArrowLeft />}>
-                مشاهده دوره‌ها
+          </h1>
+
+          <p className="text-slate-300/80 text-sm sm:text-base leading-relaxed">
+            ممکن است آدرس صفحه تغییر کرده باشد یا این دوره موقتا در دسترس نباشد.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <Link href="/courses" className="w-full sm:w-auto">
+              <Button variant="teal" size="lg" className="w-full sm:w-auto gap-2">
+                <span>مشاهده دوره‌ها</span>
+                <LuArrowLeft className="w-4 h-4" />
               </Button>
             </Link>
-            <Link as={NextLink} href="/" _hover={{ textDecoration: "none" }}>
-              <Button variant="outline" colorScheme="whiteAlpha" rounded="xl" rightIcon={<LuHouse />}>
-                صفحه اصلی
+            <Link href="/" className="w-full sm:w-auto">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2">
+                <span>صفحه اصلی</span>
+                <LuHouse className="w-4 h-4" />
               </Button>
             </Link>
-          </Stack>
-        </Stack>
-      </Box>
+          </div>
+        </div>
+      </div>
     </BackgroundImage>
   );
 }

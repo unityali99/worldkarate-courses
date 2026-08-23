@@ -7,10 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { keywords } from "@/utils/keywords";
 import { lang } from "@/lang";
-import { Box } from "@chakra-ui/react";
 import Footer from "@/components/Footer";
-import { usePathname } from "next/navigation";
-import { headers } from "next/headers";
 
 const lalezar = localFont({
   src: [

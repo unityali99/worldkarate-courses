@@ -1,34 +1,20 @@
 "use client";
 
-import PanelContainer from "@/layouts/PanelContainer";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Profile, { ProfileType } from "@/schemas/auth/Profile";
 import ApiClient from "@/services/ApiClient";
 import useAuth from "@/stores/authStore";
 import useLanguageStore from "@/stores/languageStore";
 import { getErrorMessage } from "@/utils/getErrorMessage";
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  Icon,
-  Input,
-  Spinner,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { LuPencil, LuShieldCheck, LuUserRound } from "react-icons/lu";
-import { toast } from "react-toastify";
+import { Button } from "@/components/ui/button";
 import Placeholder from "../Placeholder";
+import { toast } from "react-toastify";
+import { LuPencil, LuShieldCheck, LuUserRound } from "react-icons/lu";
 
-function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
+export default function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
   const { user, login } = useAuth();
   const { t } = useLanguageStore();
   const [isEditing, setIsEditing] = useState(false);
@@ -86,178 +72,157 @@ function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
       .finally(() => setIsLoading(false));
   };
 
-  const inputStyles = {
-    bg: isEditing ? "white" : "whiteAlpha.100",
-    color: isEditing ? "gray.900" : "white",
-    borderColor: isEditing ? "teal.300" : "whiteAlpha.200",
-    opacity: 1,
-    cursor: isEditing ? "text" : "default",
-  };
-
   return (
-    <PanelContainer w="full" h="full">
-      <Stack
-        as="form"
+    <div className="w-full h-full">
+      <form
         onSubmit={handleSubmit(onSubmit)}
         dir="rtl"
-        h="full"
-        spacing={6}
-        p={{ base: 6, md: 8 }}
-        rounded={{ base: "2xl", md: "3xl" }}
-        color="white"
-        bg="rgba(13, 22, 27, 0.76)"
-        border="1px solid"
-        borderColor="whiteAlpha.200"
-        backdropFilter="blur(12px)"
-        shadow="0 14px 38px rgba(0, 0, 0, 0.2)"
+        className="flex flex-col justify-between h-full space-y-6 p-6 sm:p-8 rounded-3xl bg-slate-950/75 border border-white/15 backdrop-blur-xl shadow-glass text-white"
       >
-        <Flex align="center" gap={3}>
-          <Flex
-            align="center"
-            justify="center"
-            boxSize={{ base: 10, sm: 11 }}
-            rounded="xl"
-            bg="whiteAlpha.100"
-            color="teal.100"
-            flexShrink={0}
-          >
-            <Icon as={LuUserRound} boxSize={{ base: 5, sm: 6 }} />
-          </Flex>
-          <Box>
-            <Heading size="md">{t.ui.profile}</Heading>
-            <Text
-              mt={1}
-              color="whiteAlpha.600"
-              fontSize="xs"
-              fontWeight="normal"
-            >
+        {/* Header */}
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-teal-500/15 text-teal-300 border border-teal-500/30 flex items-center justify-center flex-shrink-0">
+            <LuUserRound className="w-5 h-5 sm:w-6 sm:h-6" />
+          </div>
+          <div>
+            <h3 className="font-lalezar text-2xl text-white font-normal">
+              {t.ui.profile}
+            </h3>
+            <p className="text-slate-400 text-xs font-normal">
               اطلاعات حساب کاربری شما
-            </Text>
-          </Box>
-        </Flex>
+            </p>
+          </div>
+        </div>
 
+        {/* Admin Panel Banner */}
         {isAdmin && (
-          <Flex
-            align={{ base: "stretch", sm: "center" }}
-            justify="space-between"
-            direction={{ base: "column", sm: "row" }}
-            gap={3}
-            p={4}
-            rounded="xl"
-            bg="rgba(56, 178, 172, 0.12)"
-            border="1px solid"
-            borderColor="rgba(129, 230, 217, 0.25)"
-          >
-            <Flex align="center" gap={2} color="teal.100">
-              <Icon as={LuShieldCheck} boxSize={5} flexShrink={0} />
-              <Text>{t.ui.adminPanel}</Text>
-            </Flex>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-2xl bg-teal-500/10 border border-teal-500/30">
+            <div className="flex items-center gap-2 text-teal-300 text-sm font-semibold">
+              <LuShieldCheck className="w-5 h-5 flex-shrink-0" />
+              <span>{t.ui.adminPanel}</span>
+            </div>
             <Button
               type="button"
+              variant="teal"
               size="sm"
-              colorScheme="teal"
               onClick={() => push("/profile/admin")}
             >
               {t.ui.redirectToAdmin}
             </Button>
-          </Flex>
+          </div>
         )}
 
+        {/* Form Fields */}
         {hydrated ? (
-          <Stack spacing={4} flex="1">
-            <FormControl isInvalid={Boolean(errors.firstName)}>
-              <FormLabel color="whiteAlpha.700">{t.ui.firstName}</FormLabel>
-              <Input
+          <div className="space-y-4 flex-1">
+            <div className="space-y-1 text-right">
+              <label className="block text-xs font-semibold text-slate-300">
+                {t.ui.firstName}
+              </label>
+              <input
                 disabled={!isEditing}
                 {...register("firstName")}
-                textAlign="right"
-                rounded="xl"
-                {...inputStyles}
+                className={`w-full h-11 px-4 rounded-2xl text-sm transition-all text-right border ${
+                  isEditing
+                    ? "bg-slate-900 border-teal-400 text-white focus:ring-2 focus:ring-teal-400/30"
+                    : "bg-white/5 border-white/10 text-slate-200 cursor-default"
+                }`}
               />
-              <FormErrorMessage mt={2} color="red.300" fontSize="sm">
-                {errors.firstName?.message}
-              </FormErrorMessage>
-            </FormControl>
+              {errors.firstName && (
+                <p className="text-xs text-red-400 font-medium">
+                  {errors.firstName.message}
+                </p>
+              )}
+            </div>
 
-            <FormControl isInvalid={Boolean(errors.lastName)}>
-              <FormLabel color="whiteAlpha.700">{t.ui.lastName}</FormLabel>
-              <Input
+            <div className="space-y-1 text-right">
+              <label className="block text-xs font-semibold text-slate-300">
+                {t.ui.lastName}
+              </label>
+              <input
                 disabled={!isEditing}
                 {...register("lastName")}
-                textAlign="right"
-                rounded="xl"
-                {...inputStyles}
+                className={`w-full h-11 px-4 rounded-2xl text-sm transition-all text-right border ${
+                  isEditing
+                    ? "bg-slate-900 border-teal-400 text-white focus:ring-2 focus:ring-teal-400/30"
+                    : "bg-white/5 border-white/10 text-slate-200 cursor-default"
+                }`}
               />
-              <FormErrorMessage mt={2} color="red.300" fontSize="sm">
-                {errors.lastName?.message}
-              </FormErrorMessage>
-            </FormControl>
+              {errors.lastName && (
+                <p className="text-xs text-red-400 font-medium">
+                  {errors.lastName.message}
+                </p>
+              )}
+            </div>
 
-            <FormControl isInvalid={Boolean(errors.email)}>
-              <FormLabel color="whiteAlpha.700">{t.ui.email}</FormLabel>
-              <Input
+            <div className="space-y-1 text-right">
+              <label className="block text-xs font-semibold text-slate-300">
+                {t.ui.email}
+              </label>
+              <input
                 disabled={!isEditing}
                 {...register("email")}
                 dir="ltr"
-                textAlign="left"
-                rounded="xl"
-                {...inputStyles}
+                className={`w-full h-11 px-4 rounded-2xl text-sm transition-all text-left border ${
+                  isEditing
+                    ? "bg-slate-900 border-teal-400 text-white focus:ring-2 focus:ring-teal-400/30"
+                    : "bg-white/5 border-white/10 text-slate-200 cursor-default"
+                }`}
               />
-              <FormErrorMessage mt={2} color="red.300" fontSize="sm">
-                {errors.email?.message}
-              </FormErrorMessage>
-            </FormControl>
-          </Stack>
+              {errors.email && (
+                <p className="text-xs text-red-400 font-medium">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+          </div>
         ) : (
-          <Stack spacing={5}>
+          <div className="space-y-5">
             <Placeholder />
             <Placeholder />
             <Placeholder />
-          </Stack>
+          </div>
         )}
 
+        {/* Buttons */}
         {isEditing ? (
-          <Flex direction={{ base: "column", sm: "row" }} gap={3}>
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <Button
               type="submit"
-              flex="1"
+              variant="teal"
               size="lg"
-              rounded="xl"
-              colorScheme="teal"
-              isDisabled={isLoading}
+              className="flex-1"
+              isLoading={isLoading}
             >
-              {isLoading ? <Spinner size="sm" /> : t.ui.save}
+              {t.ui.save}
             </Button>
             <Button
               type="button"
-              flex="1"
-              size="lg"
-              rounded="xl"
               variant="outline"
-              colorScheme="whiteAlpha"
+              size="lg"
+              className="flex-1"
               onClick={cancelEditing}
-              isDisabled={isLoading}
+              disabled={isLoading}
             >
               {t.ui.cancel}
             </Button>
-          </Flex>
+          </div>
         ) : (
-          <Button
-            type="button"
-            w="full"
-            size="lg"
-            rounded="xl"
-            colorScheme="orange"
-            leftIcon={<LuPencil />}
-            onClick={() => setIsEditing(true)}
-            isDisabled={!hydrated}
-          >
-            {t.ui.edit}
-          </Button>
+          <div className="pt-2">
+            <Button
+              type="button"
+              variant="gold"
+              size="lg"
+              className="w-full gap-2 font-bold"
+              onClick={() => setIsEditing(true)}
+              disabled={!hydrated}
+            >
+              <LuPencil className="w-4 h-4 ml-1" />
+              <span>{t.ui.edit}</span>
+            </Button>
+          </div>
         )}
-      </Stack>
-    </PanelContainer>
+      </form>
+    </div>
   );
 }
-
-export default ProfileForm;

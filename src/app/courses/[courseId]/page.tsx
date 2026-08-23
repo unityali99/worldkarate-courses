@@ -1,41 +1,29 @@
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import CourseActions from "@/components/CourseActions";
 import PriceBadge from "@/components/PriceBadge";
 import BackgroundImage from "@/layouts/BackgroundImage";
+import { Badge } from "@/components/ui/badge";
 import {
   fetchCourseWithRetry,
   fetchCoursesWithRetry,
 } from "@/services/courseService";
 import { getCourseImageSource } from "@/utils/courseImage";
-import {
-  Badge,
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  Image as ChakraImage,
-  Link,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import Image from "next/image";
 import { LuArrowLeft, LuBookOpen } from "react-icons/lu";
 
-export default function SingleCoursePage({
+export default async function SingleCoursePage({
   params,
 }: {
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>;
 }) {
+  const { courseId } = await params;
+
   return (
     <BackgroundImage image="/kyuna.webp">
-      <Box
-        minH="100vh"
-        px={{ base: 4, md: 6 }}
-        pt={{ base: 36, md: 48 }}
-        pb={{ base: 20, md: 28 }}
-      >
-        <CourseDetails courseId={params.courseId} />
-      </Box>
+      <div className="min-h-screen px-4 sm:px-6 pt-36 md:pt-44 pb-24">
+        <CourseDetails courseId={courseId} />
+      </div>
     </BackgroundImage>
   );
 }
@@ -53,149 +41,75 @@ async function CourseDetails({ courseId }: { courseId: string }) {
   const imageSource = getCourseImageSource(course.img);
 
   return (
-    <Box maxW="1180px" mx="auto">
+    <div className="max-w-6xl mx-auto">
+      {/* Back Button */}
       <Link
         href="/courses"
-        display="inline-flex"
-        alignItems="center"
-        gap={2}
-        mb={{ base: 5, md: 7 }}
-        px={4}
-        py={2}
-        rounded="full"
-        color="whiteAlpha.900"
-        bg="rgba(13, 22, 27, 0.55)"
-        border="1px solid"
-        borderColor="whiteAlpha.200"
-        backdropFilter="blur(8px)"
-        _hover={{ bg: "rgba(13, 22, 27, 0.72)", textDecoration: "none" }}
+        className="inline-flex items-center gap-2 mb-6 sm:mb-8 px-4 py-2 rounded-full text-slate-200 bg-slate-900/60 border border-white/15 backdrop-blur-md text-sm font-medium transition-all hover:bg-slate-900/90 hover:border-white/30 hover:-translate-x-1"
       >
-        <LuArrowLeft />
-        بازگشت به دوره‌ها
+        <LuArrowLeft className="w-4 h-4" />
+        <span>بازگشت به دوره‌ها</span>
       </Link>
 
-      <SimpleGrid
-        columns={{ base: 1, lg: 2 }}
-        gap={{ base: 0, lg: 6 }}
-        p={{ base: 3, sm: 4, md: 6 }}
-        rounded={{ base: "2xl", md: "3xl" }}
-        overflow="hidden"
-        bg="rgba(13, 22, 27, 0.72)"
-        border="1px solid"
-        borderColor="whiteAlpha.200"
-        backdropFilter="blur(12px)"
-        shadow="0 16px 45px rgba(0, 0, 0, 0.24)"
-      >
-        <Box
-          position="relative"
-          h={{ base: "310px", sm: "430px", lg: "560px" }}
-          overflow="hidden"
-          rounded={{ base: "xl", md: "2xl" }}
-          bg="gray.900"
-        >
+      {/* Main Course Showcase Card */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 rounded-3xl overflow-hidden bg-slate-950/75 border border-white/15 backdrop-blur-xl shadow-glass">
+        {/* Left/Top: Image & Glow */}
+        <div className="relative h-[320px] sm:h-[420px] lg:h-auto min-h-[400px] overflow-hidden bg-slate-900">
           <Image
             aria-hidden="true"
             alt=""
             src={imageSource}
             unoptimized
             fill
-            sizes="(max-width: 992px) 100vw, 570px"
-            style={{
-              objectFit: "cover",
-              filter: "blur(24px)",
-              opacity: 0.5,
-              transform: "scale(1.14)",
-            }}
+            sizes="(max-width: 992px) 100vw, 600px"
+            className="object-cover filter blur-2xl opacity-45 scale-125"
           />
-          <Box
-            position="absolute"
-            inset={0}
-            bg="linear-gradient(145deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.48))"
-          />
-          <Box position="absolute" inset={{ base: 4, sm: 6, md: 8 }}>
-            <ChakraImage
-              alt={course.title}
-              src={imageSource}
-              position="absolute"
-              top="50%"
-              left="50%"
-              transform="translate(-50%, -50%)"
-              w="auto"
-              h="auto"
-              maxW="100%"
-              maxH="100%"
-              rounded="xl"
-              objectFit="contain"
-              filter="drop-shadow(0 14px 24px rgba(0, 0, 0, 0.3))"
-            />
-          </Box>
-        </Box>
+          <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-slate-950/90 via-slate-950/25 to-transparent z-10" />
 
-        <Flex
+          <div className="absolute inset-6 sm:inset-10 flex items-center justify-center z-20">
+            <div className="relative w-full h-full max-h-[380px]">
+              <Image
+                alt={course.title}
+                src={imageSource}
+                unoptimized
+                fill
+                className="object-contain rounded-2xl drop-shadow-[0_16px_30px_rgba(0,0,0,0.5)]"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Right/Bottom: Details & Action */}
+        <div
           dir="rtl"
-          direction="column"
-          justify="space-between"
-          p={{ base: 5, sm: 7, lg: 6 }}
-          mt={{ base: 3, lg: 0 }}
-          borderTop={{ base: "1px solid", lg: "none" }}
-          borderLeft={{ base: "none", lg: "1px solid" }}
-          borderColor="whiteAlpha.200"
-          color="white"
+          className="flex flex-col justify-between p-6 sm:p-10 text-white border-t lg:border-t-0 lg:border-r border-white/10"
         >
-          <Box>
-            <Badge
-              display="inline-flex"
-              alignItems="center"
-              gap={2}
-              mb={5}
-              px={3}
-              py={2}
-              rounded="full"
-              bg="whiteAlpha.100"
-              color="teal.100"
-              border="1px solid"
-              borderColor="whiteAlpha.200"
-              textTransform="none"
-            >
-              <LuBookOpen />
-              دوره آموزشی کاتا
+          <div className="space-y-5">
+            <Badge variant="teal" className="gap-2 py-1.5 px-4 text-xs font-semibold">
+              <LuBookOpen className="w-4 h-4" />
+              <span>دوره آموزشی کاتا</span>
             </Badge>
 
-            <Heading
-              as="h1"
-              fontFamily="var(--font-lalezar)"
-              fontWeight="normal"
-              fontSize={{ base: "2xl", sm: "3xl", md: "4xl" }}
-              lineHeight="1.5"
-              mb={5}
-            >
+            <h1 className="font-lalezar text-3xl sm:text-4xl lg:text-5xl text-white font-normal leading-tight">
               {course.title}
-            </Heading>
+            </h1>
 
-            <Text
-              color="whiteAlpha.800"
-              fontSize={{ base: "md", md: "lg" }}
-              lineHeight="2.1"
-              textAlign="right"
-            >
+            <p className="text-slate-300 text-base sm:text-lg leading-loose text-justify font-light">
               {course.description}
-            </Text>
-          </Box>
+            </p>
+          </div>
 
-          <Stack spacing={6} mt={{ base: 9, lg: 14 }}>
-            <Divider borderColor="whiteAlpha.300" />
-            <Flex align="center" justify="space-between" gap={4}>
-              <Text color="whiteAlpha.700" fontSize="sm" fontWeight="bold">
-                قیمت دوره
-              </Text>
+          <div className="space-y-6 mt-10 pt-6 border-t border-white/15">
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-slate-400 text-sm font-bold">قیمت دوره:</span>
               <PriceBadge price={course.price} />
-            </Flex>
+            </div>
 
             <CourseActions course={course} />
-          </Stack>
-        </Flex>
-      </SimpleGrid>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

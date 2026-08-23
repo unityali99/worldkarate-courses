@@ -1,13 +1,10 @@
-import { Skeleton, Stack } from "@chakra-ui/react";
 import React from "react";
 
-function Placeholder() {
+export default function Placeholder() {
   return (
-    <Stack w="full">
-      <Skeleton w="full" height="20px" />
-      <Skeleton w="full" height="20px" />
-    </Stack>
+    <div className="w-full space-y-2 animate-pulse">
+      <div className="w-full h-5 bg-white/10 rounded-xl" />
+      <div className="w-3/4 h-5 bg-white/10 rounded-xl" />
+    </div>
   );
 }
-
-export default Placeholder;

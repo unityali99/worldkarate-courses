@@ -1,67 +1,23 @@
-import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import React from "react";
+import Link from "next/link";
 import { LuUser } from "react-icons/lu";
 
-function ProfileLink({ fullName }: { fullName: string }) {
+export default function ProfileLink({ fullName }: { fullName: string }) {
   return (
     <Link
       href="/profile"
-      _hover={{ textDecoration: "none" }}
       aria-label={`Open profile for ${fullName}`}
+      className="group flex items-center gap-3 px-3 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md transition-all duration-200 hover:border-teal-400/50 hover:bg-white/15 hover:-translate-y-0.5 hover:shadow-lg"
     >
-      <Flex
-        align="center"
-        gap={3}
-        px={3}
-        py={2}
-        rounded="full"
-        border="1px solid"
-        borderColor="whiteAlpha.300"
-        bg="whiteAlpha.100"
-        backdropFilter="blur(8px)"
-        transition="all 0.2s ease"
-        _hover={{
-          transform: "translateY(-2px)",
-          borderColor: "teal.300",
-          bg: "whiteAlpha.200",
-          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.18)",
-        }}
-      >
-        <Flex
-          align="center"
-          justify="center"
-          w={10}
-          h={10}
-          rounded="full"
-          bgGradient="linear(135deg, teal.300, cyan.400, blue.500)"
-          color="white"
-          boxShadow="0 0 14px rgba(56, 178, 172, 0.45)"
-          position="relative"
-          overflow="hidden"
-          flexShrink={0}
-        >
-          <Box position="absolute" inset={0} bg="whiteAlpha.200" />
-          <Box position="relative">
-            <LuUser size={18} />
-          </Box>
-        </Flex>
-        <Flex direction="column" lineHeight={1.1} minW={0}>
-          <Text fontSize="xs" textTransform="uppercase" color="whiteAlpha.700">
-            Profile
-          </Text>
-          <Text
-            color="white"
-            fontWeight="bold"
-            fontSize="sm"
-            maxW="140px"
-            noOfLines={1}
-          >
-            {fullName}
-          </Text>
-        </Flex>
-      </Flex>
+      <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-teal-500 to-cyan-400 text-white flex items-center justify-center shadow-[0_0_12px_rgba(20,184,166,0.5)] flex-shrink-0">
+        <LuUser className="w-4 h-4" />
+      </div>
+      <div className="flex flex-col text-right leading-tight min-w-0 pr-1" dir="rtl">
+        <span className="text-[10px] text-slate-400">حساب کاربری</span>
+        <span className="text-xs font-bold text-white max-w-[130px] truncate">
+          {fullName}
+        </span>
+      </div>
     </Link>
   );
 }
-
-export default ProfileLink;

@@ -11,8 +11,8 @@ type LoginState = {
   logout: () => void;
 };
 
-export const cookieKey = "auth-token";
-export const userStorageKey = "user";
+import { cookieKey, userStorageKey } from "@/constants/auth";
+export { cookieKey, userStorageKey };
 
 function getStoredUser() {
   try {

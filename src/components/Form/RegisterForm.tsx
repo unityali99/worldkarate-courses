@@ -1,19 +1,19 @@
 "use client";
+
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Register, { RegisterType } from "@/schemas/auth/Register";
 import ApiClient from "@/services/ApiClient";
 import { getErrorMessage } from "@/utils/getErrorMessage";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import FormInput from "./components/FormInput";
-import { Alert, Text } from "@chakra-ui/react";
 import FormContainer from "@/layouts/FormContainer";
-import FormFooter from "./components/FormFooter";
+import FormInput from "./components/FormInput";
 import FormButton from "./components/FormButton";
-import { useRouter } from "next/navigation";
+import FormFooter from "./components/FormFooter";
+import { toast } from "react-toastify";
 
-function RegisterForm() {
+export default function RegisterForm() {
   const {
     register,
     handleSubmit,
@@ -39,78 +39,83 @@ function RegisterForm() {
       )
       .finally(() => setIsLoading(false));
   };
+
   return (
-    <FormContainer>
-      <Text className="font-bold text-xl my-5">ثبت نام</Text>
-      <FormInput
-        dir="rtl"
-        register={register("firstName")}
-        label="نام"
-        placeholder=""
-      />
-      {errors.firstName && (
-        <Alert
-          className="rounded-md text-sm"
-          textColor={"red"}
-          colorScheme="red"
-        >
-          {errors.firstName.message}
-        </Alert>
-      )}
-      <FormInput
-        dir="rtl"
-        register={register("lastName")}
-        label="نام خانوادگی"
-        placeholder=""
-      />
-      {errors.lastName && (
-        <Alert
-          className="rounded-md text-sm"
-          textColor={"red"}
-          colorScheme="red"
-        >
-          {errors.lastName.message}
-        </Alert>
-      )}
-      <FormInput
-        dir="ltr"
-        register={register("email")}
-        label="ایمیل"
-        placeholder="Example@gmail.com"
-      />
-      {errors.email && (
-        <Alert
-          className="rounded-md text-sm"
-          textColor={"red"}
-          colorScheme="red"
-        >
-          {errors.email.message}
-        </Alert>
-      )}
-      <FormInput
-        dir="ltr"
-        password
-        register={register("password")}
-        label="رمز عبور"
-        placeholder="Password"
-      />
-      {errors.password && (
-        <Alert
-          className="rounded-md text-sm"
-          textColor={"red"}
-          colorScheme="red"
-        >
-          {errors.password.message}
-        </Alert>
-      )}
-      <FormButton
-        onClick={handleSubmit(onSubmit)}
-        text="ثبت نام"
-        isLoading={isLoading}
-      />
-      <FormFooter text="ثبت نام کرده اید؟" linkText="ورود" href="/auth/login" />
+    <FormContainer className="my-8">
+      <h2 className="font-lalezar text-3xl sm:text-4xl text-white font-normal text-center mb-6">
+        ثبت نام در آکادمی
+      </h2>
+
+      <div className="space-y-4">
+        <div>
+          <FormInput
+            dir="rtl"
+            register={register("firstName")}
+            label="نام:"
+            placeholder="مثال: علی"
+          />
+          {errors.firstName && (
+            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+              {errors.firstName.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <FormInput
+            dir="rtl"
+            register={register("lastName")}
+            label="نام خانوادگی:"
+            placeholder="مثال: محمدی"
+          />
+          {errors.lastName && (
+            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+              {errors.lastName.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <FormInput
+            dir="ltr"
+            register={register("email")}
+            label="ایمیل:"
+            placeholder="Example@gmail.com"
+          />
+          {errors.email && (
+            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <FormInput
+            dir="ltr"
+            password
+            register={register("password")}
+            label="رمز عبور:"
+            placeholder="حداقل ۶ کاراکتر"
+          />
+          {errors.password && (
+            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="pt-2">
+        <FormButton
+          onClick={handleSubmit(onSubmit)}
+          text="ثبت نام"
+          isLoading={isLoading}
+        />
+      </div>
+
+      <div className="pt-4 border-t border-white/10">
+        <FormFooter text="قبلا ثبت نام کرده‌اید؟" linkText="ورود" href="/auth/login" />
+      </div>
     </FormContainer>
   );
 }
-
-export default RegisterForm;

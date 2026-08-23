@@ -1,27 +1,27 @@
 "use client";
-import { Button, Spinner } from "@chakra-ui/react";
-import React from "react";
 
-function FormButton({
+import React from "react";
+import { Button } from "@/components/ui/button";
+
+export default function FormButton({
   text,
   isLoading,
   onClick,
 }: {
   text: string;
   isLoading: boolean;
-  onClick: (data: any) => void;
+  onClick?: (data: any) => void;
 }) {
   return (
     <Button
-      _hover={{ backgroundColor: "rgba(0,0,0,1)" }}
-      bgColor={"rgba(0,0,0,0.9)"}
-      w={"100%"}
-      textColor={"white"}
+      type="submit"
+      variant="primary"
+      size="lg"
+      isLoading={isLoading}
       onClick={onClick}
+      className="w-full font-bold shadow-glow-crimson rounded-2xl h-12"
     >
-      {isLoading ? <Spinner as={"div"} color="white" /> : text}
+      {text}
     </Button>
   );
 }
-
-export default FormButton;

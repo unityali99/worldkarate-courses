@@ -1,9 +1,9 @@
 "use client";
-import { Button, HStack, Text } from "@chakra-ui/react";
-import useLanguageStore from "@/stores/languageStore";
-import React from "react";
 
-function LanguageSwitcher() {
+import React from "react";
+import useLanguageStore from "@/stores/languageStore";
+
+export default function LanguageSwitcher() {
   const { currentLanguage, setLanguage } = useLanguageStore();
 
   const toggleLanguage = () => {
@@ -12,39 +12,17 @@ function LanguageSwitcher() {
   };
 
   return (
-    <HStack spacing={2}>
-      <Text
-        fontSize="sm"
-        fontWeight="bold"
-        color="whiteAlpha.800"
-        fontFamily="sans-serif"
-      >
+    <div className="flex items-center gap-2">
+      <span className="text-xs font-bold text-slate-300 font-sans">
         {currentLanguage === "fa" ? "فا" : "En"}
-      </Text>
-      <Button
-        size="sm"
-        variant="outline"
+      </span>
+      <button
+        type="button"
         onClick={toggleLanguage}
-        fontSize="xs"
-        fontWeight="bold"
-        fontFamily="sans-serif"
-        px={3}
-        py={1}
-        rounded="full"
-        color="white"
-        borderColor="whiteAlpha.400"
-        _hover={{
-          borderColor: "whiteAlpha.700",
-          bg: "whiteAlpha.100",
-          transform: "translateY(-1px)",
-        }}
-        _active={{ bg: "whiteAlpha.200" }}
-        transition="all 0.2s ease"
+        className="px-3 py-1 text-xs font-bold font-sans rounded-full text-white border border-white/30 bg-white/5 backdrop-blur-md transition-all duration-200 hover:border-white/60 hover:bg-white/10 hover:-translate-y-0.5 active:bg-white/20"
       >
         {currentLanguage === "fa" ? "English" : "فارسی"}
-      </Button>
-    </HStack>
+      </button>
+    </div>
   );
 }
-
-export default LanguageSwitcher;

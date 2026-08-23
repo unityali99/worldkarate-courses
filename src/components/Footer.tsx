@@ -1,126 +1,77 @@
 "use client";
+
 import React from "react";
-import {
-  Box,
-  Container,
-  Flex,
-  Stack,
-  Text,
-  Link,
-  Icon,
-  Divider,
-} from "@chakra-ui/react";
 import { FaWhatsapp, FaInstagram, FaTelegram } from "react-icons/fa";
 import useLanguageStore from "@/stores/languageStore";
 
-const Footer = () => {
+export default function Footer() {
   const { t, currentLanguage } = useLanguageStore();
 
   return (
-    <Box
+    <footer
       dir={currentLanguage === "fa" ? "rtl" : "ltr"}
-      bg="#0d161b"
-      color="white"
-      py={10}
-      mt="auto"
+      className="w-full bg-slate-950/90 border-t border-white/10 text-white py-12 mt-auto"
     >
-      <Container maxW="container.xl">
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          spacing={8}
-          justify="space-between"
-          align="center"
-          textAlign={{
-            base: "center",
-            md: currentLanguage === "fa" ? "right" : "left",
-          }}
-        >
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-right">
           {/* Contact Info */}
-          <Stack
-            spacing={4}
-            align={{
-              base: "center",
-              md: "flex-start",
-            }}
-          >
-            <Text fontSize="xl" fontWeight="bold" color="teal.400">
+          <div className="space-y-2">
+            <h4 className="font-lalezar text-xl text-teal-400 font-normal">
               {t.ui.footer.contactUs}
-            </Text>
-            <Flex
-              align="center"
-              gap={2}
-              direction={{ base: "column", md: "row" }}
-            >
-              <Text opacity={0.8}>{t.ui.footer.address}</Text>
-            </Flex>
-            <Flex
-              align="center"
-              gap={2}
-              direction={{ base: "column", md: "row" }}
-            >
-              <Text opacity={0.8}>{t.ui.footer.phone}</Text>
-            </Flex>
-          </Stack>
+            </h4>
+            <p className="text-sm text-slate-300/80">{t.ui.footer.address}</p>
+            <p className="text-sm text-slate-300/80" dir="ltr">{t.ui.footer.phone}</p>
+          </div>
 
           {/* Social Links */}
-          <Stack spacing={4} align="center">
-            <Text fontSize="lg" fontWeight="semibold">
+          <div className="space-y-3">
+            <h4 className="font-lalezar text-lg text-white font-normal">
               {t.ui.footer.socialMedias}
-            </Text>
-            <Stack direction="row" spacing={6}>
-              <Link
+            </h4>
+            <div className="flex items-center justify-center gap-6">
+              <a
                 href="https://wa.me/989191257020"
-                isExternal
+                target="_blank"
+                rel="noreferrer"
                 aria-label="WhatsApp"
-                _hover={{ transform: "translateY(-2px)", color: "green.400" }}
-                transition="all 0.3s"
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:text-emerald-400 hover:border-emerald-400/50 hover:bg-white/10 transition-all hover:-translate-y-1"
               >
-                <Icon as={FaWhatsapp} w={8} h={8} />
-              </Link>
-              <Link
+                <FaWhatsapp size={20} />
+              </a>
+              <a
                 href="https://www.instagram.com/amiryarikata/"
-                isExternal
+                target="_blank"
+                rel="noreferrer"
                 aria-label="Instagram"
-                _hover={{ transform: "translateY(-2px)", color: "pink.400" }}
-                transition="all 0.3s"
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:text-pink-400 hover:border-pink-400/50 hover:bg-white/10 transition-all hover:-translate-y-1"
               >
-                <Icon as={FaInstagram} w={8} h={8} />
-              </Link>
-              <Link
+                <FaInstagram size={20} />
+              </a>
+              <a
                 href="https://t.me/Amiryarikata"
-                isExternal
+                target="_blank"
+                rel="noreferrer"
                 aria-label="Telegram"
-                _hover={{ transform: "translateY(-2px)", color: "blue.400" }}
-                transition="all 0.3s"
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:text-cyan-400 hover:border-cyan-400/50 hover:bg-white/10 transition-all hover:-translate-y-1"
               >
-                <Icon as={FaTelegram} w={8} h={8} />
-              </Link>
-            </Stack>
-          </Stack>
-        </Stack>
+                <FaTelegram size={20} />
+              </a>
+            </div>
+          </div>
+        </div>
 
-        <Divider my={8} borderColor="gray.800" />
+        <div className="my-8 border-t border-white/10" />
 
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          justify="space-between"
-          align="center"
-          fontSize="sm"
-          opacity={0.8}
-        >
-          <Flex align="center" gap={1}>
-            <Text>{t.ui.footer.designer}</Text>
-            <Text fontWeight="bold" color="teal.400">
-              {t.ui.footer.designerName}
-            </Text>
-          </Flex>
-          <Text>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <div className="flex items-center gap-1.5">
+            <span>{t.ui.footer.designer}</span>
+            <span className="font-bold text-teal-400">{t.ui.footer.designerName}</span>
+          </div>
+          <p>
             {t.ui.footer.rights} © {new Date().getFullYear()}
-          </Text>
-        </Stack>
-      </Container>
-    </Box>
+          </p>
+        </div>
+      </div>
+    </footer>
   );
-};
-
-export default Footer;
+}

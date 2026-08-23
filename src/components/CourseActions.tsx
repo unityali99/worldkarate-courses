@@ -1,46 +1,43 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import AddToCartBtn from "@/components/AddToCartBtn";
 import DeleteBtn from "@/components/DeleteBtn";
 import { CourseType } from "@/schemas/Course";
 import useAuth from "@/stores/authStore";
-import { Box, Button, Link, Spinner, Stack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { LuPlus } from "react-icons/lu";
 
-function CourseActions({ course }: { course: CourseType }) {
+export default function CourseActions({ course }: { course: CourseType }) {
   const { user } = useAuth();
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => setHydrated(true), []);
 
-  if (!hydrated) return <Spinner size="xl" color="teal.200" />;
+  if (!hydrated) {
+    return (
+      <div className="w-full h-12 rounded-2xl bg-white/5 animate-pulse" />
+    );
+  }
 
   if (user?.isAdmin) {
     return (
-      <Stack spacing={3}>
+      <div className="flex flex-col gap-3 w-full">
         <DeleteBtn text="حذف دوره" courseId={String(course.id)} />
-        <Link href="/profile/admin" _hover={{ textDecoration: "none" }}>
-          <Button w="full" size="lg" rounded="xl" colorScheme="teal">
-            ایجاد دوره جدید
+        <Link href="/profile/admin" className="w-full">
+          <Button variant="teal" size="lg" className="w-full gap-2 font-bold">
+            <LuPlus className="w-5 h-5 ml-1" />
+            <span>ایجاد دوره جدید</span>
           </Button>
         </Link>
-      </Stack>
+      </div>
     );
   }
 
   return (
-    <Box
-      sx={{
-        "& > button": {
-          width: "100%",
-          minHeight: "48px",
-          borderRadius: "12px",
-        },
-      }}
-    >
+    <div className="w-full">
       <AddToCartBtn course={course} />
-    </Box>
+    </div>
   );
 }
-
-export default CourseActions;

@@ -1,13 +1,17 @@
 "use client";
-import PanelContainer from "@/layouts/PanelContainer";
-import { Alert, Box, Button, Spinner, Text } from "@chakra-ui/react";
+
+import React, { useEffect, useState, Suspense } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
+import PanelContainer from "@/layouts/PanelContainer";
+import BackgroundImage from "@/layouts/BackgroundImage";
+import { Button } from "@/components/ui/button";
 import httpService from "@/services/httpService";
 import { toast } from "react-toastify";
 import PaidOrder from "@/components/Form/PaidOrder";
 import { ResponseData } from "@/layouts/CheckoutLogic";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { LuRefreshCw } from "react-icons/lu";
 
 function VerifyContent() {
   const searchParams = useSearchParams();
@@ -31,7 +35,7 @@ function VerifyContent() {
     }
 
     if (status !== "OK") {
-      setError("پرداخت ناموفق بود");
+      setError("پرداخت توسط کاربر لغو شد یا ناموفق بود.");
       setVerifying(false);
       return;
     }
@@ -51,25 +55,15 @@ function VerifyContent() {
       .finally(() => setVerifying(false));
   }, [authority, status]);
 
-  if (!hydrated) {
+  if (!hydrated || verifying) {
     return (
       <PanelContainer>
-        <Box className="flex justify-center items-center min-h-[400px]">
-          <Spinner size="xl" />
-        </Box>
-      </PanelContainer>
-    );
-  }
-
-  if (verifying) {
-    return (
-      <PanelContainer>
-        <Box className="flex flex-col justify-center items-center min-h-[400px] space-y-4">
-          <Spinner size="xl" />
-          <Text className="text-lg" dir="rtl">
-            در حال تایید پرداخت...
-          </Text>
-        </Box>
+        <div className="flex flex-col justify-center items-center min-h-[350px] space-y-4 text-white" dir="rtl">
+          <div className="w-12 h-12 rounded-full border-4 border-teal-400 border-t-transparent animate-spin" />
+          <p className="text-base sm:text-lg font-medium text-slate-300">
+            در حال تایید پرداخت و صدور دسترسی دوره‌ها...
+          </p>
+        </div>
       </PanelContainer>
     );
   }
@@ -77,20 +71,18 @@ function VerifyContent() {
   if (error) {
     return (
       <PanelContainer>
-        <Box className="w-10/12 md:w-6/12 mx-auto">
-          <Alert colorScheme="red" className="rounded-lg mb-4">
-            <Text mx="auto" className="text-center" dir="rtl">
-              {error}
-            </Text>
-          </Alert>
-          <Button
-            colorScheme="blue"
-            onClick={() => (window.location.href = "/profile")}
-            className="w-full"
-          >
-            رفتن به دوره های خریداری شده
-          </Button>
-        </Box>
+        <div className="w-full max-w-md mx-auto p-8 rounded-3xl bg-slate-950/80 border border-white/15 backdrop-blur-xl shadow-glass text-center space-y-6 text-white" dir="rtl">
+          <div className="mx-auto w-14 h-14 rounded-2xl bg-red-500/15 text-red-400 border border-red-500/30 flex items-center justify-center shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+            <LuRefreshCw className="w-7 h-7" />
+          </div>
+          <h3 className="font-lalezar text-2xl text-white font-normal">خطا در پرداخت</h3>
+          <p className="text-sm text-slate-300">{error}</p>
+          <Link href="/profile" className="block w-full">
+            <Button variant="teal" size="lg" className="w-full font-bold">
+              رفتن به دوره‌های خریداری شده
+            </Button>
+          </Link>
+        </div>
       </PanelContainer>
     );
   }
@@ -102,23 +94,25 @@ function VerifyContent() {
   return null;
 }
 
-function VerifyPage() {
+export default function VerifyPage() {
   return (
-    <Suspense
-      fallback={
-        <PanelContainer>
-          <Box className="flex justify-center items-center min-h-[400px]">
-            <Spinner size="xl" />
-          </Box>
-        </PanelContainer>
-      }
-    >
-      <VerifyContent />
-    </Suspense>
+    <BackgroundImage image="/kyuna.webp">
+      <div className="min-h-screen px-4 sm:px-6 pt-36 md:pt-48 pb-24">
+        <Suspense
+          fallback={
+            <PanelContainer>
+              <div className="flex justify-center items-center min-h-[350px]">
+                <div className="w-12 h-12 rounded-full border-4 border-teal-400 border-t-transparent animate-spin" />
+              </div>
+            </PanelContainer>
+          }
+        >
+          <VerifyContent />
+        </Suspense>
+      </div>
+    </BackgroundImage>
   );
 }
 
 export const fetchCache = "force-no-store";
 export const dynamic = "force-dynamic";
-
-export default VerifyPage;

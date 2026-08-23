@@ -1,27 +1,27 @@
-import { Box } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
 
-function BackgroundImage({
-  image,
-  children,
-}: {
+interface BackgroundImageProps {
   image: string;
   children: ReactNode;
-}) {
-  return (
-    <Box
-      bgAttachment={"fixed"}
-      bgImage={`url(${image})`}
-      bgBlendMode={"darken"}
-      backgroundColor={"rgba(0,0,0,0.1)"}
-      bgPos={"center"}
-      bgSize={"cover"}
-      backgroundPosition={"center 25%"}
-      bgRepeat={"no-repeat"}
-    >
-      {children}
-    </Box>
-  );
+  className?: string;
 }
 
-export default BackgroundImage;
+export default function BackgroundImage({
+  image,
+  children,
+  className = "",
+}: BackgroundImageProps) {
+  return (
+    <div
+      className={`min-h-screen bg-fixed bg-cover bg-no-repeat ${className}`}
+      style={{
+        backgroundImage: `url(${image})`,
+        backgroundColor: "rgba(8, 15, 18, 0.7)",
+        backgroundBlendMode: "darken",
+        backgroundPosition: "center 25%",
+      }}
+    >
+      {children}
+    </div>
+  );
+}

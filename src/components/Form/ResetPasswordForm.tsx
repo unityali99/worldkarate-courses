@@ -1,21 +1,19 @@
-import FormContainer from "@/layouts/FormContainer";
-import { Alert, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
-import FormInput from "./components/FormInput";
-import FormButton from "./components/FormButton";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ResetPassword, { ResetPasswordType } from "@/schemas/auth/ResetPassword";
 import ApiClient from "@/services/ApiClient";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import FormContainer from "@/layouts/FormContainer";
+import FormInput from "./components/FormInput";
+import FormButton from "./components/FormButton";
 
-function ResetPasswordForm() {
+export default function ResetPasswordForm() {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<ResetPasswordType>({ resolver: zodResolver(ResetPassword) });
   const { replace } = useRouter();
@@ -39,47 +37,50 @@ function ResetPasswordForm() {
   };
 
   return (
-    <FormContainer>
-      <Text className="font-bold text-xl my-5">
-        {"رمز عبور خود را انتخاب کنید"}
-      </Text>
-      <FormInput
-        password
-        dir="ltr"
-        register={register("newPassword")}
-        label="رمز جدید:"
-      />
-      {errors.newPassword && (
-        <Alert
-          className="rounded-md text-sm"
-          textColor={"red"}
-          colorScheme="red"
-        >
-          {errors.newPassword.message}
-        </Alert>
-      )}
-      <FormInput
-        password
-        dir="ltr"
-        register={register("repeatPassword")}
-        label="تکرار رمز جدید:"
-      />
-      {errors.repeatPassword && (
-        <Alert
-          className="rounded-md text-sm"
-          textColor={"red"}
-          colorScheme="red"
-        >
-          {errors.repeatPassword.message}
-        </Alert>
-      )}
-      <FormButton
-        onClick={handleSubmit(onSubmit)}
-        text="تایید"
-        isLoading={isLoading}
-      />
+    <FormContainer className="my-8">
+      <h2 className="font-lalezar text-3xl sm:text-4xl text-white font-normal text-center mb-6">
+        انتخاب رمز عبور جدید
+      </h2>
+
+      <div className="space-y-4">
+        <div>
+          <FormInput
+            password
+            dir="ltr"
+            register={register("newPassword")}
+            label="رمز عبور جدید:"
+            placeholder="حداقل ۶ کاراکتر"
+          />
+          {errors.newPassword && (
+            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+              {errors.newPassword.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <FormInput
+            password
+            dir="ltr"
+            register={register("repeatPassword")}
+            label="تکرار رمز عبور جدید:"
+            placeholder="تکرار رمز عبور"
+          />
+          {errors.repeatPassword && (
+            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+              {errors.repeatPassword.message}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="pt-2">
+        <FormButton
+          onClick={handleSubmit(onSubmit)}
+          text="تغییر رمز عبور"
+          isLoading={isLoading}
+        />
+      </div>
     </FormContainer>
   );
 }
-
-export default ResetPasswordForm;

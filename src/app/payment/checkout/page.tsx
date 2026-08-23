@@ -1,14 +1,17 @@
-import CheckoutLogic from "@/layouts/CheckoutLogic";
-import { Box } from "@chakra-ui/react";
 import React from "react";
+import CheckoutLogic from "@/layouts/CheckoutLogic";
+import BackgroundImage from "@/layouts/BackgroundImage";
 
 function CheckoutPage() {
   return (
-    <Box className="my-20">
-      <CheckoutLogic />
-    </Box>
+    <BackgroundImage image="/kyuna.webp">
+      <div className="min-h-screen px-4 sm:px-6 pt-36 md:pt-48 pb-24">
+        <CheckoutLogic />
+      </div>
+    </BackgroundImage>
   );
 }
+
 export const fetchCache = "force-no-store";
 export const dynamic = "force-dynamic";
 
