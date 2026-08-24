@@ -7,6 +7,7 @@ import DeleteBtn from "@/components/DeleteBtn";
 import { CourseType } from "@/schemas/Course";
 import useAuth from "@/stores/authStore";
 import { Button } from "@/components/ui/button";
+import { isAdmin } from "@/utils/authHelpers";
 import { LuPlus } from "react-icons/lu";
 
 export default function CourseActions({ course }: { course: CourseType }) {
@@ -21,7 +22,7 @@ export default function CourseActions({ course }: { course: CourseType }) {
     );
   }
 
-  if (user?.isAdmin) {
+  if (isAdmin(user)) {
     return (
       <div className="flex flex-col gap-3 w-full">
         <DeleteBtn text="حذف دوره" courseId={String(course.id)} />

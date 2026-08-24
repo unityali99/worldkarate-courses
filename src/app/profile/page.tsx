@@ -8,6 +8,7 @@ import BackgroundImage from "@/layouts/BackgroundImage";
 import UserType from "@/schemas/UserType";
 import { cookieKey } from "@/constants/auth";
 import decodeJwt from "@/utils/jwtDecode";
+import { isAdmin as checkIsAdmin } from "@/utils/authHelpers";
 import { LuShieldCheck, LuUser } from "react-icons/lu";
 
 export default async function ProfilePage() {
@@ -16,7 +17,8 @@ export default async function ProfilePage() {
   if (!token || token?.length === 0) return redirect("/auth/login");
 
   const decodedToken = decodeJwt(token!);
-  const { isAdmin, firstName, lastName, email }: UserType = decodedToken;
+  const { firstName, lastName, email, role }: UserType = decodedToken;
+  const userIsAdmin = checkIsAdmin(decodedToken);
 
   return (
     <BackgroundImage image="/kyuna.webp">
@@ -36,7 +38,7 @@ export default async function ProfilePage() {
                 <h1 className="font-lalezar text-3xl sm:text-4xl text-white font-normal">
                   {firstName} {lastName}
                 </h1>
-                {isAdmin && (
+                {userIsAdmin && (
                   <LuShieldCheck className="w-6 h-6 text-teal-400" title="مدیر سیستم" />
                 )}
               </div>
@@ -47,13 +49,13 @@ export default async function ProfilePage() {
           </div>
 
           {/* Settings Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-            <ProfileForm isAdmin={isAdmin} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-start">
+            <ProfileForm initialUser={{ firstName, lastName, email, role }} />
             <ChangePasswordForm />
           </div>
 
           {/* User Enrolled Courses */}
-          {!isAdmin && (
+          {!userIsAdmin && (
             <div className="pt-2">
               <UserCourses />
             </div>

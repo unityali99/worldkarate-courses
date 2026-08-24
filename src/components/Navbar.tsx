@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import useAuth from "@/stores/authStore";
 import useLanguageStore from "@/stores/languageStore";
 import { Button } from "@/components/ui/button";
@@ -16,35 +15,44 @@ import { LuBookOpen, LuInstagram, LuLogOut } from "react-icons/lu";
 export default function Navbar() {
   const { user, logout } = useAuth();
   const { t } = useLanguageStore();
-  const path = usePathname();
   const [hydrated, setHydrated] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => setHydrated(true), []);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    // Initial check on mount
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const hasTransparentHero =
-    path === "/" || path === "/profile" || path.startsWith("/courses");
-  const shouldShowBackground = isScrolled || !hasTransparentHero;
-
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 py-3 md:py-4 px-4 sm:px-6 ${
-        shouldShowBackground
-          ? "bg-slate-950/85 backdrop-blur-xl border-b border-white/10 shadow-glass"
-          : "bg-transparent"
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 w-full py-3 md:py-4 px-4 sm:px-6 transition-colors duration-300"
       suppressHydrationWarning
     >
-      <div className="w-full max-w-6xl mx-auto flex justify-between items-center">
+      {/* GPU-Accelerated Hardware Background Layer */}
+      <div
+        className={`absolute inset-0 bg-slate-950/90 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-opacity duration-300 pointer-events-none ${
+          isScrolled ? "opacity-100" : "opacity-0"
+        }`}
+      />
+
+      <div className="relative z-10 w-full max-w-6xl mx-auto flex justify-between items-center">
         {/* Left Side: Logo & Navigation Links */}
         <div className="flex items-center gap-6 lg:gap-10">
           <Link href="/" className="relative block w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0">

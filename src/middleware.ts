@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
 import UserType from "./schemas/UserType";
+import { isAdmin } from "./utils/authHelpers";
 
 export function middleware(request: NextRequest) {
   const authToken = request.cookies.get(cookieKey)?.value;
@@ -13,7 +14,7 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/auth/login", request.url));
     if (path.startsWith("/profile/admin")) {
       const user: UserType = jwtDecode(authToken);
-      if (!user.isAdmin)
+      if (!isAdmin(user))
         return NextResponse.redirect(new URL("/profile", request.url));
     }
   }

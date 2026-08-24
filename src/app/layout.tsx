@@ -58,11 +58,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa">
-      <body className={`${iranSans.variable} ${lalezar.variable} font-sans`}>
+    <html lang="fa" className="dark">
+      <body className={`${iranSans.variable} ${lalezar.variable} font-sans min-h-screen flex flex-col bg-[#070c0e] text-white selection:bg-red-500 selection:text-white`}>
         <Providers>
           <Navbar />
-          {children}
+          <main className="flex-1 w-full flex flex-col">{children}</main>
           <Footer />
           <ToastContainer
             className={"text-right font-bold"}
@@ -75,7 +75,7 @@ export default function RootLayout({
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            theme="light"
+            theme="dark"
           />
         </Providers>
       </body>

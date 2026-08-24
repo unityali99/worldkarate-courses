@@ -1,28 +1,43 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Profile, { ProfileType } from "@/schemas/auth/Profile";
+import UserType from "@/schemas/UserType";
 import ApiClient from "@/services/ApiClient";
 import useAuth from "@/stores/authStore";
 import useLanguageStore from "@/stores/languageStore";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { Button } from "@/components/ui/button";
-import Placeholder from "../Placeholder";
+import { Input } from "@/components/ui/input";
+import { isAdmin as checkIsAdmin, isInstructor, isStaff } from "@/utils/authHelpers";
 import { toast } from "react-toastify";
-import { LuPencil, LuShieldCheck, LuUserRound } from "react-icons/lu";
+import {
+  LuPencil,
+  LuShieldCheck,
+  LuUserRound,
+  LuCheck,
+  LuX,
+  LuMail,
+} from "react-icons/lu";
 
-export default function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
+interface ProfileFormProps {
+  initialUser: UserType;
+}
+
+export default function ProfileForm({ initialUser }: ProfileFormProps) {
   const { user, login } = useAuth();
   const { t } = useLanguageStore();
   const [isEditing, setIsEditing] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { push, refresh } = useRouter();
 
-  useEffect(() => setHydrated(true), []);
+  // Active user data preferring authStore when hydrated, otherwise server initialUser
+  const activeUser = user || initialUser;
+  const userIsAdmin = checkIsAdmin(activeUser);
+  const userIsStaff = isStaff(activeUser);
 
   const {
     register,
@@ -31,27 +46,39 @@ export default function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
     formState: { errors },
   } = useForm<ProfileType>({
     resolver: zodResolver(Profile),
-    mode: "onTouched",
-    reValidateMode: "onChange",
-    defaultValues: user
-      ? {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-        }
-      : undefined,
+    defaultValues: {
+      firstName: activeUser.firstName,
+      lastName: activeUser.lastName,
+      email: activeUser.email,
+    },
   });
+
+  // Sync form defaults when active user updates
+  useEffect(() => {
+    reset({
+      firstName: activeUser.firstName,
+      lastName: activeUser.lastName,
+      email: activeUser.email,
+    });
+  }, [activeUser.firstName, activeUser.lastName, activeUser.email, reset]);
 
   const apiClient = new ApiClient<ProfileType>("/profile");
 
-  const cancelEditing = () => {
-    if (user) {
-      reset({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-      });
-    }
+  const handleStartEditing = () => {
+    reset({
+      firstName: activeUser.firstName,
+      lastName: activeUser.lastName,
+      email: activeUser.email,
+    });
+    setIsEditing(true);
+  };
+
+  const handleCancelEditing = () => {
+    reset({
+      firstName: activeUser.firstName,
+      lastName: activeUser.lastName,
+      email: activeUser.email,
+    });
     setIsEditing(false);
   };
 
@@ -60,9 +87,8 @@ export default function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
     apiClient
       .put(data)
       .then((res) => {
-        toast.success(res.data.message);
-        login({ ...data, isAdmin: user?.isAdmin ?? isAdmin });
-        reset(data);
+        toast.success(res.data.message || "اطلاعات با موفقیت ذخیره شد");
+        login({ ...data, role: activeUser.role });
         setIsEditing(false);
         refresh();
       })
@@ -72,157 +98,198 @@ export default function ProfileForm({ isAdmin }: { isAdmin: boolean }) {
       .finally(() => setIsLoading(false));
   };
 
+  const getRoleLabel = () => {
+    if (userIsAdmin) return "مدیر ارشد آکادمی";
+    if (isInstructor(activeUser)) return "مربی و استاد کاتا";
+    return "هنرجوی آکادمی";
+  };
+
   return (
-    <div className="w-full h-full">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        dir="rtl"
-        className="flex flex-col justify-between h-full space-y-6 p-6 sm:p-8 rounded-3xl bg-slate-950/75 border border-white/15 backdrop-blur-xl shadow-glass text-white"
-      >
-        {/* Header */}
+    <div
+      dir="rtl"
+      className="w-full h-full p-6 sm:p-8 rounded-3xl bg-slate-950/75 border border-white/15 backdrop-blur-xl shadow-glass text-white transition-all duration-300"
+    >
+      {/* ========================================================= */}
+      {/* 1. Header with View/Edit Mode Indicator                  */}
+      {/* ========================================================= */}
+      <div className="flex items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-teal-500/15 text-teal-300 border border-teal-500/30 flex items-center justify-center flex-shrink-0">
-            <LuUserRound className="w-5 h-5 sm:w-6 sm:h-6" />
+          <div className="w-11 h-11 rounded-2xl bg-teal-500/15 text-teal-300 border border-teal-500/30 flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(20,184,166,0.25)]">
+            <LuUserRound className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="font-lalezar text-2xl text-white font-normal">
-              {t.ui.profile}
+            <h3 className="font-lalezar text-2xl text-white font-normal leading-tight">
+              {isEditing ? "ویرایش مشخصات فردی" : t.ui.profile}
             </h3>
-            <p className="text-slate-400 text-xs font-normal">
-              اطلاعات حساب کاربری شما
+            <p className="text-slate-400 text-xs font-light">
+              {isEditing ? "اطلاعات جدید خود را وارد نمایید" : "مشخصات ثبت‌شده حساب کاربری شما"}
             </p>
           </div>
         </div>
 
-        {/* Admin Panel Banner */}
-        {isAdmin && (
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-2xl bg-teal-500/10 border border-teal-500/30">
-            <div className="flex items-center gap-2 text-teal-300 text-sm font-semibold">
-              <LuShieldCheck className="w-5 h-5 flex-shrink-0" />
-              <span>{t.ui.adminPanel}</span>
-            </div>
-            <Button
-              type="button"
-              variant="teal"
-              size="sm"
-              onClick={() => push("/profile/admin")}
-            >
-              {t.ui.redirectToAdmin}
-            </Button>
-          </div>
+        {!isEditing && (
+          <Button
+            type="button"
+            variant="gold"
+            size="sm"
+            onClick={handleStartEditing}
+            className="gap-2 font-bold shadow-md hover:scale-105 transition-all text-xs"
+          >
+            <LuPencil className="w-3.5 h-3.5" />
+            <span>{t.ui.edit}</span>
+          </Button>
         )}
+      </div>
 
-        {/* Form Fields */}
-        {hydrated ? (
-          <div className="space-y-4 flex-1">
-            <div className="space-y-1 text-right">
-              <label className="block text-xs font-semibold text-slate-300">
-                {t.ui.firstName}
-              </label>
-              <input
-                disabled={!isEditing}
+      {/* Staff / Admin Panel Quick Banner */}
+      {userIsStaff && !isEditing && (
+        <div className="mt-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-2xl bg-teal-500/10 border border-teal-500/30">
+          <div className="flex items-center gap-2 text-teal-300 text-sm font-semibold">
+            <LuShieldCheck className="w-5 h-5 flex-shrink-0" />
+            <span>{t.ui.adminPanel}</span>
+          </div>
+          <Button
+            type="button"
+            variant="teal"
+            size="sm"
+            onClick={() => push("/profile/admin")}
+          >
+            {t.ui.redirectToAdmin}
+          </Button>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* 2. BODY: Dual-Mode Rendering (View vs Edit Form)         */}
+      {/* ========================================================= */}
+      {!isEditing ? (
+        /* --- VIEW MODE: Read-Only Dashboard Summary --- */
+        <div className="mt-6 space-y-4">
+          {/* First Name & Last Name Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="p-4 rounded-2xl bg-slate-900/60 border border-white/10 space-y-1">
+              <span className="text-[11px] text-slate-400 font-medium">نام</span>
+              <p className="text-sm sm:text-base font-bold text-white">
+                {activeUser.firstName}
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-900/60 border border-white/10 space-y-1">
+              <span className="text-[11px] text-slate-400 font-medium">نام خانوادگی</span>
+              <p className="text-sm sm:text-base font-bold text-white">
+                {activeUser.lastName}
+              </p>
+            </div>
+          </div>
+
+          {/* Email Card */}
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-white/10 space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] text-slate-400 font-medium">آدرس ایمیل</span>
+              <LuMail className="w-4 h-4 text-slate-400" />
+            </div>
+            <p dir="ltr" className="text-sm sm:text-base font-medium text-slate-200 text-right">
+              {activeUser.email}
+            </p>
+          </div>
+
+          {/* Role Status Pill */}
+          <div className="pt-2 flex items-center justify-between p-3.5 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-300">
+            <span>نوع کاربری:</span>
+            <span className={`font-bold ${userIsAdmin ? "text-teal-400" : isInstructor(activeUser) ? "text-amber-400" : "text-slate-200"}`}>
+              {getRoleLabel()}
+            </span>
+          </div>
+        </div>
+      ) : (
+        /* --- EDIT MODE: Active Form --- */
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5">
+          {/* First Name Input */}
+          <div className="space-y-1.5 text-right">
+            <label className="block text-xs font-semibold text-slate-300">
+              {t.ui.firstName}:
+            </label>
+            <div className="relative">
+              <Input
+                autoFocus
                 {...register("firstName")}
-                className={`w-full h-11 px-4 rounded-2xl text-sm transition-all text-right border ${
-                  isEditing
-                    ? "bg-slate-900 border-teal-400 text-white focus:ring-2 focus:ring-teal-400/30"
-                    : "bg-white/5 border-white/10 text-slate-200 cursor-default"
-                }`}
+                placeholder="مثال: علی"
+                className="h-11 rounded-2xl bg-slate-900/90 border-white/20 text-white focus-visible:border-teal-400 focus-visible:ring-teal-400/30 text-sm"
               />
-              {errors.firstName && (
-                <p className="text-xs text-red-400 font-medium">
-                  {errors.firstName.message}
-                </p>
-              )}
             </div>
+            {errors.firstName && (
+              <p className="text-xs text-red-400 font-medium pt-0.5">
+                {errors.firstName.message}
+              </p>
+            )}
+          </div>
 
-            <div className="space-y-1 text-right">
-              <label className="block text-xs font-semibold text-slate-300">
-                {t.ui.lastName}
-              </label>
-              <input
-                disabled={!isEditing}
+          {/* Last Name Input */}
+          <div className="space-y-1.5 text-right">
+            <label className="block text-xs font-semibold text-slate-300">
+              {t.ui.lastName}:
+            </label>
+            <div className="relative">
+              <Input
                 {...register("lastName")}
-                className={`w-full h-11 px-4 rounded-2xl text-sm transition-all text-right border ${
-                  isEditing
-                    ? "bg-slate-900 border-teal-400 text-white focus:ring-2 focus:ring-teal-400/30"
-                    : "bg-white/5 border-white/10 text-slate-200 cursor-default"
-                }`}
+                placeholder="مثال: احمدی"
+                className="h-11 rounded-2xl bg-slate-900/90 border-white/20 text-white focus-visible:border-teal-400 focus-visible:ring-teal-400/30 text-sm"
               />
-              {errors.lastName && (
-                <p className="text-xs text-red-400 font-medium">
-                  {errors.lastName.message}
-                </p>
-              )}
             </div>
+            {errors.lastName && (
+              <p className="text-xs text-red-400 font-medium pt-0.5">
+                {errors.lastName.message}
+              </p>
+            )}
+          </div>
 
-            <div className="space-y-1 text-right">
-              <label className="block text-xs font-semibold text-slate-300">
-                {t.ui.email}
-              </label>
-              <input
-                disabled={!isEditing}
-                {...register("email")}
+          {/* Email Input */}
+          <div className="space-y-1.5 text-right">
+            <label className="block text-xs font-semibold text-slate-300">
+              {t.ui.email}:
+            </label>
+            <div className="relative">
+              <Input
                 dir="ltr"
-                className={`w-full h-11 px-4 rounded-2xl text-sm transition-all text-left border ${
-                  isEditing
-                    ? "bg-slate-900 border-teal-400 text-white focus:ring-2 focus:ring-teal-400/30"
-                    : "bg-white/5 border-white/10 text-slate-200 cursor-default"
-                }`}
+                type="email"
+                {...register("email")}
+                placeholder="example@gmail.com"
+                className="h-11 rounded-2xl bg-slate-900/90 border-white/20 text-white focus-visible:border-teal-400 focus-visible:ring-teal-400/30 text-sm text-left"
               />
-              {errors.email && (
-                <p className="text-xs text-red-400 font-medium">
-                  {errors.email.message}
-                </p>
-              )}
             </div>
+            {errors.email && (
+              <p className="text-xs text-red-400 font-medium pt-0.5">
+                {errors.email.message}
+              </p>
+            )}
           </div>
-        ) : (
-          <div className="space-y-5">
-            <Placeholder />
-            <Placeholder />
-            <Placeholder />
-          </div>
-        )}
 
-        {/* Buttons */}
-        {isEditing ? (
-          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          {/* Actions Bar */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-3">
             <Button
               type="submit"
               variant="teal"
               size="lg"
-              className="flex-1"
+              className="flex-1 font-bold gap-2 shadow-glow-teal"
               isLoading={isLoading}
             >
-              {t.ui.save}
+              <LuCheck className="w-4 h-4" />
+              <span>{t.ui.save}</span>
             </Button>
             <Button
               type="button"
               variant="outline"
               size="lg"
-              className="flex-1"
-              onClick={cancelEditing}
+              className="flex-1 font-semibold gap-2 border-white/20 hover:bg-white/10"
+              onClick={handleCancelEditing}
               disabled={isLoading}
             >
-              {t.ui.cancel}
+              <LuX className="w-4 h-4" />
+              <span>{t.ui.cancel}</span>
             </Button>
           </div>
-        ) : (
-          <div className="pt-2">
-            <Button
-              type="button"
-              variant="gold"
-              size="lg"
-              className="w-full gap-2 font-bold"
-              onClick={() => setIsEditing(true)}
-              disabled={!hydrated}
-            >
-              <LuPencil className="w-4 h-4 ml-1" />
-              <span>{t.ui.edit}</span>
-            </Button>
-          </div>
-        )}
-      </form>
+        </form>
+      )}
     </div>
   );
 }

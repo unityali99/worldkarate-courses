@@ -24,35 +24,46 @@ export default function LandingPage() {
   return (
     <div
       dir={isRtl ? "rtl" : "ltr"}
-      className="w-full bg-[#070c0e] text-slate-100 selection:bg-red-500 selection:text-white overflow-hidden"
+      className="relative w-full bg-[#091014] text-slate-100 selection:bg-red-500 selection:text-white overflow-hidden"
     >
+      {/* Subtle Continuous Dojo Ambient Texture */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none z-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(#ffffff 1px, transparent 1px), radial-gradient(#ffffff 1px, #091014 1px)",
+          backgroundSize: "32px 32px",
+          backgroundPosition: "0 0, 16px 16px",
+        }}
+      />
+
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION WITH AMBIENT LIGHT & PARALLAX GLOW                        */}
+      {/* 1. HERO SECTION                                                           */}
       {/* ========================================================================= */}
-      <section className="relative min-h-[90vh] md:min-h-[95vh] flex items-center justify-center text-center px-4 overflow-hidden">
-        {/* Background Image with Cinematic Overlay */}
+      <section className="relative min-h-[78vh] md:min-h-[84vh] flex items-center justify-center text-center px-4 overflow-hidden">
+        {/* Background Image with Clean Translucent Overlay */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 scale-105 transform transition-transform duration-1000"
           style={{ backgroundImage: "url('/navbar.webp')" }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-950/70 to-[#070c0e] z-10" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.12)_0%,transparent_70%)] z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-[#091014] z-10" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.12)_0%,transparent_75%)] z-10" />
         </div>
 
         {/* Ambient Floating Glow Spheres */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-3xl pointer-events-none z-10" />
-        <div className="absolute bottom-10 right-10 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl pointer-events-none z-10" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-3xl pointer-events-none z-10" />
+        <div className="absolute bottom-6 right-10 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none z-10" />
 
-        <div className="relative z-20 max-w-4xl mx-auto py-28 sm:py-36">
+        <div className="relative z-20 max-w-4xl mx-auto pt-24 pb-12 sm:pt-28 sm:pb-16">
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="flex flex-col items-center space-y-6"
+            className="flex flex-col items-center space-y-5"
           >
             <Badge
               variant="crimson"
-              className="py-1.5 px-5 text-xs font-bold uppercase tracking-widest gap-2 shadow-[0_0_20px_rgba(220,38,38,0.35)]"
+              className="py-1 px-4 text-xs font-bold uppercase tracking-widest gap-2 shadow-[0_0_20px_rgba(220,38,38,0.35)]"
             >
               <LuSparkles className="w-3.5 h-3.5" />
               <span>آکادمی بین‌المللی کاتا و کاراته</span>
@@ -80,13 +91,13 @@ export default function LandingPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="pt-4"
+              className="pt-2"
             >
               <Link href="/courses">
                 <Button
                   variant="primary"
                   size="lg"
-                  className="gap-3 px-10 py-5 text-base sm:text-lg font-bold rounded-2xl shadow-glow-crimson hover:shadow-[0_0_40px_rgba(220,38,38,0.6)] transition-all hover:scale-105"
+                  className="gap-3 px-9 py-4 text-base sm:text-lg font-bold rounded-2xl shadow-glow-crimson hover:shadow-[0_0_40px_rgba(220,38,38,0.6)] transition-all hover:scale-105"
                 >
                   <span>{t.ui.landing.ctaButton}</span>
                   <ArrowIcon className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
@@ -98,42 +109,27 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 2. PILLARS / FEATURES WITH GEOMETRIC PATTERN & CARD NEON ACCENTS          */}
+      {/* 2. THREE CORE PILLARS                                                     */}
       {/* ========================================================================= */}
-      <section className="relative py-20 md:py-28 bg-[#091014] border-t border-b border-white/10 overflow-hidden">
-        {/* Subtle Dojo Grid Texture */}
-        <div
-          className="absolute inset-0 opacity-[0.035] pointer-events-none"
-          style={{
-            backgroundImage:
-              "radial-gradient(#ffffff 1px, transparent 1px), radial-gradient(#ffffff 1px, #091014 1px)",
-            backgroundSize: "32px 32px",
-            backgroundPosition: "0 0, 16px 16px",
-          }}
-        />
-
-        {/* Ambient Section Glows */}
-        <div className="absolute top-1/2 left-0 w-96 h-96 bg-teal-600/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      <section className="relative py-8 md:py-12 z-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             {/* 1. Experience Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="relative group p-8 rounded-3xl bg-slate-950/60 border border-white/10 backdrop-blur-xl hover:border-teal-400/40 hover:bg-slate-900/90 transition-all duration-300 shadow-glass overflow-hidden"
+              className="relative group p-6 sm:p-7 rounded-3xl bg-slate-950/60 border border-white/10 backdrop-blur-xl hover:border-teal-400/40 hover:bg-slate-900/90 transition-all duration-300 shadow-glass overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/10 rounded-full blur-2xl group-hover:bg-teal-500/20 transition-all" />
-              <div className="w-16 h-16 rounded-2xl bg-teal-500/15 text-teal-300 border border-teal-500/30 flex items-center justify-center mx-auto mb-6 shadow-[0_0_25px_rgba(20,184,166,0.25)] group-hover:scale-110 transition-transform">
-                <LuAward className="w-8 h-8" />
+              <div className="w-14 h-14 rounded-2xl bg-teal-500/15 text-teal-300 border border-teal-500/30 flex items-center justify-center mx-auto mb-4 shadow-[0_0_25px_rgba(20,184,166,0.25)] group-hover:scale-110 transition-transform">
+                <LuAward className="w-7 h-7" />
               </div>
-              <h3 className="font-lalezar text-2xl sm:text-3xl text-white font-normal mb-3">
+              <h3 className="font-lalezar text-2xl text-white font-normal mb-2">
                 {t.ui.landing.experience}
               </h3>
-              <p className="text-slate-400 text-sm sm:text-base leading-relaxed font-light">
+              <p className="text-slate-400 text-sm leading-relaxed font-light">
                 {t.ui.landing.experienceDesc}
               </p>
             </motion.div>
@@ -144,16 +140,16 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="relative group p-8 rounded-3xl bg-slate-950/60 border border-white/10 backdrop-blur-xl hover:border-red-500/40 hover:bg-slate-900/90 transition-all duration-300 shadow-glass overflow-hidden"
+              className="relative group p-6 sm:p-7 rounded-3xl bg-slate-950/60 border border-white/10 backdrop-blur-xl hover:border-red-500/40 hover:bg-slate-900/90 transition-all duration-300 shadow-glass overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-2xl group-hover:bg-red-500/20 transition-all" />
-              <div className="w-16 h-16 rounded-2xl bg-red-500/15 text-red-400 border border-red-500/30 flex items-center justify-center mx-auto mb-6 shadow-[0_0_25px_rgba(239,68,68,0.25)] group-hover:scale-110 transition-transform">
-                <LuTarget className="w-8 h-8" />
+              <div className="w-14 h-14 rounded-2xl bg-red-500/15 text-red-400 border border-red-500/30 flex items-center justify-center mx-auto mb-4 shadow-[0_0_25px_rgba(239,68,68,0.25)] group-hover:scale-110 transition-transform">
+                <LuTarget className="w-7 h-7" />
               </div>
-              <h3 className="font-lalezar text-2xl sm:text-3xl text-white font-normal mb-3">
+              <h3 className="font-lalezar text-2xl text-white font-normal mb-2">
                 {t.ui.landing.training}
               </h3>
-              <p className="text-slate-400 text-sm sm:text-base leading-relaxed font-light">
+              <p className="text-slate-400 text-sm leading-relaxed font-light">
                 {t.ui.landing.trainingDesc}
               </p>
             </motion.div>
@@ -164,16 +160,16 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="relative group p-8 rounded-3xl bg-slate-950/60 border border-white/10 backdrop-blur-xl hover:border-amber-500/40 hover:bg-slate-900/90 transition-all duration-300 shadow-glass overflow-hidden"
+              className="relative group p-6 sm:p-7 rounded-3xl bg-slate-950/60 border border-white/10 backdrop-blur-xl hover:border-amber-500/40 hover:bg-slate-900/90 transition-all duration-300 shadow-glass overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all" />
-              <div className="w-16 h-16 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center mx-auto mb-6 shadow-[0_0_25px_rgba(245,158,11,0.25)] group-hover:scale-110 transition-transform">
-                <LuShield className="w-8 h-8" />
+              <div className="w-16 h-16 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center mx-auto mb-4 shadow-[0_0_25px_rgba(245,158,11,0.25)] group-hover:scale-110 transition-transform">
+                <LuShield className="w-7 h-7" />
               </div>
-              <h3 className="font-lalezar text-2xl sm:text-3xl text-white font-normal mb-3">
+              <h3 className="font-lalezar text-2xl text-white font-normal mb-2">
                 {t.ui.landing.environment}
               </h3>
-              <p className="text-slate-400 text-sm sm:text-base leading-relaxed font-light">
+              <p className="text-slate-400 text-sm leading-relaxed font-light">
                 {t.ui.landing.environmentDesc}
               </p>
             </motion.div>
@@ -182,21 +178,18 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. ABOUT SENSEI ROW WITH SPOTLIGHT NEBULA BACKGROUND                      */}
+      {/* 3. ABOUT SENSEI ROW                                                       */}
       {/* ========================================================================= */}
-      <section className="relative py-24 md:py-32 bg-gradient-to-b from-[#091014] via-[#0b1419] to-[#070c0e] overflow-hidden">
-        {/* Soft Radial Spotlight behind Sensei */}
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-red-950/20 rounded-full blur-[120px] pointer-events-none" />
-
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <section className="relative py-10 md:py-14 z-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Sensei Portrait with Luminous Frame */}
             <motion.div
               initial={{ opacity: 0, x: isRtl ? 40 : -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="relative group rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-slate-950 h-[380px] sm:h-[480px] lg:h-[540px]"
+              className="relative group rounded-3xl overflow-hidden shadow-2xl border border-white/15 bg-slate-950/80 h-[340px] sm:h-[420px] lg:h-[480px]"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10 opacity-70" />
               <Image
@@ -214,7 +207,7 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-right space-y-6"
+              className="text-right space-y-4"
             >
               <Badge variant="teal" className="py-1 px-3 text-xs font-semibold">
                 درباره استاد امیر یاری
@@ -246,21 +239,18 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. METHODOLOGY ROW WITH CYAN AMBIENT MESH & HIGHLIGHT CHIPS                */}
+      {/* 4. METHODOLOGY ROW                                                        */}
       {/* ========================================================================= */}
-      <section className="relative py-24 md:py-32 bg-[#081116] border-t border-b border-white/10 overflow-hidden">
-        {/* Subtle Cyan Mesh Gradient */}
-        <div className="absolute top-1/2 left-10 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-950/25 rounded-full blur-[130px] pointer-events-none" />
-
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <section className="relative py-10 md:py-14 z-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Methodology Text */}
             <motion.div
               initial={{ opacity: 0, x: isRtl ? 40 : -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="text-right space-y-6"
+              className="text-right space-y-4"
             >
               <Badge variant="teal" className="py-1 px-3 text-xs font-semibold">
                 متدولوژی و اصول تمرین
@@ -274,22 +264,22 @@ export default function LandingPage() {
                 {t.ui.landing.methodologyDesc}
               </p>
 
-              <div className="space-y-3.5 pt-2">
-                <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-white/5 border border-white/10 text-slate-200">
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-950/60 border border-white/10 backdrop-blur-xl text-slate-200">
                   <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center flex-shrink-0">
                     <LuTarget className="w-4 h-4" />
                   </div>
                   <span className="text-sm sm:text-base font-medium">{t.ui.landing.structuredApproach}</span>
                 </div>
 
-                <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-white/5 border border-white/10 text-slate-200">
+                <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-950/60 border border-white/10 backdrop-blur-xl text-slate-200">
                   <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center flex-shrink-0">
                     <LuTarget className="w-4 h-4" />
                   </div>
                   <span className="text-sm sm:text-base font-medium">{t.ui.landing.progressiveSkill}</span>
                 </div>
 
-                <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-white/5 border border-white/10 text-slate-200">
+                <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-950/60 border border-white/10 backdrop-blur-xl text-slate-200">
                   <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center flex-shrink-0">
                     <LuTarget className="w-4 h-4" />
                   </div>
@@ -298,20 +288,20 @@ export default function LandingPage() {
               </div>
             </motion.div>
 
-            {/* Methodology Image with Floating Glow Card */}
+            {/* Methodology Image with Matching Dark Glass Container */}
             <motion.div
               initial={{ opacity: 0, x: isRtl ? -40 : 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="relative group rounded-3xl overflow-hidden shadow-2xl border border-white/15 bg-slate-950/80 h-[340px] sm:h-[440px] flex items-center justify-center p-8 backdrop-blur-xl"
+              className="relative group rounded-3xl overflow-hidden shadow-2xl border border-white/15 bg-slate-950/60 h-[300px] sm:h-[380px] flex items-center justify-center p-6 backdrop-blur-xl"
             >
               <div className="absolute inset-0 bg-radial-gradient from-teal-500/10 to-transparent opacity-60 pointer-events-none" />
               <Image
                 src="/product-1.webp"
                 alt="Karate Methodology"
                 fill
-                className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
+                className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                 unoptimized
               />
             </motion.div>
@@ -320,28 +310,25 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 5. LEGACY ROW WITH WARM GOLDEN MASTERCLASS BACKGROUND                      */}
+      {/* 5. LEGACY ROW                                                             */}
       {/* ========================================================================= */}
-      <section className="relative py-24 md:py-32 bg-gradient-to-b from-[#070c0e] via-[#0f1412] to-[#070c0e] overflow-hidden">
-        {/* Soft Golden Ambient Nebula */}
-        <div className="absolute top-1/2 right-10 -translate-y-1/2 w-[550px] h-[550px] bg-amber-950/20 rounded-full blur-[140px] pointer-events-none" />
-
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <section className="relative py-10 md:py-14 z-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Legacy Image Showcase */}
             <motion.div
               initial={{ opacity: 0, x: isRtl ? 40 : -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="relative group rounded-3xl overflow-hidden shadow-2xl border border-amber-500/20 bg-slate-950/80 h-[340px] sm:h-[440px] flex items-center justify-center p-8 backdrop-blur-xl"
+              className="relative group rounded-3xl overflow-hidden shadow-2xl border border-amber-500/20 bg-slate-950/60 h-[300px] sm:h-[380px] flex items-center justify-center p-6 backdrop-blur-xl"
             >
               <div className="absolute inset-0 bg-radial-gradient from-amber-500/10 to-transparent opacity-60 pointer-events-none" />
               <Image
                 src="/product-3.webp"
                 alt="Legacy"
                 fill
-                className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
+                className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                 unoptimized
               />
             </motion.div>
@@ -352,7 +339,7 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-right space-y-6"
+              className="text-right space-y-4"
             >
               <Badge variant="gold" className="py-1 px-3 text-xs font-semibold">
                 افتخارات و تاریخچه قهرمانی
@@ -384,18 +371,16 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. READY TO BEGIN CTA WITH CRIMSON PULSE FLARE                            */}
+      {/* 6. READY TO BEGIN CTA                                                     */}
       {/* ========================================================================= */}
-      <section className="relative py-28 bg-gradient-to-b from-[#070c0e] via-red-950/40 to-[#070c0e] border-t border-white/10 text-center overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-600/15 rounded-full blur-[140px] pointer-events-none" />
-
-        <div className="relative z-10 max-w-4xl mx-auto px-4">
+      <section className="relative py-14 md:py-20 z-10 text-center">
+        <div className="max-w-4xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="space-y-6 p-8 sm:p-14 rounded-3xl bg-slate-950/70 border border-white/15 backdrop-blur-2xl shadow-glass"
+            className="space-y-5 p-8 sm:p-12 rounded-3xl bg-slate-950/70 border border-white/15 backdrop-blur-2xl shadow-glass"
           >
             <h2 className="font-lalezar text-4xl sm:text-5xl md:text-6xl text-white font-normal leading-tight">
               {t.ui.landing.readyToBegin}
@@ -405,12 +390,12 @@ export default function LandingPage() {
               {t.ui.landing.joinCommunity}
             </p>
 
-            <div className="pt-4">
+            <div className="pt-2">
               <Link href="/courses">
                 <Button
                   variant="primary"
                   size="lg"
-                  className="gap-3 px-12 py-5 text-lg font-bold rounded-2xl shadow-glow-crimson hover:scale-105 transition-all"
+                  className="gap-3 px-12 py-4 text-lg font-bold rounded-2xl shadow-glow-crimson hover:scale-105 transition-all"
                 >
                   <span>{t.ui.landing.ctaButton}</span>
                   <ArrowIcon className="w-5 h-5" />
