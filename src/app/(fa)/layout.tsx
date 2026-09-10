@@ -13,7 +13,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://worldkarate.ir"
   ),
-  title: lang.fa.metadata.title,
+  title: {
+    default: lang.fa.metadata.title,
+    template: `%s | ${lang.fa.metadata.title}`,
+  },
   description: lang.fa.metadata.description,
   keywords: lang.fa.metadata.keywords,
   alternates: {
@@ -23,6 +26,28 @@ export const metadata: Metadata = {
       "x-default": "/",
       en: "/en",
     },
+  },
+  openGraph: {
+    title: lang.fa.metadata.title,
+    description: lang.fa.metadata.description,
+    url: "/",
+    siteName: "آکادمی کاراته سنسی امیر یاری",
+    locale: "fa_IR",
+    type: "website",
+    images: [
+      {
+        url: "/logo.webp",
+        width: 800,
+        height: 800,
+        alt: lang.fa.metadata.title,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: lang.fa.metadata.title,
+    description: lang.fa.metadata.description,
+    images: ["/logo.webp"],
   },
 };
 

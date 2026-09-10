@@ -16,6 +16,7 @@ export default function UserSeachForm() {
   const {
     register,
     handleSubmit,
+    formState: { errors },
   } = useForm<SearchUserType>({
     resolver: zodResolver(SearchUser),
   });
@@ -30,12 +31,19 @@ export default function UserSeachForm() {
           جستجوی دوره‌های کاربر
         </h2>
         <div className="space-y-4">
-          <FormInput
-            dir="ltr"
-            register={register("email")}
-            label="ایمیل کاربر:"
-            placeholder="example@email.com"
-          />
+          <div>
+            <FormInput
+              dir="ltr"
+              register={register("email")}
+              label="ایمیل کاربر:"
+              placeholder="example@email.com"
+            />
+            {errors.email && (
+              <p className="mt-1 text-xs text-red-400 font-medium text-right">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
         </div>
         <div className="pt-2">
           <FormButton

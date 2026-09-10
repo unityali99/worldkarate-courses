@@ -49,7 +49,7 @@ export default function ResetPasswordForm() {
             dir="ltr"
             register={register("newPassword")}
             label="رمز عبور جدید:"
-            placeholder="حداقل ۶ کاراکتر"
+            placeholder="حداقل ۸ کاراکتر (حرف و عدد)"
           />
           {errors.newPassword && (
             <p className="mt-1 text-xs text-red-400 font-medium text-right">

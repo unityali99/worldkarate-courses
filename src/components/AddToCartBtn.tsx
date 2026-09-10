@@ -24,14 +24,19 @@ export default function AddToCartBtn({ course }: { course: CourseType }) {
   const [userCourses, setUserCourses] = useState<CourseType[]>([]);
 
   useEffect(() => {
+    if (!user) {
+      setHydrated(true);
+      return;
+    }
+
     apiClient
       .get()
       .then((res) => setUserCourses(res.data))
-      .catch((error) =>
-        toast.error(getErrorMessage(error, "خطا در دریافت دوره‌های کاربر"))
-      )
+      .catch(() => {
+        // Silently fail if session expired or fetch error occurs
+      })
       .finally(() => setHydrated(true));
-  }, []);
+  }, [user]);
 
   if (!hydrated) {
     return (

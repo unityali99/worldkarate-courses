@@ -18,6 +18,7 @@ export default function AdminForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateCourseType>({
     resolver: zodResolver(CreateCourse),
@@ -29,7 +30,8 @@ export default function AdminForm() {
     courseCreationApi
       .post({ ...data, link: getExternalUrl(data.link) })
       .then((res) => {
-        toast.success(res.data.message);
+        toast.success(res.data.message || "دوره با موفقیت ایجاد شد");
+        reset();
       })
       .catch((error) => {
         toast.error(getErrorMessage(error, "خطا در ایجاد دوره"));

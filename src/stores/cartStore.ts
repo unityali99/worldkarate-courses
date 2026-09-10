@@ -12,7 +12,7 @@ type cartType = {
   courses: CourseType[];
   add: (course: CourseType) => void;
   remove: (id: string) => void;
-  clear: () => void;
+  clear: (options?: { silent?: boolean } | boolean) => void;
   hydrated: boolean;
   setHydrated: () => void;
   isOpen: boolean;
@@ -57,10 +57,13 @@ const useCart = create<cartType>()((set, get) => ({
     setItem(cartStorageKey, JSON.stringify(get().courses));
     toast.success(lang.fa.ui.removedFromCart);
   },
-  clear: () => {
+  clear: (arg?: { silent?: boolean } | boolean) => {
+    const silent = typeof arg === "boolean" ? arg : Boolean(arg?.silent);
     set(() => ({ courses: [] }));
     removeItem(cartStorageKey);
-    toast.success(lang.fa.ui.cartCleared);
+    if (!silent) {
+      toast.success(lang.fa.ui.cartCleared);
+    }
   },
 }));
 

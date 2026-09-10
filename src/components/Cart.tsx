@@ -98,7 +98,7 @@ export function CartDrawer() {
             size="default"
             className="w-full text-xs"
             disabled={courses.length === 0}
-            onClick={clear}
+            onClick={() => clear()}
           >
             {t.ui.clear}
           </Button>

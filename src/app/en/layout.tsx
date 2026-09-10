@@ -13,7 +13,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://worldkarate.ir"
   ),
-  title: lang.en.metadata.title,
+  title: {
+    default: lang.en.metadata.title,
+    template: `%s | ${lang.en.metadata.title}`,
+  },
   description: lang.en.metadata.description,
   keywords: lang.en.metadata.keywords,
   alternates: {
@@ -23,6 +26,28 @@ export const metadata: Metadata = {
       "x-default": "/",
       en: "/en",
     },
+  },
+  openGraph: {
+    title: lang.en.metadata.title,
+    description: lang.en.metadata.description,
+    url: "/en",
+    siteName: "Sensei Amir Yari Karate Academy",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/logo.webp",
+        width: 800,
+        height: 800,
+        alt: lang.en.metadata.title,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: lang.en.metadata.title,
+    description: lang.en.metadata.description,
+    images: ["/logo.webp"],
   },
 };
 

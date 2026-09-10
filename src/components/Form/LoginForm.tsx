@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Login, { LoginType } from "@/schemas/auth/Login";
@@ -19,6 +19,7 @@ export default function LoginForm() {
   const { login } = useAuth();
   const { t } = useLanguageStore();
   const { replace } = useRouter();
+  const searchParams = useSearchParams();
   const {
     register,
     handleSubmit,
@@ -38,7 +39,14 @@ export default function LoginForm() {
       .then((res) => {
         login(res.data.user);
         toast.success(res.data.message);
-        replace("/");
+        const redirectParam = searchParams.get("redirect");
+        const safeRedirect =
+          redirectParam &&
+          redirectParam.startsWith("/") &&
+          !redirectParam.startsWith("//")
+            ? redirectParam
+            : "/";
+        replace(safeRedirect);
       })
       .catch((error) => {
         toast.error(getErrorMessage(error, "ورود با خطا روبه‌رو شد"));

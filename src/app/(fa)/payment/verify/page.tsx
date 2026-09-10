@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import PanelContainer from "@/layouts/PanelContainer";
 import BackgroundImage from "@/layouts/BackgroundImage";
 import { Button } from "@/components/ui/button";
 import httpService from "@/services/httpService";
+import useCart from "@/stores/cartStore";
 import { toast } from "react-toastify";
 import PaidOrder from "@/components/Form/PaidOrder";
 import { ResponseData } from "@/layouts/CheckoutLogic";
@@ -17,11 +18,13 @@ function VerifyContent() {
   const searchParams = useSearchParams();
   const authority = searchParams.get("Authority");
   const status = searchParams.get("Status");
+  const { clear } = useCart();
 
   const [verifying, setVerifying] = useState(true);
   const [order, setOrder] = useState<ResponseData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const hasRequestedRef = useRef(false);
 
   useEffect(() => {
     setHydrated(true);
@@ -40,11 +43,15 @@ function VerifyContent() {
       return;
     }
 
+    if (hasRequestedRef.current) return;
+    hasRequestedRef.current = true;
+
     // Send authority to backend for verification
     httpService
       .post("/payment/verify", { authority })
       .then((res) => {
         setOrder(res.data);
+        clear(true);
         toast.success(res.data.message || "پرداخت با موفقیت انجام شد");
       })
       .catch((error) => {
@@ -53,7 +60,7 @@ function VerifyContent() {
         toast.error(errorMessage);
       })
       .finally(() => setVerifying(false));
-  }, [authority, status]);
+  }, [authority, status, clear]);
 
   if (!hydrated || verifying) {
     return (

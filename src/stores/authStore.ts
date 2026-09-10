@@ -9,6 +9,7 @@ type LoginState = {
   user: UserType | null;
   login: (user: UserType) => void;
   logout: () => void;
+  clearUser: () => void;
 };
 
 import { cookieKey, userStorageKey } from "@/constants/auth";
@@ -29,6 +30,10 @@ const useAuth = create<LoginState>()((set, get) => ({
     setItem(userStorageKey, JSON.stringify(user));
     set(() => ({ user }));
   },
+  clearUser: () => {
+    remove(userStorageKey);
+    set(() => ({ user: null }));
+  },
   logout: () => {
     remove(userStorageKey);
     set(() => ({ user: null }));
@@ -40,5 +45,11 @@ const useAuth = create<LoginState>()((set, get) => ({
       .catch((error) => toast.error(getErrorMessage(error, "خروج با خطا روبه‌رو شد")));
   },
 }));
+
+if (typeof window !== "undefined") {
+  window.addEventListener("auth:unauthorized", () => {
+    useAuth.getState().clearUser();
+  });
+}
 
 export default useAuth;

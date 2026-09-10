@@ -15,9 +15,11 @@ import { getErrorMessage } from "@/utils/getErrorMessage";
 export default function ForgetPasswordForm({
   setOtp,
   setEmail,
+  onSuccess,
 }: {
-  setOtp: (otp: number) => void;
+  setOtp?: (otp: number) => void;
   setEmail: (email: string) => void;
+  onSuccess?: () => void;
 }) {
   const {
     register,
@@ -33,9 +35,15 @@ export default function ForgetPasswordForm({
     apiClient
       .put(data)
       .then((res) => {
-        toast.success(res.data.OTP);
-        setOtp(res.data.OTP);
+        // Only show OTP toast in development mode; in production, no OTP toast is displayed
+        if (process.env.NODE_ENV === "development" && res.data?.OTP) {
+          toast.info(`کد تایید (محیط توسعه): ${res.data.OTP}`);
+        }
+        if (setOtp && res.data?.OTP) {
+          setOtp(res.data.OTP);
+        }
         setEmail(data.email);
+        onSuccess?.();
       })
       .catch((error) =>
         toast.error(getErrorMessage(error, "ارسال کد با خطا روبه‌رو شد"))

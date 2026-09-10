@@ -25,9 +25,9 @@ export default function DeleteBtn({
     courseDeletionApi
       .delete()
       .then((res) => {
-        toast.success(res.data.message);
+        toast.success(res.data.message || "دوره با موفقیت حذف شد");
         setIsOpen(false);
-        replace("/");
+        replace("/courses");
       })
       .catch((error) =>
         toast.error(getErrorMessage(error, "خطا در حذف دوره"))

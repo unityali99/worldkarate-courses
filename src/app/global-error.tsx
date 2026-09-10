@@ -1,12 +1,24 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import Link from "next/link";
 import BackgroundImage from "@/layouts/BackgroundImage";
 import { Button } from "@/components/ui/button";
-import { LuArrowLeft, LuHouse } from "react-icons/lu";
+import { LuHouse, LuRefreshCw } from "react-icons/lu";
 import { iranSans, lalezar } from "@/app/fonts";
 import "@/app/globals.css";
 
-export default function NotFound() {
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  useEffect(() => {
+    console.error("Global application error:", error);
+  }, [error]);
+
   return (
     <html lang="fa" dir="rtl" className="dark">
       <body
@@ -18,25 +30,28 @@ export default function NotFound() {
               dir="rtl"
               className="w-full max-w-xl mx-auto p-8 sm:p-12 rounded-3xl bg-slate-950/80 border border-white/15 backdrop-blur-xl shadow-glass text-center space-y-6 text-white"
             >
-              <span className="font-lalezar text-6xl md:text-8xl text-red-500 font-normal leading-none block">
-                ۴۰۴
-              </span>
+              <div className="mx-auto w-16 h-16 rounded-2xl bg-red-500/15 text-red-400 border border-red-500/30 flex items-center justify-center shadow-[0_0_25px_rgba(239,68,68,0.2)]">
+                <LuRefreshCw className="w-8 h-8" />
+              </div>
 
               <h1 className="font-lalezar text-3xl md:text-4xl text-white font-normal leading-tight">
-                صفحه مورد نظر پیدا نشد
+                مشکلی در سامانه پیش آمد
               </h1>
 
               <p className="text-slate-300/80 text-sm sm:text-base leading-relaxed">
-                ممکن است آدرس صفحه تغییر کرده باشد یا این دوره موقتا در دسترس نباشد.
+                درخواست شما با خطا روبه‌رو شد. می‌توانید دوباره تلاش کنید یا به صفحه اصلی بازگردید.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-                <Link href="/courses" className="w-full sm:w-auto">
-                  <Button variant="teal" size="lg" className="w-full sm:w-auto gap-2">
-                    <span>مشاهده دوره‌ها</span>
-                    <LuArrowLeft className="w-4 h-4" />
-                  </Button>
-                </Link>
+                <Button
+                  variant="teal"
+                  size="lg"
+                  className="w-full sm:w-auto gap-2"
+                  onClick={reset}
+                >
+                  <span>تلاش دوباره</span>
+                  <LuRefreshCw className="w-4 h-4" />
+                </Button>
                 <Link href="/" className="w-full sm:w-auto">
                   <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2">
                     <span>صفحه اصلی</span>

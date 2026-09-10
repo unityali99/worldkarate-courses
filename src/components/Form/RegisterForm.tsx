@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Register, { RegisterType } from "@/schemas/auth/Register";
 import ApiClient from "@/services/ApiClient";
+import useLanguageStore from "@/stores/languageStore";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import FormContainer from "@/layouts/FormContainer";
 import FormInput from "./components/FormInput";
@@ -14,6 +15,7 @@ import FormFooter from "./components/FormFooter";
 import { toast } from "react-toastify";
 
 export default function RegisterForm() {
+  const { t } = useLanguageStore();
   const {
     register,
     handleSubmit,
@@ -31,7 +33,7 @@ export default function RegisterForm() {
     apiClient
       .post(data)
       .then((res) => {
-        toast.success(res.data.message);
+        toast.success(res.data.message || "ثبت‌نام با موفقیت انجام شد");
         replace("/auth/login");
       })
       .catch((error) =>
@@ -43,7 +45,7 @@ export default function RegisterForm() {
   return (
     <FormContainer className="my-8">
       <h2 className="font-lalezar text-3xl sm:text-4xl text-white font-normal text-center mb-6">
-        ثبت نام در آکادمی
+        {t.ui.register} در آکادمی
       </h2>
 
       <div className="space-y-4">
@@ -51,7 +53,7 @@ export default function RegisterForm() {
           <FormInput
             dir="rtl"
             register={register("firstName")}
-            label="نام:"
+            label={t.ui.firstName + ":"}
             placeholder="مثال: علی"
           />
           {errors.firstName && (
@@ -65,7 +67,7 @@ export default function RegisterForm() {
           <FormInput
             dir="rtl"
             register={register("lastName")}
-            label="نام خانوادگی:"
+            label={t.ui.lastName + ":"}
             placeholder="مثال: محمدی"
           />
           {errors.lastName && (
@@ -79,8 +81,8 @@ export default function RegisterForm() {
           <FormInput
             dir="ltr"
             register={register("email")}
-            label="ایمیل:"
-            placeholder="Example@gmail.com"
+            label={t.ui.email + ":"}
+            placeholder={t.ui.emailPlaceholder}
           />
           {errors.email && (
             <p className="mt-1 text-xs text-red-400 font-medium text-right">
@@ -94,8 +96,8 @@ export default function RegisterForm() {
             dir="ltr"
             password
             register={register("password")}
-            label="رمز عبور:"
-            placeholder="حداقل ۶ کاراکتر"
+            label={t.ui.password + ":"}
+            placeholder="حداقل ۸ کاراکتر (حرف و عدد)"
           />
           {errors.password && (
             <p className="mt-1 text-xs text-red-400 font-medium text-right">
@@ -108,13 +110,17 @@ export default function RegisterForm() {
       <div className="pt-2">
         <FormButton
           onClick={handleSubmit(onSubmit)}
-          text="ثبت نام"
+          text={t.ui.register}
           isLoading={isLoading}
         />
       </div>
 
       <div className="pt-4 border-t border-white/10">
-        <FormFooter text="قبلا ثبت نام کرده‌اید؟" linkText="ورود" href="/auth/login" />
+        <FormFooter
+          text={t.ui.alreadyRegistered}
+          linkText={t.ui.login}
+          href="/auth/login"
+        />
       </div>
     </FormContainer>
   );

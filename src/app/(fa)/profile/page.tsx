@@ -14,9 +14,11 @@ import { LuShieldCheck, LuUser } from "react-icons/lu";
 export default async function ProfilePage() {
   const cookieStore = await cookies();
   const token = cookieStore.get(cookieKey)?.value;
-  if (!token || token?.length === 0) return redirect("/auth/login");
+  if (!token || token.length === 0) return redirect("/auth/login");
 
-  const decodedToken = decodeJwt(token!);
+  const decodedToken = decodeJwt(token);
+  if (!decodedToken) return redirect("/auth/login");
+
   const { firstName, lastName, email, role }: UserType = decodedToken;
   const userIsAdmin = checkIsAdmin(decodedToken);
 
