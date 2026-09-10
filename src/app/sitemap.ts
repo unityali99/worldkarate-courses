@@ -68,3 +68,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...courseEntries,
   ];
 }
+
+// Automatically revalidate the sitemap every hour so newly published courses appear without rebuilding
+export const revalidate = 3600;
