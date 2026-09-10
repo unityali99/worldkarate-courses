@@ -1,7 +1,21 @@
-import { ReactNode } from "react";
+"use client";
 
-function Providers({ children }: { children: ReactNode }) {
+import { ReactNode, useEffect } from "react";
+import { syncLanguage } from "@/stores/languageStore";
+import { Language } from "@/lang";
+
+export default function Providers({
+  children,
+  locale = "fa",
+}: {
+  children: ReactNode;
+  locale?: Language;
+}) {
+  syncLanguage(locale);
+
+  useEffect(() => {
+    syncLanguage(locale);
+  }, [locale]);
+
   return <>{children}</>;
 }
-
-export default Providers;

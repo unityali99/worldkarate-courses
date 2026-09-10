@@ -7,11 +7,15 @@ import ApiClient from "@/services/ApiClient";
 import { getExternalUrl } from "@/utils/externalUrl";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { Button } from "@/components/ui/button";
+import useLanguageStore from "@/stores/languageStore";
 import Placeholder from "./Placeholder";
 import { toast } from "react-toastify";
 import { LuBookOpen, LuExternalLink } from "react-icons/lu";
 
 export default function UserCourses({ email }: { email?: string }) {
+  const { t, currentLanguage } = useLanguageStore();
+  const isRtl = currentLanguage === "fa";
+  const coursesHref = isRtl ? "/courses" : "/en/courses";
   const [hydrated, setHydrated] = useState(false);
   const [courses, setCourses] = useState<CreateCourseType[]>([]);
 
@@ -32,7 +36,7 @@ export default function UserCourses({ email }: { email?: string }) {
   return (
     <div className="w-full">
       <div
-        dir="rtl"
+        dir={isRtl ? "rtl" : "ltr"}
         className="space-y-6 p-6 sm:p-8 rounded-3xl bg-slate-950/75 border border-white/15 backdrop-blur-xl shadow-glass text-white"
       >
         {/* Header */}
@@ -42,10 +46,10 @@ export default function UserCourses({ email }: { email?: string }) {
           </div>
           <div>
             <h3 className="font-lalezar text-2xl text-white font-normal">
-              دوره‌های خریداری شده
+              {t.ui.purchasedCourses}
             </h3>
             <p className="text-slate-400 text-xs font-normal">
-              دسترسی سریع به محتوای آموزشی شما
+              {t.ui.quickAccessToCourses}
             </p>
           </div>
         </div>
@@ -59,7 +63,7 @@ export default function UserCourses({ email }: { email?: string }) {
           </div>
         ) : courses.length === 0 ? (
           <div className="p-8 text-center rounded-2xl bg-white/5 border border-white/10">
-            <p className="text-slate-400 text-sm">دوره‌ای خریداری نشده است.</p>
+            <p className="text-slate-400 text-sm">{t.ui.noPurchasedCourses}</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -80,13 +84,13 @@ export default function UserCourses({ email }: { email?: string }) {
                     className="w-full sm:w-auto"
                   >
                     <Button variant="teal" size="sm" className="w-full sm:w-auto gap-2">
-                      <span>مشاهده دوره</span>
+                      <span>{t.ui.viewCourse}</span>
                       <LuExternalLink className="w-3.5 h-3.5" />
                     </Button>
                   </a>
                 ) : (
                   <Button variant="outline" size="sm" disabled className="w-full sm:w-auto text-xs">
-                    لینک موجود نیست
+                    {t.ui.noLinkAvailable}
                   </Button>
                 )}
               </div>
@@ -95,9 +99,9 @@ export default function UserCourses({ email }: { email?: string }) {
         )}
 
         <div className="pt-2">
-          <Link href="/courses" className="block w-full">
+          <Link href={coursesHref} className="block w-full">
             <Button variant="outline" size="lg" className="w-full font-bold">
-              مشاهده همه دوره‌ها
+              {t.ui.viewAllCourses}
             </Button>
           </Link>
         </div>

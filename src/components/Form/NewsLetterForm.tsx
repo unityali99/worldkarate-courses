@@ -5,6 +5,7 @@ import { registerNewsletter, type NewsletterState } from "@/services/registerNew
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IoNewspaperOutline, IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
+import useLanguageStore from "@/stores/languageStore";
 import { cn } from "@/utils/cn";
 
 const initialState: NewsletterState = {
@@ -19,8 +20,12 @@ interface NewsLetterFormProps {
 
 export default function NewsLetterForm({
   className,
-  buttonText = "عضویت در خبرنامه دوجو",
+  buttonText,
 }: NewsLetterFormProps) {
+  const { t, currentLanguage } = useLanguageStore();
+  const isRtl = currentLanguage === "fa";
+  const finalButtonText = buttonText || t.ui.footer.newsletterButton;
+
   const [state, formAction, isPending] = useActionState(
     registerNewsletter,
     initialState
@@ -38,11 +43,11 @@ export default function NewsLetterForm({
       ref={formRef}
       action={formAction}
       className={cn("space-y-3 w-full", className)}
-      dir="rtl"
+      dir={isRtl ? "rtl" : "ltr"}
     >
       <div className="relative w-full">
         <Input
-          placeholder="ایمیل خود را وارد کنید (مثال: sensei@karate.ir)"
+          placeholder={t.ui.footer.newsletterEmailPlaceholder}
           type="email"
           name="email"
           required
@@ -76,7 +81,7 @@ export default function NewsLetterForm({
         className="w-full gap-2 rounded-2xl h-11 text-xs sm:text-sm font-bold shadow-glow-crimson hover:shadow-lg transition-all"
       >
         <IoNewspaperOutline className="w-4 h-4 ml-1" />
-        <span>{buttonText}</span>
+        <span>{finalButtonText}</span>
       </Button>
     </form>
   );

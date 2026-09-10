@@ -8,27 +8,40 @@ import { isAdmin } from "./utils/authHelpers";
 export function middleware(request: NextRequest) {
   const authToken = request.cookies.get(cookieKey)?.value;
   const path = request.nextUrl.pathname;
+  const isEn = path.startsWith("/en");
+  const loginPath = isEn ? "/en/auth/login" : "/auth/login";
+  const profilePath = isEn ? "/en/profile" : "/profile";
 
-  if (path.startsWith("/profile")) {
+  const normalizedPath = isEn ? path.replace(/^\/en/, "") || "/" : path;
+
+  if (normalizedPath.startsWith("/profile")) {
     if (!authToken)
-      return NextResponse.redirect(new URL("/auth/login", request.url));
-    if (path.startsWith("/profile/admin")) {
+      return NextResponse.redirect(new URL(loginPath, request.url));
+    if (normalizedPath.startsWith("/profile/admin")) {
       const user: UserType = jwtDecode(authToken);
       if (!isAdmin(user))
-        return NextResponse.redirect(new URL("/profile", request.url));
+        return NextResponse.redirect(new URL(profilePath, request.url));
     }
   }
 
-  if (path.startsWith("/auth")) {
+  if (normalizedPath.startsWith("/auth")) {
     if (authToken)
-      return NextResponse.redirect(new URL("/profile", request.url));
+      return NextResponse.redirect(new URL(profilePath, request.url));
   }
 
-  if (path.startsWith("/payment"))
+  if (normalizedPath.startsWith("/payment")) {
     if (!authToken)
-      return NextResponse.redirect(new URL("/auth/login", request.url));
+      return NextResponse.redirect(new URL(loginPath, request.url));
+  }
 }
 
 export const config = {
-  matcher: ["/profile/:path*", "/auth/:path*", "/payment/:path*"],
+  matcher: [
+    "/profile/:path*",
+    "/auth/:path*",
+    "/payment/:path*",
+    "/en/profile/:path*",
+    "/en/auth/:path*",
+    "/en/payment/:path*",
+  ],
 };

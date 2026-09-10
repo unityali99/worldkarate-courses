@@ -3,20 +3,29 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import useAuth from "@/stores/authStore";
 import useLanguageStore from "@/stores/languageStore";
+import { lang, Language } from "@/lang";
 import { Button } from "@/components/ui/button";
-import BurgerMenu from "./BurgerMenu";
 import ProfileLink from "./ProfileLink";
-import Cart from "./Cart";
+import Cart, { CartDrawer } from "./Cart";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { LuBookOpen, LuInstagram, LuLogOut } from "react-icons/lu";
 
-export default function Navbar() {
+export default function Navbar({ locale }: { locale?: Language }) {
+  const pathname = usePathname();
+  const isEnglish = locale ? locale === "en" : pathname.startsWith("/en");
+
   const { user, logout } = useAuth();
-  const { t } = useLanguageStore();
+  const { t: storeT } = useLanguageStore();
+  const t = locale ? lang[locale] : storeT;
   const [hydrated, setHydrated] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const homeHref = isEnglish ? "/en" : "/";
+  const coursesHref = isEnglish ? "/en/courses" : "/courses";
+  const loginHref = isEnglish ? "/en/auth/login" : "/auth/login";
 
   useEffect(() => setHydrated(true), []);
 
@@ -55,7 +64,7 @@ export default function Navbar() {
       <div className="relative z-10 w-full max-w-6xl mx-auto flex justify-between items-center">
         {/* Left Side: Logo & Navigation Links */}
         <div className="flex items-center gap-6 lg:gap-10">
-          <Link href="/" className="relative block w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0">
+          <Link href={homeHref} className="relative block w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 flex-shrink-0">
             <Image
               priority
               alt="Logo"
@@ -85,7 +94,7 @@ export default function Navbar() {
 
             {/* Courses Link */}
             <Link
-              href="/courses"
+              href={coursesHref}
               aria-label={t.ui.courses}
               className="group flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-200 hover:border-teal-400 hover:bg-white/10 hover:-translate-y-0.5"
             >
@@ -99,9 +108,9 @@ export default function Navbar() {
           </nav>
         </div>
 
-        {/* Right Side: Auth / Cart / Profile Links */}
+        {/* Right Side Desktop: Auth / Cart / Profile Links */}
         <div className="hidden md:flex items-center gap-4">
-          <Cart />
+          <Cart showDrawer={false} />
           <LanguageSwitcher />
 
           {hydrated && user ? (
@@ -110,16 +119,16 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={logout}
-                title="خروج از حساب"
+                title={t.ui.logoutTitle}
                 className="w-10 h-10 rounded-full bg-red-950/60 border border-red-800/60 text-red-300 hover:bg-red-900/80 hover:text-white flex items-center justify-center transition-all hover:scale-105"
               >
                 <LuLogOut size={18} />
               </button>
             </div>
           ) : hydrated && !user ? (
-            <Link href="/auth/login">
+            <Link href={loginHref}>
               <Button variant="primary" size="default" className="px-5 font-bold shadow-glow-crimson">
-                {t.ui.login + " / " + t.ui.register}
+                {t.ui.loginRegister}
               </Button>
             </Link>
           ) : (
@@ -127,11 +136,25 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile Burger Menu */}
-        <div className="md:hidden">
-          <BurgerMenu hydrated={hydrated} />
+        {/* Right Side Mobile: Directly Visible Language Switcher & Quick Logout */}
+        <div className="flex md:hidden items-center gap-2.5">
+          <LanguageSwitcher />
+
+          {hydrated && user && (
+            <button
+              type="button"
+              onClick={logout}
+              title={t.ui.logoutTitle}
+              className="w-9 h-9 rounded-full bg-red-950/60 border border-red-800/60 text-red-300 hover:bg-red-900/80 hover:text-white flex items-center justify-center transition-all active:scale-95"
+            >
+              <LuLogOut size={16} />
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Synchronized Global Cart Drawer */}
+      <CartDrawer />
     </header>
   );
 }

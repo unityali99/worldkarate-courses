@@ -7,6 +7,7 @@ import useCart from "@/stores/cartStore";
 import { Button } from "@/components/ui/button";
 import Placeholder from "./Placeholder";
 import ApiClient from "@/services/ApiClient";
+import useLanguageStore from "@/stores/languageStore";
 import { PaymentType } from "@/schemas/Payment";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "@/utils/getErrorMessage";
@@ -14,6 +15,8 @@ import { LuCreditCard } from "react-icons/lu";
 
 export default function Checkout({ hydrated }: { hydrated: boolean }) {
   const { courses } = useCart();
+  const { t, currentLanguage } = useLanguageStore();
+  const isRtl = currentLanguage === "fa";
   const [isLoading, setIsLoading] = useState(false);
 
   const apiClient = new ApiClient<PaymentType>("/payment/checkout");
@@ -40,9 +43,9 @@ export default function Checkout({ hydrated }: { hydrated: boolean }) {
 
   if (hydrated && courses.length === 0) {
     return (
-      <div className="w-11/12 sm:w-8/12 md:w-6/12 mx-auto text-center">
+      <div className="w-11/12 sm:w-8/12 md:w-6/12 mx-auto text-center" dir={isRtl ? "rtl" : "ltr"}>
         <div className="p-8 rounded-3xl bg-slate-950/80 border border-white/15 backdrop-blur-xl text-slate-300">
-          <p className="text-base font-semibold">شما هیچ موردی در سبد خرید برای پرداخت ندارید.</p>
+          <p className="text-base font-semibold">{t.ui.noCoursesInCart}</p>
         </div>
       </div>
     );
@@ -50,17 +53,17 @@ export default function Checkout({ hydrated }: { hydrated: boolean }) {
 
   return (
     <PanelContainer>
-      <div className="space-y-6" dir="rtl">
+      <div className="space-y-6" dir={isRtl ? "rtl" : "ltr"}>
         <h2 className="font-lalezar text-3xl text-white font-normal">
-          نهایی‌سازی سفارش
+          {t.ui.checkout}
         </h2>
 
         <PanelTableContainer>
-          <table className="w-full text-right border-collapse">
+          <table className={`w-full ${isRtl ? "text-right" : "text-left"} border-collapse`}>
             <thead>
               <tr className="border-b border-white/10 text-slate-400 text-xs sm:text-sm">
-                <th className="py-3 px-4 font-semibold">عنوان دوره</th>
-                <th className="py-3 px-4 font-semibold text-center">قیمت (تومان)</th>
+                <th className="py-3 px-4 font-semibold">{t.ui.courseTitle}</th>
+                <th className="py-3 px-4 font-semibold text-center">{t.ui.coursePrice}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-sm">
@@ -69,7 +72,7 @@ export default function Checkout({ hydrated }: { hydrated: boolean }) {
                     <tr key={i} className="hover:bg-white/5 transition-colors">
                       <td className="py-4 px-4 font-medium text-slate-100">{c.title}</td>
                       <td className="py-4 px-4 text-center font-bold text-slate-200">
-                        {c.price.toLocaleString("fa-IR")}
+                        {c.price.toLocaleString(isRtl ? "fa-IR" : "en-US")}
                       </td>
                     </tr>
                   ))
@@ -84,9 +87,9 @@ export default function Checkout({ hydrated }: { hydrated: boolean }) {
                     </tr>
                   ))}
               <tr className="bg-white/5 font-bold text-base">
-                <td className="py-4 px-4 text-white">مجموع قابل پرداخت:</td>
+                <td className="py-4 px-4 text-white">{t.ui.totalPayable}</td>
                 <td className="py-4 px-4 text-center text-emerald-400 font-extrabold text-lg">
-                  {hydrated ? `${totalPrice.toLocaleString("fa-IR")} تومان` : <Placeholder />}
+                  {hydrated ? `${totalPrice.toLocaleString(isRtl ? "fa-IR" : "en-US")}${t.ui.currency}` : <Placeholder />}
                 </td>
               </tr>
             </tbody>
@@ -101,7 +104,7 @@ export default function Checkout({ hydrated }: { hydrated: boolean }) {
               onClick={onClick}
             >
               <LuCreditCard className="w-5 h-5 ml-1" />
-              <span>پرداخت آنلاین و نهایی کردن سفارش</span>
+              <span>{t.ui.checkoutOnline}</span>
             </Button>
           </div>
         </PanelTableContainer>

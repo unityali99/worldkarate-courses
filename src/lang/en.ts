@@ -57,9 +57,15 @@ export const en = {
     send: "Send",
     clear: "Clear All",
     courses: "Courses",
+    home: "Home",
+    cart: "Cart",
 
     // Landing Page
     landing: {
+      badge: "International Kata & Karate Academy",
+      aboutBadge: "About Sensei Amir Yari",
+      methodologyBadge: "Methodology & Training Principles",
+      legacyBadge: "Championship History & Legacy",
       heroTitle: "Master Karate with Sensei Amir Yari",
       heroDesc:
         "Join the ultimate platform for learning Kata and advancing your martial arts journey. Expert guidance, comprehensive courses, and a legacy of excellence.",
@@ -110,7 +116,27 @@ export const en = {
     passwordPlaceholder: "Password",
     otpPlaceholder: "OTP Code",
 
-    // Page titles
+    // Page titles & Common Labels
+    account: "Account",
+    openProfile: "Profile",
+    logoutTitle: "Logout",
+    loginRegister: "Login / Register",
+    langCode: "En",
+    switchLang: "فارسی",
+    checkingStatus: "Checking status...",
+    alreadyPurchasedNotice: "You have already purchased this course.",
+    viewInProfile: "View in Profile",
+    viewAllCourses: "View All Courses",
+    quickAccessToCourses: "Quick access to your learning content",
+    noLinkAvailable: "No link available",
+    cartYourCart: "Your Shopping Cart",
+    removeFromCart: "Remove from Cart",
+    checkoutOnline: "Complete Order & Pay Online",
+    totalPayable: "Total Payable:",
+    courseTitle: "Course Title",
+    coursePrice: "Price (Toman)",
+    noCoursesInCart: "You have no items in the cart to checkout.",
+    trainingPackage: "Training Package",
     profile: "Profile",
     adminPanel: "Admin Panel",
     changePassword: "Change Password",
@@ -132,6 +158,8 @@ export const en = {
 
     // Footer
     footer: {
+      brandTitle: "Sensei Amir Yari",
+      brandSubtitle: "Specialized Kata & Karate Academy",
       address:
         "Tehran, District 22, Rah Ahan settlement , Qaem St, Sadra academy",
       phone: "Phone: 09191257020",
@@ -139,10 +167,32 @@ export const en = {
       designerName: "Ali Ahmadi",
       contactUs: "Contact Us",
       socialMedias: "Social Medias",
+      socialDesc: "Direct contact & daily video updates:",
+      instagramLabel: "Instagram Page",
+      telegramLabel: "Telegram Channel",
+      whatsappLabel: "WhatsApp Support",
+      newsletterTitle: "Subscribe to Academy Newsletter",
+      newsletterDesc: "Subscribe to receive special course discounts, event notices, and technique updates.",
+      newsletterButton: "Subscribe to Newsletter",
+      newsletterEmailPlaceholder: "Enter your email address (e.g. sensei@karate.ir)",
       instagram: "Instagram",
       telegram: "Telegram",
       whatsapp: "WhatsApp",
       rights: "All rights reserved.",
+    },
+
+    // Courses Page
+    coursesPage: {
+      badge: "Online Karate Dojo",
+      instructorTitle: "Sensei Amir Yari",
+      subtitle: "Specialized Kata & Martial Arts Video Training Packages",
+      newsletterDesc: "Enter your email below to receive updates on new course releases and upcoming workshops.",
+      newsletterBtn: "Subscribe to Newsletter",
+      emptyBadge: "In Preparation",
+      emptyTitle: "No courses currently published",
+      emptyDesc: "New masterclass video packages breaking down Kata and Kumite techniques will be available here soon.",
+      trainingPackage: "Training Package",
+      viewCourse: "View Course",
     },
 
     // Status

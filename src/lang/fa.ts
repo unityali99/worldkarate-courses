@@ -57,9 +57,15 @@ export const fa = {
     send: "ارسال",
     clear: "حذف همه",
     courses: "دوره ها",
+    home: "خانه",
+    cart: "سبد خرید",
 
     // Landing Page
     landing: {
+      badge: "آکادمی بین‌المللی کاتا و کاراته",
+      aboutBadge: "درباره استاد امیر یاری",
+      methodologyBadge: "متدولوژی و اصول تمرین",
+      legacyBadge: "افتخارات و تاریخچه قهرمانی",
       heroTitle: "با سنسی یاری کاراته را حرفه‌ای بیاموزید",
       heroDesc:
         "به جامع ترین پلتفرم آموزش کاتا و هنرهای رزمی بپیوندید. آموزش تخصصی، دوره های جامع و میراثی از برتری.",
@@ -73,7 +79,7 @@ export const fa = {
       legacyTitle: "میراثی از افتخار",
       legacyDesc:
         "از سال ۲۰۱۲، ما متعهد به هنر کاراته بوده ایم. به جامعه ای بپیوندید که بر پایه احترام، قدرت و پیشرفت مداوم بنا شده است.",
-      experience: "۱۰+ سال تجربه",
+      experience: "۲۰+ سال تجربه",
       experienceDesc: "آموزش تخصصی",
       training: "آموزش شخصی سازی شده",
       trainingDesc: "برنامه های سفارشی برای تمام سطوح مهارت",
@@ -109,7 +115,27 @@ export const fa = {
     passwordPlaceholder: "Password",
     otpPlaceholder: "کد یکبار مصرف",
 
-    // Page titles
+    // Page titles & Common Labels
+    account: "حساب کاربری",
+    openProfile: "پروفایل",
+    logoutTitle: "خروج از حساب",
+    loginRegister: "ورود / ثبت‌نام",
+    langCode: "فا",
+    switchLang: "English",
+    checkingStatus: "در حال بررسی وضعیت...",
+    alreadyPurchasedNotice: "شما این دوره را قبلا خریداری نموده‌اید.",
+    viewInProfile: "مشاهده دوره در پروفایل",
+    viewAllCourses: "مشاهده همه دوره‌ها",
+    quickAccessToCourses: "دسترسی سریع به محتوای آموزشی شما",
+    noLinkAvailable: "لینک موجود نیست",
+    cartYourCart: "سبد خرید شما",
+    removeFromCart: "حذف از سبد",
+    checkoutOnline: "پرداخت آنلاین و نهایی کردن سفارش",
+    totalPayable: "مجموع قابل پرداخت:",
+    courseTitle: "عنوان دوره",
+    coursePrice: "قیمت (تومان)",
+    noCoursesInCart: "شما هیچ موردی در سبد خرید برای پرداخت ندارید.",
+    trainingPackage: "پکیج آموزشی",
     profile: "پروفایل",
     adminPanel: "پنل ادمین",
     changePassword: "تغییر رمز عبور",
@@ -131,16 +157,40 @@ export const fa = {
 
     // Footer
     footer: {
+      brandTitle: "سنسی امیر یاری",
+      brandSubtitle: "آکادمی تخصصی کاراته و کاتا",
       address: "تهران، منطقه 22، شهرک راه آهن، خیابان قائم، باشگاه صدرا",
       phone: "شماره تماس: 09191257020",
       designer: "طراحی:",
       designerName: "علی احمدی",
       contactUs: "ارتباط با ما",
       socialMedias: "شبکه‌های اجتماعی",
+      socialDesc: "ارتباط مستقیم و مشاهده ویدیوهای روزانه:",
+      instagramLabel: "صفحه اینستاگرام",
+      telegramLabel: "کانال تلگرام",
+      whatsappLabel: "پشتیبانی واتساپ",
+      newsletterTitle: "عضویت در خبرنامه آکادمی",
+      newsletterDesc: "با عضویت در خبرنامه، از تخفیف‌های ویژه دوره‌ها، رویدادها و آپدیت‌های تکنیک‌ها مطلع شوید.",
+      newsletterButton: "عضویت در خبرنامه",
+      newsletterEmailPlaceholder: "ایمیل خود را وارد کنید (مثال: sensei@karate.ir)",
       instagram: "اینستاگرام",
       telegram: "تلگرام",
       whatsapp: "واتساپ",
       rights: "تمامی حقوق محفوظ است",
+    },
+
+    // Courses Page
+    coursesPage: {
+      badge: "دوجو آنلاین کاراته",
+      instructorTitle: "سنسی امیر یاری",
+      subtitle: "پکیج‌های آموزش تخصصی کاتا و تکنیک‌های کاراته",
+      newsletterDesc: "برای اطلاع از انتشار دوره‌های جدید و تخفیف‌های ویژه، ایمیل خود را در کادر زیر ثبت کنید.",
+      newsletterBtn: "عضویت در خبرنامه",
+      emptyBadge: "در حال آماده‌سازی",
+      emptyTitle: "در حال حاضر دوره‌ای منتشر نشده است",
+      emptyDesc: "پکیج‌های ویدیویی جدید آموزش تکنیک‌ها و کاتاهای کاراته به زودی در این بخش قرار خواهند گرفت.",
+      trainingPackage: "پکیج آموزشی",
+      viewCourse: "مشاهده دوره",
     },
 
     // Status

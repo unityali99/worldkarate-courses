@@ -15,6 +15,8 @@ type cartType = {
   clear: () => void;
   hydrated: boolean;
   setHydrated: () => void;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 };
 
 export const cartStorageKey = "cart";
@@ -22,6 +24,8 @@ export const cartStorageKey = "cart";
 const useCart = create<cartType>()((set, get) => ({
   courses: [],
   hydrated: false,
+  isOpen: false,
+  setIsOpen: (isOpen) => set({ isOpen }),
   setHydrated: () => {
     if (typeof window !== "undefined") {
       let courses: CourseType[] = [];

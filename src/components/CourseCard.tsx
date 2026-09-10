@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -6,7 +8,8 @@ import { getCourseImageSource } from "@/utils/courseImage";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import PriceBadge from "./PriceBadge";
-import { LuArrowLeft, LuBookOpen } from "react-icons/lu";
+import useLanguageStore from "@/stores/languageStore";
+import { LuArrowLeft, LuArrowRight, LuBookOpen } from "react-icons/lu";
 
 interface CourseCardProps {
   course: CourseType;
@@ -15,6 +18,10 @@ interface CourseCardProps {
 export default function CourseCard({
   course: { id, description, img, title, price },
 }: CourseCardProps) {
+  const { t, currentLanguage } = useLanguageStore();
+  const isRtl = currentLanguage === "fa";
+  const ArrowIcon = isRtl ? LuArrowLeft : LuArrowRight;
+  const courseHref = isRtl ? `/courses/${id}` : `/en/courses/${id}`;
   const imageSource = getCourseImageSource(img);
 
   return (
@@ -50,15 +57,15 @@ export default function CourseCard({
         <div className="absolute top-4 right-4 z-30">
           <Badge variant="teal" className="backdrop-blur-md">
             <LuBookOpen className="w-3.5 h-3.5 ml-1 text-teal-300" />
-            <span>پکیج آموزشی</span>
+            <span>{t.ui.trainingPackage}</span>
           </Badge>
         </div>
       </div>
 
       {/* Content Section */}
       <div
-        className="flex flex-col justify-between flex-1 p-6 sm:p-8 text-right space-y-6"
-        dir="rtl"
+        className={`flex flex-col justify-between flex-1 p-6 sm:p-8 ${isRtl ? "text-right" : "text-left"} space-y-6`}
+        dir={isRtl ? "rtl" : "ltr"}
       >
         <div className="space-y-3">
           <h3 className="font-lalezar text-2xl sm:text-3xl text-white font-normal leading-snug group-hover:text-red-400 transition-colors duration-200">
@@ -73,14 +80,14 @@ export default function CourseCard({
         <div className="flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-white/10">
           <PriceBadge price={price} />
 
-          <Link href={`/courses/${id}`} className="w-full sm:w-auto">
+          <Link href={courseHref} className="w-full sm:w-auto">
             <Button
               variant="primary"
               size="default"
               className="w-full sm:w-auto gap-2 px-6 rounded-xl text-sm font-semibold"
             >
-              <span>مشاهده دوره</span>
-              <LuArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+              <span>{t.ui.viewCourse}</span>
+              <ArrowIcon className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             </Button>
           </Link>
         </div>

@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import useLanguageStore from "@/stores/languageStore";
+import { lang, Language } from "@/lang";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -16,10 +17,15 @@ import {
 } from "react-icons/lu";
 import { motion } from "framer-motion";
 
-export default function LandingPage() {
-  const { t, currentLanguage } = useLanguageStore();
-  const isRtl = currentLanguage === "fa";
+export default function LandingPage({ locale }: { locale?: Language }) {
+  const { t: storeT, currentLanguage } = useLanguageStore();
+  const activeLang = locale || currentLanguage || "fa";
+  const t = locale ? lang[locale] : storeT;
+  const isRtl = activeLang === "fa";
   const ArrowIcon = isRtl ? LuArrowLeft : LuArrowRight;
+  const coursesHref = isRtl ? "/courses" : "/en/courses";
+  const profileHref = isRtl ? "/profile" : "/en/profile";
+  const adminHref = isRtl ? "/profile/admin" : "/en/profile/admin";
 
   return (
     <div
@@ -62,11 +68,11 @@ export default function LandingPage() {
             className="flex flex-col items-center space-y-5"
           >
             <Badge
-              variant="crimson"
-              className="py-1 px-4 text-xs font-bold uppercase tracking-widest gap-2 shadow-[0_0_20px_rgba(220,38,38,0.35)]"
+              variant="default"
+              className="py-1.5 px-4 text-xs sm:text-sm font-semibold tracking-wide gap-2 bg-slate-950/85 border border-red-500/60 text-white shadow-[0_0_25px_rgba(220,38,38,0.35)] backdrop-blur-xl"
             >
-              <LuSparkles className="w-3.5 h-3.5" />
-              <span>آکادمی بین‌المللی کاتا و کاراته</span>
+              <LuSparkles className="w-3.5 h-3.5 text-red-400" />
+              <span>{t.ui.landing.badge}</span>
             </Badge>
 
             <motion.h1
@@ -82,7 +88,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-base sm:text-xl text-slate-300 font-light leading-relaxed max-w-2xl mx-auto drop-shadow"
+              className="text-base sm:text-xl text-white font-medium leading-relaxed max-w-2xl mx-auto drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
             >
               {t.ui.landing.heroDesc}
             </motion.p>
@@ -93,7 +99,7 @@ export default function LandingPage() {
               transition={{ delay: 0.6, duration: 0.8 }}
               className="pt-2"
             >
-              <Link href="/courses">
+              <Link href={coursesHref}>
                 <Button
                   variant="primary"
                   size="lg"
@@ -207,10 +213,10 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-right space-y-4"
+              className={`${isRtl ? "text-right" : "text-left"} space-y-4`}
             >
               <Badge variant="teal" className="py-1 px-3 text-xs font-semibold">
-                درباره استاد امیر یاری
+                {t.ui.landing.aboutBadge}
               </Badge>
 
               <h2 className="font-lalezar text-3xl sm:text-4xl lg:text-5xl text-white font-normal leading-tight">
@@ -222,12 +228,12 @@ export default function LandingPage() {
               </p>
 
               <div className="flex flex-wrap items-center gap-4 pt-2">
-                <Link href="/courses">
+                <Link href={coursesHref}>
                   <Button variant="primary" size="lg" className="font-bold shadow-glow-crimson">
                     {t.ui.landing.learnMore}
                   </Button>
                 </Link>
-                <Link href="/profile/admin">
+                <Link href={adminHref}>
                   <Button variant="outline" size="lg">
                     {t.ui.landing.meetSensei}
                   </Button>
@@ -250,10 +256,10 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="text-right space-y-4"
+              className={`${isRtl ? "text-right" : "text-left"} space-y-4`}
             >
               <Badge variant="teal" className="py-1 px-3 text-xs font-semibold">
-                متدولوژی و اصول تمرین
+                {t.ui.landing.methodologyBadge}
               </Badge>
 
               <h2 className="font-lalezar text-3xl sm:text-4xl lg:text-5xl text-teal-300 font-normal leading-tight">
@@ -339,10 +345,10 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-right space-y-4"
+              className={`${isRtl ? "text-right" : "text-left"} space-y-4`}
             >
               <Badge variant="gold" className="py-1 px-3 text-xs font-semibold">
-                افتخارات و تاریخچه قهرمانی
+                {t.ui.landing.legacyBadge}
               </Badge>
 
               <h2 className="font-lalezar text-3xl sm:text-4xl lg:text-5xl text-amber-400 font-normal leading-tight">
@@ -354,12 +360,12 @@ export default function LandingPage() {
               </p>
 
               <div className="flex flex-wrap items-center gap-4 pt-2">
-                <Link href="/courses">
+                <Link href={coursesHref}>
                   <Button variant="gold" size="lg" className="font-bold shadow-[0_0_25px_rgba(245,158,11,0.3)]">
                     {t.ui.landing.exploreHistory}
                   </Button>
                 </Link>
-                <Link href="/profile">
+                <Link href={profileHref}>
                   <Button variant="outline" size="lg">
                     {t.ui.landing.viewAchievements}
                   </Button>
@@ -391,7 +397,7 @@ export default function LandingPage() {
             </p>
 
             <div className="pt-2">
-              <Link href="/courses">
+              <Link href={coursesHref}>
                 <Button
                   variant="primary"
                   size="lg"
