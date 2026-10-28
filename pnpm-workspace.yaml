@@ -4,7 +4,7 @@ allowBuilds:
 
 overrides:
   postcss: ">=8.5.26"
-  sharp: ">=0.35.3"
+  sharp: ">=0.35.5"
   minimatch: ">=9.0.7"
   glob: ">=10.5.0"
   cross-spawn: ">=7.0.6"
