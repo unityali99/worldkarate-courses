@@ -12,10 +12,13 @@ import { toast } from "react-toastify";
 import PaidOrder from "@/components/Form/PaidOrder";
 import { ResponseData } from "@/layouts/CheckoutLogic";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import useLanguageStore from "@/stores/languageStore";
 import { LuRefreshCw } from "react-icons/lu";
 
 function VerifyContent() {
   const searchParams = useSearchParams();
+  const { t } = useLanguageStore();
+  const v = t.ui.verify;
   const authority = searchParams.get("Authority");
   const status = searchParams.get("Status");
   const { clear } = useCart();
@@ -32,13 +35,13 @@ function VerifyContent() {
 
   useEffect(() => {
     if (!authority || !status) {
-      setError("پارامترهای لازم برای تایید پرداخت یافت نشد");
+      setError(v.missingParams);
       setVerifying(false);
       return;
     }
 
     if (status !== "OK") {
-      setError("پرداخت توسط کاربر لغو شد یا ناموفق بود.");
+      setError(v.cancelledOrFailed);
       setVerifying(false);
       return;
     }
@@ -52,23 +55,26 @@ function VerifyContent() {
       .then((res) => {
         setOrder(res.data);
         clear(true);
-        toast.success(res.data.message || "پرداخت با موفقیت انجام شد");
+        toast.success(res.data.message || v.successMsg);
       })
       .catch((error) => {
-        const errorMessage = getErrorMessage(error, "خطا در تایید پرداخت");
+        const errorMessage = getErrorMessage(error, v.verifyError);
         setError(errorMessage);
         toast.error(errorMessage);
       })
       .finally(() => setVerifying(false));
-  }, [authority, status, clear]);
+  }, [authority, status, clear, v]);
 
   if (!hydrated || verifying) {
     return (
       <PanelContainer>
-        <div className="flex flex-col justify-center items-center min-h-[350px] space-y-4 text-white" dir="rtl">
+        <div
+          className="flex flex-col justify-center items-center min-h-[350px] space-y-4 text-white"
+          dir="rtl"
+        >
           <div className="w-12 h-12 rounded-full border-4 border-teal-400 border-t-transparent animate-spin" />
           <p className="text-base sm:text-lg font-medium text-slate-300">
-            در حال تایید پرداخت و صدور دسترسی دوره‌ها...
+            {v.verifying}
           </p>
         </div>
       </PanelContainer>
@@ -78,15 +84,20 @@ function VerifyContent() {
   if (error) {
     return (
       <PanelContainer>
-        <div className="w-full max-w-md mx-auto p-8 rounded-3xl bg-slate-950/80 border border-white/15 backdrop-blur-xl shadow-glass text-center space-y-6 text-white" dir="rtl">
+        <div
+          className="w-full max-w-md mx-auto p-8 rounded-3xl bg-slate-950/80 border border-white/15 backdrop-blur-xl shadow-glass text-center space-y-6 text-white"
+          dir="rtl"
+        >
           <div className="mx-auto w-14 h-14 rounded-2xl bg-red-500/15 text-red-400 border border-red-500/30 flex items-center justify-center shadow-[0_0_20px_rgba(239,68,68,0.2)]">
             <LuRefreshCw className="w-7 h-7" />
           </div>
-          <h3 className="font-lalezar text-2xl text-white font-normal">خطا در پرداخت</h3>
+          <h3 className="font-lalezar text-2xl text-white font-normal">
+            {v.paymentError}
+          </h3>
           <p className="text-sm text-slate-300">{error}</p>
           <Link href="/profile" className="block w-full">
             <Button variant="teal" size="lg" className="w-full font-bold">
-              رفتن به دوره‌های خریداری شده
+              {v.goToPurchased}
             </Button>
           </Link>
         </div>

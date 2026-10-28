@@ -172,9 +172,11 @@ export const en = {
       telegramLabel: "Telegram Channel",
       whatsappLabel: "WhatsApp Support",
       newsletterTitle: "Subscribe to Academy Newsletter",
-      newsletterDesc: "Subscribe to receive special course discounts, event notices, and technique updates.",
+      newsletterDesc:
+        "Subscribe to receive special course discounts, event notices, and technique updates.",
       newsletterButton: "Subscribe to Newsletter",
-      newsletterEmailPlaceholder: "Enter your email address (e.g. sensei@karate.ir)",
+      newsletterEmailPlaceholder:
+        "Enter your email address (e.g. sensei@karate.ir)",
       instagram: "Instagram",
       telegram: "Telegram",
       whatsapp: "WhatsApp",
@@ -186,13 +188,33 @@ export const en = {
       badge: "Online Karate Dojo",
       instructorTitle: "Sensei Amir Yari",
       subtitle: "Specialized Kata & Martial Arts Video Training Packages",
-      newsletterDesc: "Enter your email below to receive updates on new course releases and upcoming workshops.",
+      newsletterDesc:
+        "Enter your email below to receive updates on new course releases and upcoming workshops.",
       newsletterBtn: "Subscribe to Newsletter",
       emptyBadge: "In Preparation",
       emptyTitle: "No courses currently published",
-      emptyDesc: "New masterclass video packages breaking down Kata and Kumite techniques will be available here soon.",
+      emptyDesc:
+        "New masterclass video packages breaking down Kata and Kumite techniques will be available here soon.",
       trainingPackage: "Training Package",
       viewCourse: "View Course",
+    },
+
+    // Course Detail Page
+    courseDetail: {
+      backToCourses: "Back to Courses",
+      categoryBadge: "Kata Training Course",
+      priceLabel: "Course price:",
+    },
+
+    // Forget Password Form
+    forgetPasswordForm: {
+      title: "Password Recovery",
+      emailLabel: "Your Email:",
+      submit: "Send Verification Code",
+      footerText: "Don't have an account?",
+      footerLink: "Sign Up",
+      otpDevToast: "Verification code (dev)",
+      sendError: "Failed to send the code",
     },
 
     // Status
@@ -212,6 +234,126 @@ export const en = {
     // Newsletter
     newsletterDescription:
       "Enter your email to stay updated with the latest package updates.",
+
+    // Common loading / wait
+    loading: "Loading...",
+    pleaseWait: "Please wait...",
+
+    // Error & Not-Found boundaries
+    errors: {
+      errorCode: "404",
+      notFoundTitle: "Page Not Found",
+      notFoundDesc:
+        "The page address may have changed, or this course is temporarily unavailable.",
+      viewCourses: "View Courses",
+      errorTitle: "Something Went Wrong",
+      systemErrorTitle: "A System Error Occurred",
+      errorDesc:
+        "Your request failed. You can try again or return to the home page.",
+      retry: "Try Again",
+      courseLoadTitle: "Course Failed to Load",
+      courseLoadDesc:
+        "The connection to the server may be temporarily down. Please try again in a moment.",
+    },
+
+    // Payment verification
+    verify: {
+      missingParams: "Required payment verification parameters were not found",
+      cancelledOrFailed: "Payment was cancelled by the user or failed.",
+      successMsg: "Payment completed successfully",
+      verifyError: "Error verifying payment",
+      verifying: "Verifying payment and provisioning course access...",
+      paymentError: "Payment Error",
+      goToPurchased: "Go to Purchased Courses",
+    },
+
+    // Checkout / payment
+    checkoutFlow: {
+      startPayError: "Failed to start payment",
+    },
+
+    // Course management (delete / actions)
+    manage: {
+      deleteCourse: "Delete Course",
+      deletedSuccess: "Course deleted successfully",
+      deleteError: "Error deleting course",
+      permanentDeleteConfirm:
+        "Are you sure you want to permanently delete this item? This action cannot be undone.",
+      permanentDelete: "Delete Permanently",
+      fetchCoursesError: "Error fetching courses",
+    },
+
+    // Auth & profile messages
+    authMsg: {
+      loginError: "Login failed",
+      registerSuccess: "Registration completed successfully",
+      registerError: "Registration failed",
+      registerTitle: "Sign Up for the Academy",
+      otpValidateError: "Code validation failed",
+      passwordChangeError: "Password change failed",
+      profileSaveSuccess: "Information saved successfully",
+      profileEditError: "Updating information failed",
+      exampleFirstName: "e.g. Ali",
+      exampleLastName: "e.g. Ahmadi",
+      passwordHint: "At least 8 characters (letters and numbers)",
+      securityHint: "For better security, choose a strong password",
+      roleSystemAdmin: "System Admin",
+    },
+
+    // OTP form
+    otpForm: {
+      title: "One-Time Verification Code",
+      descBefore: "Enter the code sent to",
+      descAfter: ".",
+      submit: "Confirm Code",
+    },
+
+    // Reset password form
+    resetForm: {
+      title: "Choose a New Password",
+      repeatPlaceholder: "Repeat password",
+    },
+
+    // Profile view
+    profileInfo: {
+      editTitle: "Edit Personal Information",
+      editHint: "Enter your new information",
+      viewHint: "Your registered account details",
+      emailLabel: "Email Address",
+      roleLabel: "Account Type:",
+      roleAdmin: "Academy Senior Admin",
+      roleInstructor: "Instructor & Kata Master",
+      roleStudent: "Academy Student",
+    },
+
+    // Admin course creation form
+    adminCourse: {
+      titleLabel: "Course Title:",
+      titlePlaceholder: "e.g. Kata Kankevoid Training",
+      descLabel: "Course Description:",
+      descPlaceholder: "Comprehensive description and syllabus...",
+      imgLabel: "Image (base64 or URL):",
+      linkLabel: "Course Video Download Link:",
+      submit: "Save & Publish Course",
+      createSuccess: "Course created successfully",
+      createError: "Error creating course",
+    },
+
+    // User search form
+    searchUser: {
+      title: "Search User Courses",
+      emailLabel: "User Email:",
+    },
+
+    // Paid order view
+    order: {
+      orderNumber: "Order Number:",
+      paidSuccess: "Paid",
+      paidFailed: "Payment Failed",
+      accessLink: "Access Link",
+      downloadVideo: "Download Video",
+      totalPaid: "Total Paid:",
+    },
 
     // Currency
     currency: " Toman",

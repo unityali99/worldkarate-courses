@@ -16,7 +16,8 @@ const buttonVariants = cva(
         gold: "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold shadow-glow-gold border border-amber-400/50",
         teal: "bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white shadow-glow-teal font-semibold border border-teal-400/40",
         ghost: "hover:bg-white/10 text-white/90 hover:text-white",
-        danger: "bg-red-950/80 text-red-200 border border-red-800/60 hover:bg-red-900/80",
+        danger:
+          "bg-red-950/80 text-red-200 border border-red-800/60 hover:bg-red-900/80",
       },
       size: {
         sm: "h-9 px-3.5 text-xs rounded-lg",
@@ -29,17 +30,31 @@ const buttonVariants = cva(
       variant: "primary",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   isLoading?: boolean;
+  loadingText?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, isLoading, children, disabled, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      isLoading,
+      loadingText,
+      children,
+      disabled,
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <button
         className={cn(buttonVariants({ variant, size, className }))}
@@ -69,14 +84,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               ></path>
             </svg>
-            <span>لطفا صبر کنید...</span>
+            {loadingText ? <span>{loadingText}</span> : null}
           </span>
         ) : (
           children
         )}
       </button>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

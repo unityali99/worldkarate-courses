@@ -10,6 +10,9 @@ import { cookieKey } from "@/constants/auth";
 import decodeJwt from "@/utils/jwtDecode";
 import { isAdmin as checkIsAdmin } from "@/utils/authHelpers";
 import { LuShieldCheck, LuUser } from "react-icons/lu";
+import { lang } from "@/lang";
+import { getLocaleConfig } from "@/lib/i18n/config";
+import { getServerLocale } from "@/lib/i18n/serverLocale";
 
 export default async function ProfilePage() {
   const cookieStore = await cookies();
@@ -21,6 +24,10 @@ export default async function ProfilePage() {
 
   const { firstName, lastName, email, role }: UserType = decodedToken;
   const userIsAdmin = checkIsAdmin(decodedToken);
+  // App routes carry no locale in the URL, so derive it from the SSR cookie.
+  const locale = await getServerLocale();
+  const t = lang[locale];
+  const dir = getLocaleConfig(locale).dir;
 
   return (
     <BackgroundImage image="/kyuna.webp">
@@ -28,7 +35,7 @@ export default async function ProfilePage() {
         <div className="max-w-5xl mx-auto space-y-6 md:space-y-8">
           {/* User Hero Badge */}
           <div
-            dir="rtl"
+            dir={dir}
             className="flex flex-col sm:flex-row items-center gap-5 p-6 sm:p-8 rounded-3xl bg-slate-950/75 border border-white/15 backdrop-blur-xl shadow-glass text-white"
           >
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-teal-500/15 text-teal-300 border border-teal-500/30 flex items-center justify-center flex-shrink-0 shadow-[0_0_20px_rgba(20,184,166,0.2)]">
@@ -41,10 +48,16 @@ export default async function ProfilePage() {
                   {firstName} {lastName}
                 </h1>
                 {userIsAdmin && (
-                  <LuShieldCheck className="w-6 h-6 text-teal-400" title="مدیر سیستم" />
+                  <LuShieldCheck
+                    className="w-6 h-6 text-teal-400"
+                    title={t.ui.authMsg.roleSystemAdmin}
+                  />
                 )}
               </div>
-              <p dir="ltr" className="text-slate-400 text-sm md:text-base font-light text-center sm:text-right truncate">
+              <p
+                dir="ltr"
+                className="text-slate-400 text-sm md:text-base font-light text-center sm:text-right truncate"
+              >
                 {email}
               </p>
             </div>

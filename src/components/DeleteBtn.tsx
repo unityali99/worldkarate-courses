@@ -6,6 +6,7 @@ import ApiClient from "@/services/ApiClient";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
+import useLanguageStore from "@/stores/languageStore";
 import { LuTrash2 } from "react-icons/lu";
 
 export default function DeleteBtn({
@@ -16,6 +17,7 @@ export default function DeleteBtn({
   courseId: string;
 }) {
   const courseDeletionApi = new ApiClient(`/delete-course/${courseId}`);
+  const { t } = useLanguageStore();
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const { replace } = useRouter();
@@ -25,12 +27,12 @@ export default function DeleteBtn({
     courseDeletionApi
       .delete()
       .then((res) => {
-        toast.success(res.data.message || "دوره با موفقیت حذف شد");
+        toast.success(res.data.message || t.ui.manage.deletedSuccess);
         setIsOpen(false);
         replace("/courses");
       })
       .catch((error) =>
-        toast.error(getErrorMessage(error, "خطا در حذف دوره"))
+        toast.error(getErrorMessage(error, t.ui.manage.deleteError)),
       )
       .finally(() => setIsDeleting(false));
   };
@@ -62,7 +64,7 @@ export default function DeleteBtn({
               {text}
             </h3>
             <p className="text-slate-300 text-sm leading-relaxed">
-              آیا از حذف دائمی این مورد اطمینان دارید؟ این عملیات غیرقابل بازگشت است.
+              {t.ui.manage.permanentDeleteConfirm}
             </p>
             <div className="flex items-center justify-end gap-3 pt-2">
               <Button
@@ -71,7 +73,7 @@ export default function DeleteBtn({
                 disabled={isDeleting}
                 onClick={() => setIsOpen(false)}
               >
-                انصراف
+                {t.ui.cancel}
               </Button>
               <Button
                 variant="danger"
@@ -79,7 +81,7 @@ export default function DeleteBtn({
                 isLoading={isDeleting}
                 onClick={onClick}
               >
-                حذف قطعی
+                {t.ui.manage.permanentDelete}
               </Button>
             </div>
           </div>

@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { lang } from "@/lang";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import SiteSchema from "@/components/seo/SiteSchema";
+import { getLocaleConfig } from "@/lib/i18n/config";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
     title: lang.fa.metadata.title,
     description: lang.fa.metadata.description,
     url: "/",
-    siteName: "آکادمی کاراته سنسی امیر یاری",
+    siteName: getLocaleConfig("fa").siteName,
     locale: "fa_IR",
     type: "website",
     images: [
@@ -61,6 +63,7 @@ export default function PersianLayout({
       <body
         className={`${iranSans.variable} ${lalezar.variable} font-sans min-h-screen flex flex-col bg-[#070c0e] text-white selection:bg-red-500 selection:text-white`}
       >
+        <SiteSchema locale="fa" />
         <Providers locale="fa">
           <Navbar locale="fa" />
           <main className="flex-1 w-full flex flex-col pb-24 md:pb-0">

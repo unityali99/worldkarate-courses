@@ -12,7 +12,11 @@ import useLanguageStore from "@/stores/languageStore";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { isAdmin as checkIsAdmin, isInstructor, isStaff } from "@/utils/authHelpers";
+import {
+  isAdmin as checkIsAdmin,
+  isInstructor,
+  isStaff,
+} from "@/utils/authHelpers";
 import { toast } from "react-toastify";
 import {
   LuPencil,
@@ -87,26 +91,25 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
     apiClient
       .put(data)
       .then((res) => {
-        toast.success(res.data.message || "اطلاعات با موفقیت ذخیره شد");
+        toast.success(res.data.message || t.ui.authMsg.profileSaveSuccess);
         login({ ...data, role: activeUser.role });
         setIsEditing(false);
         refresh();
       })
       .catch((error) => {
-        toast.error(getErrorMessage(error, "ویرایش اطلاعات با خطا روبه‌رو شد"));
+        toast.error(getErrorMessage(error, t.ui.authMsg.profileEditError));
       })
       .finally(() => setIsLoading(false));
   };
 
   const getRoleLabel = () => {
-    if (userIsAdmin) return "مدیر ارشد آکادمی";
-    if (isInstructor(activeUser)) return "مربی و استاد کاتا";
-    return "هنرجوی آکادمی";
+    if (userIsAdmin) return t.ui.profileInfo.roleAdmin;
+    if (isInstructor(activeUser)) return t.ui.profileInfo.roleInstructor;
+    return t.ui.profileInfo.roleStudent;
   };
 
   return (
     <div
-      dir="rtl"
       className="w-full h-full p-6 sm:p-8 rounded-3xl bg-slate-950/75 border border-white/15 backdrop-blur-xl shadow-glass text-white transition-all duration-300"
     >
       {/* ========================================================= */}
@@ -119,10 +122,12 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
           </div>
           <div>
             <h3 className="font-lalezar text-2xl text-white font-normal leading-tight">
-              {isEditing ? "ویرایش مشخصات فردی" : t.ui.profile}
+              {isEditing ? t.ui.profileInfo.editTitle : t.ui.profile}
             </h3>
             <p className="text-slate-400 text-xs font-light">
-              {isEditing ? "اطلاعات جدید خود را وارد نمایید" : "مشخصات ثبت‌شده حساب کاربری شما"}
+              {isEditing
+                ? t.ui.profileInfo.editHint
+                : t.ui.profileInfo.viewHint}
             </p>
           </div>
         </div>
@@ -168,14 +173,18 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
           {/* First Name & Last Name Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-4 rounded-2xl bg-slate-900/60 border border-white/10 space-y-1">
-              <span className="text-[11px] text-slate-400 font-medium">نام</span>
+              <span className="text-[11px] text-slate-400 font-medium">
+                {t.ui.firstName}
+              </span>
               <p className="text-sm sm:text-base font-bold text-white">
                 {activeUser.firstName}
               </p>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-900/60 border border-white/10 space-y-1">
-              <span className="text-[11px] text-slate-400 font-medium">نام خانوادگی</span>
+              <span className="text-[11px] text-slate-400 font-medium">
+                {t.ui.lastName}
+              </span>
               <p className="text-sm sm:text-base font-bold text-white">
                 {activeUser.lastName}
               </p>
@@ -185,18 +194,25 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
           {/* Email Card */}
           <div className="p-4 rounded-2xl bg-slate-900/60 border border-white/10 space-y-1">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] text-slate-400 font-medium">آدرس ایمیل</span>
+              <span className="text-[11px] text-slate-400 font-medium">
+                {t.ui.profileInfo.emailLabel}
+              </span>
               <LuMail className="w-4 h-4 text-slate-400" />
             </div>
-            <p dir="ltr" className="text-sm sm:text-base font-medium text-slate-200 text-right">
+            <p
+              dir="ltr"
+              className="text-sm sm:text-base font-medium text-slate-200 text-start"
+            >
               {activeUser.email}
             </p>
           </div>
 
           {/* Role Status Pill */}
           <div className="pt-2 flex items-center justify-between p-3.5 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-300">
-            <span>نوع کاربری:</span>
-            <span className={`font-bold ${userIsAdmin ? "text-teal-400" : isInstructor(activeUser) ? "text-amber-400" : "text-slate-200"}`}>
+            <span>{t.ui.profileInfo.roleLabel}</span>
+            <span
+              className={`font-bold ${userIsAdmin ? "text-teal-400" : isInstructor(activeUser) ? "text-amber-400" : "text-slate-200"}`}
+            >
               {getRoleLabel()}
             </span>
           </div>
@@ -205,7 +221,7 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
         /* --- EDIT MODE: Active Form --- */
         <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5">
           {/* First Name Input */}
-          <div className="space-y-1.5 text-right">
+          <div className="space-y-1.5 text-start">
             <label className="block text-xs font-semibold text-slate-300">
               {t.ui.firstName}:
             </label>
@@ -213,7 +229,7 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
               <Input
                 autoFocus
                 {...register("firstName")}
-                placeholder="مثال: علی"
+                placeholder={t.ui.authMsg.exampleFirstName}
                 className="h-11 rounded-2xl bg-slate-900/90 border-white/20 text-white focus-visible:border-teal-400 focus-visible:ring-teal-400/30 text-sm"
               />
             </div>
@@ -225,14 +241,14 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
           </div>
 
           {/* Last Name Input */}
-          <div className="space-y-1.5 text-right">
+          <div className="space-y-1.5 text-start">
             <label className="block text-xs font-semibold text-slate-300">
               {t.ui.lastName}:
             </label>
             <div className="relative">
               <Input
                 {...register("lastName")}
-                placeholder="مثال: احمدی"
+                placeholder={t.ui.authMsg.exampleLastName}
                 className="h-11 rounded-2xl bg-slate-900/90 border-white/20 text-white focus-visible:border-teal-400 focus-visible:ring-teal-400/30 text-sm"
               />
             </div>
@@ -244,7 +260,7 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
           </div>
 
           {/* Email Input */}
-          <div className="space-y-1.5 text-right">
+          <div className="space-y-1.5 text-start">
             <label className="block text-xs font-semibold text-slate-300">
               {t.ui.email}:
             </label>

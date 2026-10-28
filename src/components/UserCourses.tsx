@@ -8,13 +8,14 @@ import { getExternalUrl } from "@/utils/externalUrl";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { Button } from "@/components/ui/button";
 import useLanguageStore from "@/stores/languageStore";
+import { getLocaleConfig } from "@/lib/i18n/config";
 import Placeholder from "./Placeholder";
 import { toast } from "react-toastify";
 import { LuBookOpen, LuExternalLink } from "react-icons/lu";
 
 export default function UserCourses({ email }: { email?: string }) {
   const { t, currentLanguage } = useLanguageStore();
-  const isRtl = currentLanguage === "fa";
+  const isRtl = getLocaleConfig(currentLanguage).dir === "rtl";
   const coursesHref = isRtl ? "/courses" : "/en/courses";
   const [hydrated, setHydrated] = useState(false);
   const [courses, setCourses] = useState<CreateCourseType[]>([]);
@@ -28,10 +29,10 @@ export default function UserCourses({ email }: { email?: string }) {
       .get()
       .then((res) => setCourses(res.data))
       .catch((error) =>
-        toast.error(getErrorMessage(error, "خطا در دریافت دوره‌ها"))
+        toast.error(getErrorMessage(error, t.ui.manage.fetchCoursesError)),
       )
       .finally(() => setHydrated(true));
-  }, [email]);
+  }, [email, t]);
 
   return (
     <div className="w-full">
@@ -83,13 +84,22 @@ export default function UserCourses({ email }: { email?: string }) {
                     rel="noopener noreferrer"
                     className="w-full sm:w-auto"
                   >
-                    <Button variant="teal" size="sm" className="w-full sm:w-auto gap-2">
+                    <Button
+                      variant="teal"
+                      size="sm"
+                      className="w-full sm:w-auto gap-2"
+                    >
                       <span>{t.ui.viewCourse}</span>
                       <LuExternalLink className="w-3.5 h-3.5" />
                     </Button>
                   </a>
                 ) : (
-                  <Button variant="outline" size="sm" disabled className="w-full sm:w-auto text-xs">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled
+                    className="w-full sm:w-auto text-xs"
+                  >
                     {t.ui.noLinkAvailable}
                   </Button>
                 )}

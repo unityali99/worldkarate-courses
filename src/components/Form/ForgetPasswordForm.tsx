@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ApiClient from "@/services/ApiClient";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import useLanguageStore from "@/stores/languageStore";
 
 export default function ForgetPasswordForm({
   setOtp,
@@ -27,6 +28,9 @@ export default function ForgetPasswordForm({
     formState: { errors },
   } = useForm<ForgetPasswordType>({ resolver: zodResolver(ForgetPassword) });
 
+  const { t } = useLanguageStore();
+  const fp = t.ui.forgetPasswordForm;
+
   const apiClient = new ApiClient<ForgetPasswordType>("/forget-password");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,7 +41,7 @@ export default function ForgetPasswordForm({
       .then((res) => {
         // Only show OTP toast in development mode; in production, no OTP toast is displayed
         if (process.env.NODE_ENV === "development" && res.data?.OTP) {
-          toast.info(`کد تایید (محیط توسعه): ${res.data.OTP}`);
+          toast.info(`${fp.otpDevToast}: ${res.data.OTP}`);
         }
         if (setOtp && res.data?.OTP) {
           setOtp(res.data.OTP);
@@ -46,7 +50,7 @@ export default function ForgetPasswordForm({
         onSuccess?.();
       })
       .catch((error) =>
-        toast.error(getErrorMessage(error, "ارسال کد با خطا روبه‌رو شد"))
+        toast.error(getErrorMessage(error, fp.sendError))
       )
       .finally(() => setIsLoading(false));
   };
@@ -54,7 +58,7 @@ export default function ForgetPasswordForm({
   return (
     <FormContainer className="my-8">
       <h2 className="font-lalezar text-3xl sm:text-4xl text-white font-normal text-center mb-6">
-        بازیابی رمز عبور
+        {fp.title}
       </h2>
 
       <div className="space-y-4">
@@ -62,11 +66,11 @@ export default function ForgetPasswordForm({
           <FormInput
             dir="ltr"
             register={register("email")}
-            label="ایمیل شما:"
-            placeholder="Email@example.com"
+            label={fp.emailLabel}
+            placeholder={t.ui.emailPlaceholder}
           />
           {errors.email && (
-            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+            <p className="mt-1 text-xs text-red-400 font-medium text-start">
               {errors.email.message}
             </p>
           )}
@@ -76,15 +80,15 @@ export default function ForgetPasswordForm({
       <div className="pt-2">
         <FormButton
           onClick={handleSubmit(onSubmit)}
-          text="ارسال کد تایید"
+          text={fp.submit}
           isLoading={isLoading}
         />
       </div>
 
       <div className="pt-4 border-t border-white/10">
         <FormFooter
-          text="حساب کاربری ندارید؟"
-          linkText="ثبت نام"
+          text={fp.footerText}
+          linkText={fp.footerLink}
           href="/auth/register"
         />
       </div>

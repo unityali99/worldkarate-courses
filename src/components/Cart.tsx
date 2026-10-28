@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useCart from "@/stores/cartStore";
 import useLanguageStore from "@/stores/languageStore";
+import { getLocaleConfig } from "@/lib/i18n/config";
 import { Button } from "@/components/ui/button";
 import { FaShoppingBasket } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
@@ -13,7 +14,7 @@ export function CartDrawer() {
   const { push } = useRouter();
   const { courses, remove, clear, isOpen, setIsOpen } = useCart();
   const { t, currentLanguage } = useLanguageStore();
-  const isRtl = currentLanguage === "fa";
+  const isRtl = getLocaleConfig(currentLanguage).dir === "rtl";
 
   if (!isOpen) return null;
 

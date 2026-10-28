@@ -170,9 +170,11 @@ export const fa = {
       telegramLabel: "کانال تلگرام",
       whatsappLabel: "پشتیبانی واتساپ",
       newsletterTitle: "عضویت در خبرنامه آکادمی",
-      newsletterDesc: "با عضویت در خبرنامه، از تخفیف‌های ویژه دوره‌ها، رویدادها و آپدیت‌های تکنیک‌ها مطلع شوید.",
+      newsletterDesc:
+        "با عضویت در خبرنامه، از تخفیف‌های ویژه دوره‌ها، رویدادها و آپدیت‌های تکنیک‌ها مطلع شوید.",
       newsletterButton: "عضویت در خبرنامه",
-      newsletterEmailPlaceholder: "ایمیل خود را وارد کنید (مثال: sensei@karate.ir)",
+      newsletterEmailPlaceholder:
+        "ایمیل خود را وارد کنید (مثال: sensei@karate.ir)",
       instagram: "اینستاگرام",
       telegram: "تلگرام",
       whatsapp: "واتساپ",
@@ -184,13 +186,33 @@ export const fa = {
       badge: "دوجو آنلاین کاراته",
       instructorTitle: "سنسی امیر یاری",
       subtitle: "پکیج‌های آموزش تخصصی کاتا و تکنیک‌های کاراته",
-      newsletterDesc: "برای اطلاع از انتشار دوره‌های جدید و تخفیف‌های ویژه، ایمیل خود را در کادر زیر ثبت کنید.",
+      newsletterDesc:
+        "برای اطلاع از انتشار دوره‌های جدید و تخفیف‌های ویژه، ایمیل خود را در کادر زیر ثبت کنید.",
       newsletterBtn: "عضویت در خبرنامه",
       emptyBadge: "در حال آماده‌سازی",
       emptyTitle: "در حال حاضر دوره‌ای منتشر نشده است",
-      emptyDesc: "پکیج‌های ویدیویی جدید آموزش تکنیک‌ها و کاتاهای کاراته به زودی در این بخش قرار خواهند گرفت.",
+      emptyDesc:
+        "پکیج‌های ویدیویی جدید آموزش تکنیک‌ها و کاتاهای کاراته به زودی در این بخش قرار خواهند گرفت.",
       trainingPackage: "پکیج آموزشی",
       viewCourse: "مشاهده دوره",
+    },
+
+    // Course Detail Page
+    courseDetail: {
+      backToCourses: "بازگشت به دوره‌ها",
+      categoryBadge: "دوره آموزشی کاتا",
+      priceLabel: "قیمت دوره:",
+    },
+
+    // Forget Password Form
+    forgetPasswordForm: {
+      title: "بازیابی رمز عبور",
+      emailLabel: "ایمیل شما:",
+      submit: "ارسال کد تایید",
+      footerText: "حساب کاربری ندارید؟",
+      footerLink: "ثبت نام",
+      otpDevToast: "کد تایید (dev)",
+      sendError: "ارسال کد با خطا روبه‌رو شد",
     },
 
     // Status
@@ -210,6 +232,126 @@ export const fa = {
     // Newsletter
     newsletterDescription:
       "برای اطلاع از آخرین بروزرسانی پکیج ها ایمیل خود را وارد کنید.",
+
+    // Common loading / wait
+    loading: "در حال بارگذاری...",
+    pleaseWait: "لطفا صبر کنید...",
+
+    // Error & Not-Found boundaries
+    errors: {
+      errorCode: "۴۰۴",
+      notFoundTitle: "صفحه مورد نظر پیدا نشد",
+      notFoundDesc:
+        "ممکن است آدرس صفحه تغییر کرده باشد یا این دوره موقتا در دسترس نباشد.",
+      viewCourses: "مشاهده دوره‌ها",
+      errorTitle: "مشکلی پیش آمد",
+      systemErrorTitle: "مشکلی در سامانه پیش آمد",
+      errorDesc:
+        "درخواست شما با خطا روبه‌رو شد. می‌توانید دوباره تلاش کنید یا به صفحه اصلی برگردید.",
+      retry: "تلاش دوباره",
+      courseLoadTitle: "دوره بارگذاری نشد",
+      courseLoadDesc:
+        "ممکن است ارتباط با سرور موقتا قطع شده باشد. لطفا چند لحظه دیگر دوباره تلاش کنید.",
+    },
+
+    // Payment verification
+    verify: {
+      missingParams: "پارامترهای لازم برای تایید پرداخت یافت نشد",
+      cancelledOrFailed: "پرداخت توسط کاربر لغو شد یا ناموفق بود.",
+      successMsg: "پرداخت با موفقیت انجام شد",
+      verifyError: "خطا در تایید پرداخت",
+      verifying: "در حال تایید پرداخت و صدور دسترسی دوره‌ها...",
+      paymentError: "خطا در پرداخت",
+      goToPurchased: "رفتن به دوره‌های خریداری شده",
+    },
+
+    // Checkout / payment
+    checkoutFlow: {
+      startPayError: "خطا در شروع پرداخت",
+    },
+
+    // Course management (delete / actions)
+    manage: {
+      deleteCourse: "حذف دوره",
+      deletedSuccess: "دوره با موفقیت حذف شد",
+      deleteError: "خطا در حذف دوره",
+      permanentDeleteConfirm:
+        "آیا از حذف دائمی این مورد اطمینان دارید؟ این عملیات غیرقابل بازگشت است.",
+      permanentDelete: "حذف قطعی",
+      fetchCoursesError: "خطا در دریافت دوره‌ها",
+    },
+
+    // Auth & profile messages
+    authMsg: {
+      loginError: "ورود با خطا روبه‌رو شد",
+      registerSuccess: "ثبت‌نام با موفقیت انجام شد",
+      registerError: "ثبت نام با خطا روبه‌رو شد",
+      registerTitle: "ثبت نام در آکادمی",
+      otpValidateError: "اعتبارسنجی کد با خطا روبه‌رو شد",
+      passwordChangeError: "تغییر رمز عبور با خطا روبه‌رو شد",
+      profileSaveSuccess: "اطلاعات با موفقیت ذخیره شد",
+      profileEditError: "ویرایش اطلاعات با خطا روبه‌رو شد",
+      exampleFirstName: "مثال: علی",
+      exampleLastName: "مثال: احمدی",
+      passwordHint: "حداقل ۸ کاراکتر (حرف و عدد)",
+      securityHint: "برای امنیت بیشتر، رمز قدرتمندی انتخاب کنید",
+      roleSystemAdmin: "مدیر سیستم",
+    },
+
+    // OTP form
+    otpForm: {
+      title: "کد تایید یکبار مصرف",
+      descBefore: "کد ارسال شده به ایمیل",
+      descAfter: "را وارد نمایید.",
+      submit: "تایید کد",
+    },
+
+    // Reset password form
+    resetForm: {
+      title: "انتخاب رمز عبور جدید",
+      repeatPlaceholder: "تکرار رمز عبور",
+    },
+
+    // Profile view
+    profileInfo: {
+      editTitle: "ویرایش مشخصات فردی",
+      editHint: "اطلاعات جدید خود را وارد نمایید",
+      viewHint: "مشخصات ثبت‌شده حساب کاربری شما",
+      emailLabel: "آدرس ایمیل",
+      roleLabel: "نوع کاربری:",
+      roleAdmin: "مدیر ارشد آکادمی",
+      roleInstructor: "مربی و استاد کاتا",
+      roleStudent: "هنرجوی آکادمی",
+    },
+
+    // Admin course creation form
+    adminCourse: {
+      titleLabel: "عنوان دوره:",
+      titlePlaceholder: "مثال: آموزش کاتا کانکودای",
+      descLabel: "توضیحات دوره:",
+      descPlaceholder: "توضیحات جامع و سرفصل‌ها...",
+      imgLabel: "تصویر (base64 یا URL):",
+      linkLabel: "لینک دانلود ویدیو دوره:",
+      submit: "ذخیره و انتشار دوره",
+      createSuccess: "دوره با موفقیت ایجاد شد",
+      createError: "خطا در ایجاد دوره",
+    },
+
+    // User search form
+    searchUser: {
+      title: "جستجوی دوره‌های کاربر",
+      emailLabel: "ایمیل کاربر:",
+    },
+
+    // Paid order view
+    order: {
+      orderNumber: "شماره سفارش:",
+      paidSuccess: "پرداخت موفق",
+      paidFailed: "پرداخت ناموفق",
+      accessLink: "لینک دسترسی",
+      downloadVideo: "دانلود ویدیو",
+      totalPaid: "مجموع پرداختی:",
+    },
 
     // Currency
     currency: " تومان",

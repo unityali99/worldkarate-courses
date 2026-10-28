@@ -41,7 +41,7 @@ export default function ChangePasswordForm() {
         reset();
       })
       .catch((error) => {
-        toast.error(getErrorMessage(error, "تغییر رمز عبور با خطا روبه‌رو شد"));
+        toast.error(getErrorMessage(error, t.ui.authMsg.passwordChangeError));
       })
       .finally(() => setIsLoading(false));
   };
@@ -50,7 +50,6 @@ export default function ChangePasswordForm() {
     <div className="w-full h-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        dir="rtl"
         className="flex flex-col justify-between h-full space-y-6 p-6 sm:p-8 rounded-3xl bg-slate-950/75 border border-white/15 backdrop-blur-xl shadow-glass text-white"
       >
         {/* Header */}
@@ -63,7 +62,7 @@ export default function ChangePasswordForm() {
               {t.ui.changePassword}
             </h3>
             <p className="text-slate-400 text-xs font-normal">
-              برای امنیت بیشتر، رمز قدرتمندی انتخاب کنید
+              {t.ui.authMsg.securityHint}
             </p>
           </div>
         </div>
@@ -71,7 +70,7 @@ export default function ChangePasswordForm() {
         {/* Fields */}
         {hydrated ? (
           <div className="space-y-4 flex-1">
-            <div className="space-y-1 text-right">
+            <div className="space-y-1 text-start">
               <label className="block text-xs font-semibold text-slate-300">
                 {t.ui.newPassword}
               </label>
@@ -97,7 +96,7 @@ export default function ChangePasswordForm() {
               )}
             </div>
 
-            <div className="space-y-1 text-right">
+            <div className="space-y-1 text-start">
               <label className="block text-xs font-semibold text-slate-300">
                 {t.ui.repeatPassword}
               </label>

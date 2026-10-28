@@ -5,6 +5,7 @@ import Link from "next/link";
 import BackgroundImage from "@/layouts/BackgroundImage";
 import { Button } from "@/components/ui/button";
 import { LuArrowLeft, LuRefreshCw } from "react-icons/lu";
+import { lang } from "@/lang";
 
 export default function CourseDetailsError({
   error,
@@ -13,6 +14,7 @@ export default function CourseDetailsError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const e = lang.fa.ui.errors;
   useEffect(() => {
     console.error("Course details error:", error);
   }, [error]);
@@ -29,11 +31,11 @@ export default function CourseDetailsError({
           </div>
 
           <h1 className="font-lalezar text-3xl md:text-4xl text-white font-normal leading-tight">
-            دوره بارگذاری نشد
+            {e.courseLoadTitle}
           </h1>
 
           <p className="text-slate-300/80 text-sm sm:text-base leading-relaxed">
-            ممکن است ارتباط با سرور موقتا قطع شده باشد. لطفا چند لحظه دیگر دوباره تلاش کنید.
+            {e.courseLoadDesc}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
@@ -43,12 +45,16 @@ export default function CourseDetailsError({
               className="w-full sm:w-auto gap-2"
               onClick={reset}
             >
-              <span>تلاش دوباره</span>
+              <span>{e.retry}</span>
               <LuRefreshCw className="w-4 h-4" />
             </Button>
             <Link href="/courses" className="w-full sm:w-auto">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2">
-                <span>بازگشت به دوره‌ها</span>
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto gap-2"
+              >
+                <span>{lang.fa.ui.courseDetail.backToCourses}</span>
                 <LuArrowLeft className="w-4 h-4" />
               </Button>
             </Link>

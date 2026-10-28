@@ -33,11 +33,11 @@ export default function RegisterForm() {
     apiClient
       .post(data)
       .then((res) => {
-        toast.success(res.data.message || "ثبت‌نام با موفقیت انجام شد");
+        toast.success(res.data.message || t.ui.authMsg.registerSuccess);
         replace("/auth/login");
       })
       .catch((error) =>
-        toast.error(getErrorMessage(error, "ثبت نام با خطا روبه‌رو شد"))
+        toast.error(getErrorMessage(error, t.ui.authMsg.registerError)),
       )
       .finally(() => setIsLoading(false));
   };
@@ -45,19 +45,18 @@ export default function RegisterForm() {
   return (
     <FormContainer className="my-8">
       <h2 className="font-lalezar text-3xl sm:text-4xl text-white font-normal text-center mb-6">
-        {t.ui.register} در آکادمی
+        {t.ui.authMsg.registerTitle}
       </h2>
 
       <div className="space-y-4">
         <div>
           <FormInput
-            dir="rtl"
             register={register("firstName")}
             label={t.ui.firstName + ":"}
-            placeholder="مثال: علی"
+            placeholder={t.ui.authMsg.exampleFirstName}
           />
           {errors.firstName && (
-            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+            <p className="mt-1 text-xs text-red-400 font-medium text-start">
               {errors.firstName.message}
             </p>
           )}
@@ -65,13 +64,12 @@ export default function RegisterForm() {
 
         <div>
           <FormInput
-            dir="rtl"
             register={register("lastName")}
             label={t.ui.lastName + ":"}
-            placeholder="مثال: محمدی"
+            placeholder={t.ui.authMsg.exampleLastName}
           />
           {errors.lastName && (
-            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+            <p className="mt-1 text-xs text-red-400 font-medium text-start">
               {errors.lastName.message}
             </p>
           )}
@@ -85,7 +83,7 @@ export default function RegisterForm() {
             placeholder={t.ui.emailPlaceholder}
           />
           {errors.email && (
-            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+            <p className="mt-1 text-xs text-red-400 font-medium text-start">
               {errors.email.message}
             </p>
           )}
@@ -97,10 +95,10 @@ export default function RegisterForm() {
             password
             register={register("password")}
             label={t.ui.password + ":"}
-            placeholder="حداقل ۸ کاراکتر (حرف و عدد)"
+            placeholder={t.ui.authMsg.passwordHint}
           />
           {errors.password && (
-            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+            <p className="mt-1 text-xs text-red-400 font-medium text-start">
               {errors.password.message}
             </p>
           )}

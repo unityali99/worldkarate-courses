@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FaWhatsapp, FaInstagram, FaTelegram } from "react-icons/fa";
 import useLanguageStore from "@/stores/languageStore";
 import { lang, Language } from "@/lang";
+import { defaultLocale, getLocaleConfig } from "@/lib/i18n/config";
 import NewsLetterForm from "@/components/Form/NewsLetterForm";
 
 const toPersianDigits = (str: string) =>
@@ -12,9 +13,9 @@ const toPersianDigits = (str: string) =>
 
 export default function Footer({ locale }: { locale?: Language }) {
   const { t: storeT, currentLanguage } = useLanguageStore();
-  const activeLang = locale || currentLanguage || "fa";
+  const activeLang = locale || currentLanguage || defaultLocale;
   const t = locale ? lang[locale] : storeT;
-  const isRtl = activeLang === "fa";
+  const isRtl = getLocaleConfig(activeLang).dir === "rtl";
 
   const displayPhone = isRtl
     ? toPersianDigits(t.ui.footer.phone)
@@ -30,7 +31,9 @@ export default function Footer({ locale }: { locale?: Language }) {
       className="relative z-30 w-full bg-slate-950/95 border-t border-white/10 text-white pt-14 pb-8 mt-auto backdrop-blur-2xl shadow-[0_-12px_45px_rgba(0,0,0,0.65)]"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className={`grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start ${isRtl ? "text-right" : "text-left"}`}>
+        <div
+          className={`grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start ${isRtl ? "text-right" : "text-left"}`}
+        >
           {/* ========================================================= */}
           {/* 1. Brand & Contact (md: 4 cols)                          */}
           {/* ========================================================= */}
@@ -128,7 +131,10 @@ export default function Footer({ locale }: { locale?: Language }) {
               {t.ui.footer.newsletterDesc}
             </p>
             <div className="pt-2 w-full">
-              <NewsLetterForm buttonText={t.ui.footer.newsletterButton} />
+              <NewsLetterForm
+                locale={locale}
+                buttonText={t.ui.footer.newsletterButton}
+              />
             </div>
           </div>
         </div>
@@ -139,10 +145,15 @@ export default function Footer({ locale }: { locale?: Language }) {
         <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <div className="flex items-center gap-1.5">
             <span>{t.ui.footer.designer}</span>
-            <span className="font-bold text-teal-400">{t.ui.footer.designerName}</span>
+            <span className="font-bold text-teal-400">
+              {t.ui.footer.designerName}
+            </span>
           </div>
           <p>
-            {t.ui.footer.rights} © {isRtl ? toPersianDigits(new Date().getFullYear().toString()) : new Date().getFullYear()}
+            {t.ui.footer.rights} ©{" "}
+            {isRtl
+              ? toPersianDigits(new Date().getFullYear().toString())
+              : new Date().getFullYear()}
           </p>
         </div>
       </div>

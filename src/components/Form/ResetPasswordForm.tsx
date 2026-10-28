@@ -1,9 +1,12 @@
+"use client";
+
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ResetPassword, { ResetPasswordType } from "@/schemas/auth/ResetPassword";
 import ApiClient from "@/services/ApiClient";
+import useLanguageStore from "@/stores/languageStore";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { toast } from "react-toastify";
 import FormContainer from "@/layouts/FormContainer";
@@ -17,6 +20,7 @@ export default function ResetPasswordForm() {
     formState: { errors },
   } = useForm<ResetPasswordType>({ resolver: zodResolver(ResetPassword) });
   const { replace } = useRouter();
+  const { t } = useLanguageStore();
 
   const apiClient = new ApiClient<ResetPasswordType>("/reset-password");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +35,7 @@ export default function ResetPasswordForm() {
         replace("/auth/login");
       })
       .catch((error) =>
-        toast.error(getErrorMessage(error, "تغییر رمز عبور با خطا روبه‌رو شد"))
+        toast.error(getErrorMessage(error, t.ui.authMsg.passwordChangeError)),
       )
       .finally(() => setIsLoading(false));
   };
@@ -39,7 +43,7 @@ export default function ResetPasswordForm() {
   return (
     <FormContainer className="my-8">
       <h2 className="font-lalezar text-3xl sm:text-4xl text-white font-normal text-center mb-6">
-        انتخاب رمز عبور جدید
+        {t.ui.resetForm.title}
       </h2>
 
       <div className="space-y-4">
@@ -48,11 +52,11 @@ export default function ResetPasswordForm() {
             password
             dir="ltr"
             register={register("newPassword")}
-            label="رمز عبور جدید:"
-            placeholder="حداقل ۸ کاراکتر (حرف و عدد)"
+            label={t.ui.newPassword + ":"}
+            placeholder={t.ui.authMsg.passwordHint}
           />
           {errors.newPassword && (
-            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+            <p className="mt-1 text-xs text-red-400 font-medium text-start">
               {errors.newPassword.message}
             </p>
           )}
@@ -63,11 +67,11 @@ export default function ResetPasswordForm() {
             password
             dir="ltr"
             register={register("repeatPassword")}
-            label="تکرار رمز عبور جدید:"
-            placeholder="تکرار رمز عبور"
+            label={t.ui.repeatPassword + ":"}
+            placeholder={t.ui.resetForm.repeatPlaceholder}
           />
           {errors.repeatPassword && (
-            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+            <p className="mt-1 text-xs text-red-400 font-medium text-start">
               {errors.repeatPassword.message}
             </p>
           )}
@@ -77,7 +81,7 @@ export default function ResetPasswordForm() {
       <div className="pt-2">
         <FormButton
           onClick={handleSubmit(onSubmit)}
-          text="تغییر رمز عبور"
+          text={t.ui.changePassword}
           isLoading={isLoading}
         />
       </div>

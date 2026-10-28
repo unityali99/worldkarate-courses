@@ -6,6 +6,7 @@ import { fetchCoursesWithRetry } from "@/services/courseService";
 import { Badge } from "@/components/ui/badge";
 import { LuGraduationCap, LuSparkles } from "react-icons/lu";
 import { lang, Language } from "@/lang";
+import { getLocaleConfig } from "@/lib/i18n/config";
 
 export default async function CoursesPageView({
   locale = "fa",
@@ -13,7 +14,7 @@ export default async function CoursesPageView({
   locale?: Language;
 }) {
   const t = lang[locale];
-  const isRtl = locale === "fa";
+  const isRtl = getLocaleConfig(locale).dir === "rtl";
   const courses = await fetchCoursesWithRetry();
 
   return (
@@ -38,7 +39,10 @@ export default async function CoursesPageView({
           </p>
 
           <div className="flex items-center justify-center">
-            <NewsLetterForm buttonText={t.ui.coursesPage.newsletterBtn} />
+            <NewsLetterForm
+              locale={locale}
+              buttonText={t.ui.coursesPage.newsletterBtn}
+            />
           </div>
         </div>
       </div>
@@ -70,7 +74,7 @@ export default async function CoursesPageView({
         ) : (
           <div className="flex flex-col items-center gap-8 w-full">
             {courses.map((course) => (
-              <CourseCard key={course.id} course={course} />
+              <CourseCard key={course.id} course={course} locale={locale} />
             ))}
           </div>
         )}

@@ -7,21 +7,22 @@ import useAuth from "@/stores/authStore";
 import useCart from "@/stores/cartStore";
 import useLanguageStore from "@/stores/languageStore";
 import { lang, Language } from "@/lang";
-import {
-  LuBookOpen,
-  LuInstagram,
-  LuUser,
-  LuLogIn,
-} from "react-icons/lu";
+import { defaultLocale, getLocaleConfig } from "@/lib/i18n/config";
+import { LuBookOpen, LuInstagram, LuUser, LuLogIn } from "react-icons/lu";
 import { IoHomeOutline, IoHome } from "react-icons/io5";
 import { FaShoppingBasket } from "react-icons/fa";
 
 export default function MobileBottomNav({ locale }: { locale?: Language }) {
   const pathname = usePathname();
   const { user } = useAuth();
-  const { courses, setIsOpen, hydrated: cartHydrated, setHydrated: setCartHydrated } = useCart();
+  const {
+    courses,
+    setIsOpen,
+    hydrated: cartHydrated,
+    setHydrated: setCartHydrated,
+  } = useCart();
   const { t: storeT, currentLanguage } = useLanguageStore();
-  const activeLang = locale || currentLanguage || "fa";
+  const activeLang = locale || currentLanguage || defaultLocale;
   const t = locale ? lang[locale] : storeT;
   const [mounted, setMounted] = useState(false);
 
@@ -30,18 +31,20 @@ export default function MobileBottomNav({ locale }: { locale?: Language }) {
     setCartHydrated();
   }, [setCartHydrated]);
 
-  const isRtl = activeLang === "fa";
+  const isRtl = getLocaleConfig(activeLang).dir === "rtl";
   const isEnglish = locale ? locale === "en" : pathname.startsWith("/en");
 
   const homePath = isEnglish ? "/en" : "/";
   const coursesPath = isEnglish ? "/en/courses" : "/courses";
-  const profilePath = isEnglish ? "/en/profile" : "/profile";
-  const authPath = isEnglish ? "/en/auth/login" : "/auth/login";
+  // Auth/profile/payment are locale-agnostic app routes (single source), no prefix.
+  const profilePath = "/profile";
+  const authPath = "/auth/login";
 
   const isHome = pathname === "/" || pathname === "/en";
-  const isCourses = pathname.startsWith("/courses") || pathname.startsWith("/en/courses");
-  const isAuth = pathname.startsWith("/auth") || pathname.startsWith("/en/auth");
-  const isProfile = pathname.startsWith("/profile") || pathname.startsWith("/en/profile");
+  const isCourses =
+    pathname.startsWith("/courses") || pathname.startsWith("/en/courses");
+  const isAuth = pathname.startsWith("/auth");
+  const isProfile = pathname.startsWith("/profile");
 
   return (
     <nav
@@ -143,7 +146,9 @@ export default function MobileBottomNav({ locale }: { locale?: Language }) {
                   : "text-slate-400 hover:text-slate-200"
               }`}
             >
-              <LuUser className={`w-5 h-5 ${isProfile ? "text-teal-300" : ""}`} />
+              <LuUser
+                className={`w-5 h-5 ${isProfile ? "text-teal-300" : ""}`}
+              />
               <span className="text-[11px] mt-1 truncate leading-tight font-medium">
                 {t.ui.profile}
               </span>

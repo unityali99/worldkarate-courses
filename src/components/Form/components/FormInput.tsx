@@ -9,7 +9,7 @@ function FormInput({
   password = false,
   number = false,
   register,
-  dir = "rtl",
+  dir,
   autoComplete,
 }: {
   className?: string;
@@ -18,11 +18,16 @@ function FormInput({
   number?: boolean;
   placeholder?: string;
   register: ReturnType<UseFormRegister<any>>;
-  dir: "ltr" | "rtl";
+  /**
+   * Text direction of the VALUE only (e.g. "ltr" for email/password). Omit it
+   * to inherit the active language's direction, so Latin fields stay LTR and
+   * localized fields follow the page in both languages.
+   */
+  dir?: "ltr" | "rtl";
   autoComplete?: string;
 }) {
   return (
-    <div className="space-y-1.5 text-right w-full" dir="rtl">
+    <div className="space-y-1.5 text-start w-full">
       {label && (
         <label className="block text-xs sm:text-sm font-semibold text-slate-200">
           {label}
@@ -36,7 +41,7 @@ function FormInput({
         autoComplete={autoComplete}
         className={cn(
           "flex h-11 w-full rounded-2xl border border-white/15 bg-slate-900/60 px-4 py-2 text-sm text-white shadow-inner backdrop-blur-md transition-all duration-200 placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-500/30",
-          className
+          className,
         )}
       />
     </div>

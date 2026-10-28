@@ -9,17 +9,24 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import PriceBadge from "./PriceBadge";
 import useLanguageStore from "@/stores/languageStore";
+import { lang, Language } from "@/lang";
+import { defaultLocale, getLocaleConfig } from "@/lib/i18n/config";
 import { LuArrowLeft, LuArrowRight, LuBookOpen } from "react-icons/lu";
 
 interface CourseCardProps {
   course: CourseType;
+  /** URL locale of the surrounding content route; keeps SSR and hydration aligned. */
+  locale?: Language;
 }
 
 export default function CourseCard({
   course: { id, description, img, title, price },
+  locale,
 }: CourseCardProps) {
-  const { t, currentLanguage } = useLanguageStore();
-  const isRtl = currentLanguage === "fa";
+  const { t: storeT, currentLanguage } = useLanguageStore();
+  const activeLang = locale || currentLanguage || defaultLocale;
+  const t = locale ? lang[locale] : storeT;
+  const isRtl = getLocaleConfig(activeLang).dir === "rtl";
   const ArrowIcon = isRtl ? LuArrowLeft : LuArrowRight;
   const courseHref = isRtl ? `/courses/${id}` : `/en/courses/${id}`;
   const imageSource = getCourseImageSource(img);
@@ -78,7 +85,7 @@ export default function CourseCard({
 
         {/* Footer: Price & CTA */}
         <div className="flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-white/10">
-          <PriceBadge price={price} />
+          <PriceBadge price={price} locale={locale} />
 
           <Link href={courseHref} className="w-full sm:w-auto">
             <Button

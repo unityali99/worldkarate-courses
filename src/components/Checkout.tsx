@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Placeholder from "./Placeholder";
 import ApiClient from "@/services/ApiClient";
 import useLanguageStore from "@/stores/languageStore";
+import { getLocaleConfig } from "@/lib/i18n/config";
 import { PaymentType } from "@/schemas/Payment";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "@/utils/getErrorMessage";
@@ -16,14 +17,14 @@ import { LuCreditCard } from "react-icons/lu";
 export default function Checkout({ hydrated }: { hydrated: boolean }) {
   const { courses } = useCart();
   const { t, currentLanguage } = useLanguageStore();
-  const isRtl = currentLanguage === "fa";
+  const isRtl = getLocaleConfig(currentLanguage).dir === "rtl";
   const [isLoading, setIsLoading] = useState(false);
 
   const apiClient = new ApiClient<PaymentType>("/payment/checkout");
 
   const totalPrice = courses.reduce(
     (accumulator, currentVal) => accumulator + currentVal.price,
-    0
+    0,
   );
 
   const onClick = () => {
@@ -36,14 +37,17 @@ export default function Checkout({ hydrated }: { hydrated: boolean }) {
         window.location.href = res.data.paymentUrl;
       })
       .catch((error) =>
-        toast.error(getErrorMessage(error, "خطا در شروع پرداخت"))
+        toast.error(getErrorMessage(error, t.ui.checkoutFlow.startPayError)),
       )
       .finally(() => setIsLoading(false));
   };
 
   if (hydrated && courses.length === 0) {
     return (
-      <div className="w-11/12 sm:w-8/12 md:w-6/12 mx-auto text-center" dir={isRtl ? "rtl" : "ltr"}>
+      <div
+        className="w-11/12 sm:w-8/12 md:w-6/12 mx-auto text-center"
+        dir={isRtl ? "rtl" : "ltr"}
+      >
         <div className="p-8 rounded-3xl bg-slate-950/80 border border-white/15 backdrop-blur-xl text-slate-300">
           <p className="text-base font-semibold">{t.ui.noCoursesInCart}</p>
         </div>
@@ -59,18 +63,24 @@ export default function Checkout({ hydrated }: { hydrated: boolean }) {
         </h2>
 
         <PanelTableContainer>
-          <table className={`w-full ${isRtl ? "text-right" : "text-left"} border-collapse`}>
+          <table
+            className={`w-full ${isRtl ? "text-right" : "text-left"} border-collapse`}
+          >
             <thead>
               <tr className="border-b border-white/10 text-slate-400 text-xs sm:text-sm">
                 <th className="py-3 px-4 font-semibold">{t.ui.courseTitle}</th>
-                <th className="py-3 px-4 font-semibold text-center">{t.ui.coursePrice}</th>
+                <th className="py-3 px-4 font-semibold text-center">
+                  {t.ui.coursePrice}
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-sm">
               {hydrated
                 ? courses.map((c, i) => (
                     <tr key={i} className="hover:bg-white/5 transition-colors">
-                      <td className="py-4 px-4 font-medium text-slate-100">{c.title}</td>
+                      <td className="py-4 px-4 font-medium text-slate-100">
+                        {c.title}
+                      </td>
                       <td className="py-4 px-4 text-center font-bold text-slate-200">
                         {c.price.toLocaleString(isRtl ? "fa-IR" : "en-US")}
                       </td>
@@ -89,7 +99,11 @@ export default function Checkout({ hydrated }: { hydrated: boolean }) {
               <tr className="bg-white/5 font-bold text-base">
                 <td className="py-4 px-4 text-white">{t.ui.totalPayable}</td>
                 <td className="py-4 px-4 text-center text-emerald-400 font-extrabold text-lg">
-                  {hydrated ? `${totalPrice.toLocaleString(isRtl ? "fa-IR" : "en-US")}${t.ui.currency}` : <Placeholder />}
+                  {hydrated ? (
+                    `${totalPrice.toLocaleString(isRtl ? "fa-IR" : "en-US")}${t.ui.currency}`
+                  ) : (
+                    <Placeholder />
+                  )}
                 </td>
               </tr>
             </tbody>

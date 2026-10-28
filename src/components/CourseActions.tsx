@@ -6,12 +6,14 @@ import AddToCartBtn from "@/components/AddToCartBtn";
 import DeleteBtn from "@/components/DeleteBtn";
 import { CourseType } from "@/schemas/Course";
 import useAuth from "@/stores/authStore";
+import useLanguageStore from "@/stores/languageStore";
 import { Button } from "@/components/ui/button";
 import { isAdmin } from "@/utils/authHelpers";
 import { LuPlus } from "react-icons/lu";
 
 export default function CourseActions({ course }: { course: CourseType }) {
   const { user } = useAuth();
+  const { t } = useLanguageStore();
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => setHydrated(true), []);
@@ -25,11 +27,11 @@ export default function CourseActions({ course }: { course: CourseType }) {
   if (isAdmin(user)) {
     return (
       <div className="flex flex-col gap-3 w-full">
-        <DeleteBtn text="حذف دوره" courseId={String(course.id)} />
+        <DeleteBtn text={t.ui.manage.deleteCourse} courseId={String(course.id)} />
         <Link href="/profile/admin" className="w-full">
           <Button variant="teal" size="lg" className="w-full gap-2 font-bold">
             <LuPlus className="w-5 h-5 ml-1" />
-            <span>ایجاد دوره جدید</span>
+            <span>{t.ui.createCourse}</span>
           </Button>
         </Link>
       </div>

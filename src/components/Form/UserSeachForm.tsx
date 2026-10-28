@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import FormContainer from "@/layouts/FormContainer";
 import FormInput from "./components/FormInput";
 import FormButton from "./components/FormButton";
+import useLanguageStore from "@/stores/languageStore";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -21,6 +22,8 @@ export default function UserSeachForm() {
     resolver: zodResolver(SearchUser),
   });
 
+  const { t } = useLanguageStore();
+
   const [email, setEmail] = useState("");
 
   const onSubmit = ({ email }: SearchUserType) => setEmail(email);
@@ -28,18 +31,18 @@ export default function UserSeachForm() {
     <div className="space-y-10">
       <FormContainer>
         <h2 className="font-lalezar text-2xl sm:text-3xl text-white font-normal text-center mb-6">
-          جستجوی دوره‌های کاربر
+          {t.ui.searchUser.title}
         </h2>
         <div className="space-y-4">
           <div>
             <FormInput
               dir="ltr"
               register={register("email")}
-              label="ایمیل کاربر:"
+              label={t.ui.searchUser.emailLabel}
               placeholder="example@email.com"
             />
             {errors.email && (
-              <p className="mt-1 text-xs text-red-400 font-medium text-right">
+              <p className="mt-1 text-xs text-red-400 font-medium text-start">
                 {errors.email.message}
               </p>
             )}
@@ -49,7 +52,7 @@ export default function UserSeachForm() {
           <FormButton
             onClick={handleSubmit(onSubmit)}
             isLoading={false}
-            text="جستجو"
+            text={t.ui.search}
           />
         </div>
       </FormContainer>

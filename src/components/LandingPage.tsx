@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import useLanguageStore from "@/stores/languageStore";
 import { lang, Language } from "@/lang";
+import { defaultLocale, getLocaleConfig } from "@/lib/i18n/config";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -19,13 +20,14 @@ import { motion } from "framer-motion";
 
 export default function LandingPage({ locale }: { locale?: Language }) {
   const { t: storeT, currentLanguage } = useLanguageStore();
-  const activeLang = locale || currentLanguage || "fa";
+  const activeLang = locale || currentLanguage || defaultLocale;
   const t = locale ? lang[locale] : storeT;
-  const isRtl = activeLang === "fa";
+  const isRtl = getLocaleConfig(activeLang).dir === "rtl";
   const ArrowIcon = isRtl ? LuArrowLeft : LuArrowRight;
   const coursesHref = isRtl ? "/courses" : "/en/courses";
-  const profileHref = isRtl ? "/profile" : "/en/profile";
-  const adminHref = isRtl ? "/profile/admin" : "/en/profile/admin";
+  // profile/admin are locale-agnostic app routes (single source, no /en twin).
+  const profileHref = "/profile";
+  const adminHref = "/profile/admin";
 
   return (
     <div
@@ -229,7 +231,11 @@ export default function LandingPage({ locale }: { locale?: Language }) {
 
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <Link href={coursesHref}>
-                  <Button variant="primary" size="lg" className="font-bold shadow-glow-crimson">
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className="font-bold shadow-glow-crimson"
+                  >
                     {t.ui.landing.learnMore}
                   </Button>
                 </Link>
@@ -275,21 +281,27 @@ export default function LandingPage({ locale }: { locale?: Language }) {
                   <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center flex-shrink-0">
                     <LuTarget className="w-4 h-4" />
                   </div>
-                  <span className="text-sm sm:text-base font-medium">{t.ui.landing.structuredApproach}</span>
+                  <span className="text-sm sm:text-base font-medium">
+                    {t.ui.landing.structuredApproach}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-950/60 border border-white/10 backdrop-blur-xl text-slate-200">
                   <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center flex-shrink-0">
                     <LuTarget className="w-4 h-4" />
                   </div>
-                  <span className="text-sm sm:text-base font-medium">{t.ui.landing.progressiveSkill}</span>
+                  <span className="text-sm sm:text-base font-medium">
+                    {t.ui.landing.progressiveSkill}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-950/60 border border-white/10 backdrop-blur-xl text-slate-200">
                   <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center flex-shrink-0">
                     <LuTarget className="w-4 h-4" />
                   </div>
-                  <span className="text-sm sm:text-base font-medium">{t.ui.landing.traditionalModern}</span>
+                  <span className="text-sm sm:text-base font-medium">
+                    {t.ui.landing.traditionalModern}
+                  </span>
                 </div>
               </div>
             </motion.div>
@@ -361,7 +373,11 @@ export default function LandingPage({ locale }: { locale?: Language }) {
 
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <Link href={coursesHref}>
-                  <Button variant="gold" size="lg" className="font-bold shadow-[0_0_25px_rgba(245,158,11,0.3)]">
+                  <Button
+                    variant="gold"
+                    size="lg"
+                    className="font-bold shadow-[0_0_25px_rgba(245,158,11,0.3)]"
+                  >
                     {t.ui.landing.exploreHistory}
                   </Button>
                 </Link>

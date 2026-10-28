@@ -5,6 +5,7 @@ import Link from "next/link";
 import BackgroundImage from "@/layouts/BackgroundImage";
 import { Button } from "@/components/ui/button";
 import { LuHouse, LuRefreshCw } from "react-icons/lu";
+import { lang } from "@/lang";
 
 export default function ErrorPage({
   error,
@@ -13,6 +14,7 @@ export default function ErrorPage({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const e = lang.fa.ui.errors;
   useEffect(() => {
     console.error("Application error:", error);
   }, [error]);
@@ -29,11 +31,11 @@ export default function ErrorPage({
           </div>
 
           <h1 className="font-lalezar text-3xl md:text-4xl text-white font-normal leading-tight">
-            مشکلی پیش آمد
+            {e.errorTitle}
           </h1>
 
           <p className="text-slate-300/80 text-sm sm:text-base leading-relaxed">
-            درخواست شما با خطا روبه‌رو شد. می‌توانید دوباره تلاش کنید یا به صفحه اصلی برگردید.
+            {e.errorDesc}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
@@ -43,12 +45,16 @@ export default function ErrorPage({
               className="w-full sm:w-auto gap-2"
               onClick={reset}
             >
-              <span>تلاش دوباره</span>
+              <span>{e.retry}</span>
               <LuRefreshCw className="w-4 h-4" />
             </Button>
             <Link href="/" className="w-full sm:w-auto">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2">
-                <span>صفحه اصلی</span>
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto gap-2"
+              >
+                <span>{lang.fa.ui.home}</span>
                 <LuHouse className="w-4 h-4" />
               </Button>
             </Link>

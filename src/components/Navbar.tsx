@@ -25,7 +25,8 @@ export default function Navbar({ locale }: { locale?: Language }) {
 
   const homeHref = isEnglish ? "/en" : "/";
   const coursesHref = isEnglish ? "/en/courses" : "/courses";
-  const loginHref = isEnglish ? "/en/auth/login" : "/auth/login";
+  // Auth is a locale-agnostic app route (single source), so never prefix it.
+  const loginHref = "/auth/login";
 
   useEffect(() => setHydrated(true), []);
 
@@ -64,7 +65,10 @@ export default function Navbar({ locale }: { locale?: Language }) {
       <div className="relative z-10 w-full max-w-6xl mx-auto flex justify-between items-center">
         {/* Left Side: Logo & Navigation Links */}
         <div className="flex items-center gap-6 lg:gap-10">
-          <Link href={homeHref} className="relative block w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 flex-shrink-0">
+          <Link
+            href={homeHref}
+            className="relative block w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 flex-shrink-0"
+          >
             <Image
               priority
               alt="Logo"
@@ -111,7 +115,7 @@ export default function Navbar({ locale }: { locale?: Language }) {
         {/* Right Side Desktop: Auth / Cart / Profile Links */}
         <div className="hidden md:flex items-center gap-4">
           <Cart showDrawer={false} />
-          <LanguageSwitcher />
+          <LanguageSwitcher locale={locale} />
 
           {hydrated && user ? (
             <div className="flex items-center gap-3">
@@ -127,7 +131,11 @@ export default function Navbar({ locale }: { locale?: Language }) {
             </div>
           ) : hydrated && !user ? (
             <Link href={loginHref}>
-              <Button variant="primary" size="default" className="px-5 font-bold shadow-glow-crimson">
+              <Button
+                variant="primary"
+                size="default"
+                className="px-5 font-bold shadow-glow-crimson"
+              >
                 {t.ui.loginRegister}
               </Button>
             </Link>
@@ -138,7 +146,7 @@ export default function Navbar({ locale }: { locale?: Language }) {
 
         {/* Right Side Mobile: Directly Visible Language Switcher & Quick Logout */}
         <div className="flex md:hidden items-center gap-2.5">
-          <LanguageSwitcher />
+          <LanguageSwitcher locale={locale} />
 
           {hydrated && user && (
             <button

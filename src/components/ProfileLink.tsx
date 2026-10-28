@@ -2,19 +2,17 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import useLanguageStore from "@/stores/languageStore";
+import { getLocaleConfig } from "@/lib/i18n/config";
 import { LuUser } from "react-icons/lu";
 
 export default function ProfileLink({ fullName }: { fullName: string }) {
-  const pathname = usePathname();
-  const isEnglish = pathname.startsWith("/en");
   const { t, currentLanguage } = useLanguageStore();
-  const isRtl = currentLanguage === "fa";
+  const isRtl = getLocaleConfig(currentLanguage).dir === "rtl";
 
   return (
     <Link
-      href={isEnglish ? "/en/profile" : "/profile"}
+      href="/profile" // locale-agnostic app route (single source, no /en twin)
       aria-label={`${t.ui.openProfile}: ${fullName}`}
       className="group flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-white/20 bg-slate-950/85 backdrop-blur-xl shadow-glass transition-all duration-200 hover:border-teal-400/60 hover:bg-slate-900/95 hover:-translate-y-0.5 hover:shadow-lg"
     >

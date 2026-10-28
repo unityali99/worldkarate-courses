@@ -7,6 +7,7 @@ import ApiClient from "@/services/ApiClient";
 import useAuth from "@/stores/authStore";
 import useCart from "@/stores/cartStore";
 import useLanguageStore from "@/stores/languageStore";
+import { getLocaleConfig } from "@/lib/i18n/config";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
@@ -18,8 +19,8 @@ export default function AddToCartBtn({ course }: { course: CourseType }) {
   const { add } = useCart();
   const { user } = useAuth();
   const { t, currentLanguage } = useLanguageStore();
-  const isRtl = currentLanguage === "fa";
-  const profileHref = isRtl ? "/profile" : "/en/profile";
+  const isRtl = getLocaleConfig(currentLanguage).dir === "rtl";
+  const profileHref = "/profile"; // locale-agnostic app route (no /en twin)
   const [hydrated, setHydrated] = useState(false);
   const [userCourses, setUserCourses] = useState<CourseType[]>([]);
 

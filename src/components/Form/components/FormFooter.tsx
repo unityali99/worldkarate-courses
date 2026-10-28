@@ -11,9 +11,9 @@ export default function FormFooter({
   href: string;
 }) {
   return (
-    <p className="text-right text-xs sm:text-sm font-light text-slate-300" dir="rtl">
+    <p className="text-start text-xs sm:text-sm font-light text-slate-300">
       {text}{" "}
-      <Link href={href} className="inline-block text-teal-400 hover:text-teal-300 hover:underline font-semibold pr-1 transition-colors">
+      <Link href={href} className="inline-block text-teal-400 hover:text-teal-300 hover:underline font-semibold ps-1 transition-colors">
         {linkText}
       </Link>
     </p>

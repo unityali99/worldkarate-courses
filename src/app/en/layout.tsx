@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { lang } from "@/lang";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import SiteSchema from "@/components/seo/SiteSchema";
+import { getLocaleConfig } from "@/lib/i18n/config";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
     title: lang.en.metadata.title,
     description: lang.en.metadata.description,
     url: "/en",
-    siteName: "Sensei Amir Yari Karate Academy",
+    siteName: getLocaleConfig("en").siteName,
     locale: "en_US",
     type: "website",
     images: [
@@ -61,6 +63,7 @@ export default function EnglishLayout({
       <body
         className={`${iranSans.variable} ${lalezar.variable} font-sans min-h-screen flex flex-col bg-[#070c0e] text-white selection:bg-red-500 selection:text-white`}
       >
+        <SiteSchema locale="en" />
         <Providers locale="en">
           <Navbar locale="en" />
           <main className="flex-1 w-full flex flex-col pb-24 md:pb-0">

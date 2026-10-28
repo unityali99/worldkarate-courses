@@ -1,11 +1,20 @@
 "use client";
 
 import React, { useActionState, useEffect, useRef } from "react";
-import { registerNewsletter, type NewsletterState } from "@/services/registerNewsletter";
+import {
+  registerNewsletter,
+  type NewsletterState,
+} from "@/services/registerNewsletter";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { IoNewspaperOutline, IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
+import {
+  IoNewspaperOutline,
+  IoCheckmarkCircleOutline,
+  IoAlertCircleOutline,
+} from "react-icons/io5";
 import useLanguageStore from "@/stores/languageStore";
+import { lang, Language } from "@/lang";
+import { defaultLocale, getLocaleConfig } from "@/lib/i18n/config";
 import { cn } from "@/utils/cn";
 
 const initialState: NewsletterState = {
@@ -16,19 +25,24 @@ const initialState: NewsletterState = {
 interface NewsLetterFormProps {
   className?: string;
   buttonText?: string;
+  /** URL locale of the surrounding content route; keeps SSR and hydration aligned. */
+  locale?: Language;
 }
 
 export default function NewsLetterForm({
   className,
   buttonText,
+  locale,
 }: NewsLetterFormProps) {
-  const { t, currentLanguage } = useLanguageStore();
-  const isRtl = currentLanguage === "fa";
+  const { t: storeT, currentLanguage } = useLanguageStore();
+  const activeLang = locale || currentLanguage || defaultLocale;
+  const t = locale ? lang[locale] : storeT;
+  const isRtl = getLocaleConfig(activeLang).dir === "rtl";
   const finalButtonText = buttonText || t.ui.footer.newsletterButton;
 
   const [state, formAction, isPending] = useActionState(
     registerNewsletter,
-    initialState
+    initialState,
   );
   const formRef = useRef<HTMLFormElement>(null);
 

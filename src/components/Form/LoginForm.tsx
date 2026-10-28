@@ -49,7 +49,7 @@ export default function LoginForm() {
         replace(safeRedirect);
       })
       .catch((error) => {
-        toast.error(getErrorMessage(error, "ورود با خطا روبه‌رو شد"));
+        toast.error(getErrorMessage(error, t.ui.authMsg.loginError));
       })
       .finally(() => setIsLoading(false));
   };
@@ -69,7 +69,7 @@ export default function LoginForm() {
             placeholder={t.ui.emailPlaceholder}
           />
           {errors.email && (
-            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+            <p className="mt-1 text-xs text-red-400 font-medium text-start">
               {errors.email.message}
             </p>
           )}
@@ -84,7 +84,7 @@ export default function LoginForm() {
             placeholder={t.ui.passwordPlaceholder}
           />
           {errors.password && (
-            <p className="mt-1 text-xs text-red-400 font-medium text-right">
+            <p className="mt-1 text-xs text-red-400 font-medium text-start">
               {errors.password.message}
             </p>
           )}
