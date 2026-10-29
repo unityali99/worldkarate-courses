@@ -5,11 +5,11 @@ import Providers from "@/layouts/Providers";
 import { iranSans, lalezar } from "@/app/fonts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { lang } from "@/lang";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { getLocaleConfig } from "@/lib/i18n/config";
 import { getServerLocale } from "@/lib/i18n/serverLocale";
+import { buildRootMetadata } from "@/lib/seo/metadata";
 
 /**
  * Locale-agnostic layout for the interactive app area (auth, payment, profile).
@@ -26,8 +26,10 @@ import { getServerLocale } from "@/lib/i18n/serverLocale";
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
   return {
-    title: lang[locale].metadata.title,
-    description: lang[locale].metadata.description,
+    // Site-wide defaults (metadataBase, title template, description, keywords)
+    // from the same builder the content layouts use — but no canonical/hreflang:
+    // this area has no locale in the URL and must stay out of the index entirely.
+    ...buildRootMetadata(locale),
     robots: { index: false, follow: false },
   };
 }

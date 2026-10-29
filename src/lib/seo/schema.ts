@@ -4,6 +4,8 @@ import {
   absoluteUrl,
   siteUrl,
 } from "@/lib/i18n/config";
+import { lang } from "@/lang";
+import { SOCIAL_PROFILE_URLS } from "@/constants/social";
 
 const SCHEMA_CONTEXT = "https://schema.org";
 
@@ -14,6 +16,7 @@ function abs(url: string): string {
 }
 
 interface PersonOrg {
+  "@id": string;
   "@type": string;
   name: string;
   url: string;
@@ -21,14 +24,26 @@ interface PersonOrg {
   sameAs?: string[];
 }
 
-/** EducationalOrganization used as site publisher/provider. */
+/**
+ * Locale-independent identifier of the academy. Every node that references the
+ * organization (site graph, Person.worksFor, Course.provider, Article.publisher)
+ * carries this id, so parsers merge them into ONE entity.
+ */
+const ORGANIZATION_ID = abs("/#organization");
+
+/**
+ * EducationalOrganization used as site publisher/provider, with the official
+ * social profiles claimed as `sameAs` (entity-confirmation signal).
+ */
 export function organizationSchema(locale: Locale): PersonOrg {
   const cfg = getLocaleConfig(locale);
   return {
+    "@id": ORGANIZATION_ID,
     "@type": "EducationalOrganization",
     name: cfg.siteName,
     url: siteUrl(),
     logo: abs("/logo.webp"),
+    sameAs: SOCIAL_PROFILE_URLS,
   };
 }
 
@@ -51,6 +66,48 @@ export function websiteSchema(locale: Locale) {
  */
 export function siteSchema(locale: Locale) {
   return [websiteSchema(locale), organizationSchema(locale)];
+}
+
+/** Official federation that issued the instructor's coaching credentials. */
+const FEDERATION_URL = "https://www.ikf.ir";
+
+/**
+ * Locale-independent identifier of the instructor entity. Both the fa and en
+ * landing pages emit this same @id (with a localized name/url), so parsers
+ * resolve the two language renderings to ONE person instead of two.
+ */
+const PERSON_ID = abs("/#amir-yari");
+
+/**
+ * Person (the instructor) as the page's main entity, built from the localized
+ * `person` dictionary plus the public coaching record. Emitted on the landing
+ * pages so the campaign/credentials content is machine-readable.
+ */
+export function personSchema(locale: Locale) {
+  const person = lang[locale].person;
+  const credentials = lang[locale].ui.landing.credentialsItems;
+
+  return {
+    "@context": SCHEMA_CONTEXT,
+    "@type": "Person",
+    "@id": PERSON_ID,
+    name: person.name,
+    alternateName: person.alternateName,
+    jobTitle: person.jobTitle,
+    description: person.description,
+    image: abs("/sensei.webp"),
+    url: `${absoluteUrl(locale, "/")}#credentials`,
+    award: credentials.map(
+      (item) => `${item.role} — ${item.result} (${item.year})`,
+    ),
+    affiliation: {
+      "@type": "Organization",
+      name: person.affiliation,
+      url: FEDERATION_URL,
+    },
+    knowsAbout: person.knowsAbout,
+    worksFor: organizationSchema(locale),
+  };
 }
 
 export interface BreadcrumbItem {

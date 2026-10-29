@@ -6,6 +6,7 @@ import { FaWhatsapp, FaInstagram, FaTelegram } from "react-icons/fa";
 import useLanguageStore from "@/stores/languageStore";
 import { lang, Language } from "@/lang";
 import { defaultLocale, getLocaleConfig } from "@/lib/i18n/config";
+import { SOCIAL_LINKS } from "@/constants/social";
 import NewsLetterForm from "@/components/Form/NewsLetterForm";
 
 const toPersianDigits = (str: string) =>
@@ -80,7 +81,7 @@ export default function Footer({ locale }: { locale?: Language }) {
             </p>
             <div className="flex flex-col gap-2.5 pt-1">
               <a
-                href="https://www.instagram.com/amiryarikata/"
+                href={SOCIAL_LINKS.instagram}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Instagram"
@@ -93,7 +94,7 @@ export default function Footer({ locale }: { locale?: Language }) {
               </a>
 
               <a
-                href="https://t.me/Amiryarikata"
+                href={SOCIAL_LINKS.telegram}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Telegram"
@@ -106,7 +107,7 @@ export default function Footer({ locale }: { locale?: Language }) {
               </a>
 
               <a
-                href="https://wa.me/989191257020"
+                href={SOCIAL_LINKS.whatsapp}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="WhatsApp"

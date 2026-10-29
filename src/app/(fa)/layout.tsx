@@ -5,53 +5,15 @@ import Providers from "@/layouts/Providers";
 import { iranSans, lalezar } from "@/app/fonts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { lang } from "@/lang";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import SiteSchema from "@/components/seo/SiteSchema";
-import { getLocaleConfig } from "@/lib/i18n/config";
+import { buildRootMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://worldkarate.ir"
-  ),
-  title: {
-    default: lang.fa.metadata.title,
-    template: `%s | ${lang.fa.metadata.title}`,
-  },
-  description: lang.fa.metadata.description,
-  keywords: lang.fa.metadata.keywords,
-  alternates: {
-    canonical: "/",
-    languages: {
-      fa: "/",
-      "x-default": "/",
-      en: "/en",
-    },
-  },
-  openGraph: {
-    title: lang.fa.metadata.title,
-    description: lang.fa.metadata.description,
-    url: "/",
-    siteName: getLocaleConfig("fa").siteName,
-    locale: "fa_IR",
-    type: "website",
-    images: [
-      {
-        url: "/logo.webp",
-        width: 800,
-        height: 800,
-        alt: lang.fa.metadata.title,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: lang.fa.metadata.title,
-    description: lang.fa.metadata.description,
-    images: ["/logo.webp"],
-  },
-};
+// Site-wide defaults only (metadataBase, title template, fallback description).
+// Canonical / hreflang / OpenGraph URL are per-page facts and come from
+// `buildMetadata` in each page, never from this layout.
+export const metadata: Metadata = buildRootMetadata("fa");
 
 export default function PersianLayout({
   children,

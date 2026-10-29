@@ -92,6 +92,77 @@ export const en = {
       traditionalModern: "Traditional techniques with modern methods",
       exploreHistory: "Explore History",
       viewAchievements: "View Achievements",
+      credentialsBadge: "Official Credentials",
+      credentialsTitle: "Certified by the I.R. Iran Karate Federation",
+      credentialsDesc:
+        "Sensei Amir Yari's national team coaching record, as certified by the I.R. Iran Karate Federation (Certificate No. 1-11-560).",
+      credentialsItems: [
+        {
+          year: "2006",
+          role: "Coach — Cadet National Team",
+          result:
+            "Silver medal, student's individual Kata — Asian Championship, Singapore",
+        },
+        {
+          year: "2007",
+          role: "Coach — Junior & Cadet National Teams",
+          result:
+            "Silver medal, student's individual Kata — World Championship, Turkey (a first for Iran)",
+        },
+        {
+          year: "2008",
+          role: "Coach — Under-21 National Team",
+          result:
+            "Bronze medal, student's individual Kata — Asian Championship, Malaysia",
+        },
+        {
+          year: "2012",
+          role: "Coach — Senior National Team",
+          result:
+            "5th place, student's individual Kata — World Championship, France (a first for Iran)",
+        },
+        {
+          year: "2014",
+          role: "Coach — Senior National Team",
+          result:
+            "7th place, student's individual Kata — World Championship, Germany",
+        },
+        {
+          year: "2016",
+          role: "Coach — Senior National Team",
+          result: "World Championship — Austria",
+        },
+        {
+          year: "2012",
+          role: "Athlete — National Team Member",
+          result:
+            "Gold medal, senior team Kata — West Asian Championship, Saudi Arabia",
+        },
+        {
+          year: "2013",
+          role: "Coach — National Team",
+          result:
+            "Silver medal, student's individual Kata — World League, Turkey",
+        },
+        {
+          year: "2013",
+          role: "Coach — National Team",
+          result: "Bronze medal, team Kata — World League, Turkey",
+        },
+      ],
+      certificateAlt:
+        "Official I.R. Iran Karate Federation certificate listing Sensei Amir Yari's national team coaching positions",
+      certificateCaption:
+        "Official I.R. Iran Karate Federation certificate — No. 1-11-560, issued 7 May 2017",
+      certificateOpen: "View certificate",
+      certificateDownload: "Download certificate (PDF)",
+      certificateClose: "Close",
+      certificatePrev: "Previous page",
+      certificateNext: "Next page",
+      // 2012 World Championship photo
+      lineageCaption: "World Karate Championship 2012",
+      lineageAlt:
+        "Sensei Amir Yari with Sensei Inoue at the World Karate Championship 2012",
       readyToBegin: "Ready to Begin Your Journey?",
       joinCommunity:
         "Join our community of martial artists and start your transformation today",
@@ -359,11 +430,38 @@ export const en = {
     currency: " Toman",
   },
 
+  // Person entity (structured data / E-E-A-T)
+  person: {
+    name: "Amir Yari",
+    alternateName: "امیر یاری",
+    jobTitle: "Head Kata Coach & Academy Founder",
+    description:
+      "Former coach of Iran's national karate teams (cadet, junior and U21, and senior) and founder of the Sensei Amir Yari Karate Academy.",
+    affiliation: "I.R. Iran Karate Federation",
+    knowsAbout: [
+      "Kata",
+      "Kumite",
+      "Shito-ryu Shitokai",
+      "Karate coaching",
+      "Karate instruction",
+    ],
+  },
+
   // Metadata
   metadata: {
     title: "Sensei Yari Karate Academy",
     description:
       "The most comprehensive karate training platform in the country",
+    home: {
+      title: "Kata & Karate Training",
+      description:
+        "Step-by-step Kata and Kumite training with Sensei Amir Yari, former coach of Iran's national karate teams. Video courses for every level, beginner to advanced.",
+    },
+    courses: {
+      title: "Karate & Kata Video Courses",
+      description:
+        "Browse the Kata and Kumite video courses of Sensei Amir Yari's academy: structured training packages for beginner, intermediate and advanced students.",
+    },
     keywords: [
       "karate training",
       "kata training",

@@ -8,6 +8,7 @@ import { lang, Language } from "@/lang";
 import { defaultLocale, getLocaleConfig } from "@/lib/i18n/config";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import CertificateCard from "@/components/CertificateCard";
 import {
   LuArrowRight,
   LuArrowLeft,
@@ -18,16 +19,28 @@ import {
 } from "react-icons/lu";
 import { motion } from "framer-motion";
 
+/** Certificate scans and PDFs per locale (fa: 1 page, en: 2 pages). */
+const CERTIFICATES: Record<Language, { pages: string[]; pdf: string }> = {
+  fa: {
+    pages: ["/resume-fa.webp"],
+    pdf: "/documents/amir-yari-certificate-fa.pdf",
+  },
+  en: {
+    pages: ["/resume-en-1.webp", "/resume-en-2.webp"],
+    pdf: "/documents/amir-yari-certificate-en.pdf",
+  },
+};
+
 export default function LandingPage({ locale }: { locale?: Language }) {
   const { t: storeT, currentLanguage } = useLanguageStore();
   const activeLang = locale || currentLanguage || defaultLocale;
   const t = locale ? lang[locale] : storeT;
   const isRtl = getLocaleConfig(activeLang).dir === "rtl";
+  const certificate = CERTIFICATES[activeLang];
   const ArrowIcon = isRtl ? LuArrowLeft : LuArrowRight;
   const coursesHref = isRtl ? "/courses" : "/en/courses";
-  // profile/admin are locale-agnostic app routes (single source, no /en twin).
-  const profileHref = "/profile";
-  const adminHref = "/profile/admin";
+  // In-page anchors: the landing page is the public home of the instructor's
+  // story and credentials, so these CTAs never leave it.
 
   return (
     <div
@@ -188,7 +201,7 @@ export default function LandingPage({ locale }: { locale?: Language }) {
       {/* ========================================================================= */}
       {/* 3. ABOUT SENSEI ROW                                                       */}
       {/* ========================================================================= */}
-      <section className="relative py-10 md:py-14 z-10">
+      <section id="about" className="relative py-10 md:py-14 z-10 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Sensei Portrait with Luminous Frame */}
@@ -204,8 +217,8 @@ export default function LandingPage({ locale }: { locale?: Language }) {
                 src="/sensei.webp"
                 alt="Sensei Amir Yari"
                 fill
+                sizes="(max-width: 1023px) 100vw, 550px"
                 className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                unoptimized
               />
             </motion.div>
 
@@ -239,7 +252,7 @@ export default function LandingPage({ locale }: { locale?: Language }) {
                     {t.ui.landing.learnMore}
                   </Button>
                 </Link>
-                <Link href={adminHref}>
+                <Link href="#about">
                   <Button variant="outline" size="lg">
                     {t.ui.landing.meetSensei}
                   </Button>
@@ -319,8 +332,8 @@ export default function LandingPage({ locale }: { locale?: Language }) {
                 src="/product-1.webp"
                 alt="Karate Methodology"
                 fill
+                sizes="(max-width: 1023px) 100vw, 550px"
                 className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                unoptimized
               />
             </motion.div>
           </div>
@@ -346,8 +359,8 @@ export default function LandingPage({ locale }: { locale?: Language }) {
                 src="/product-3.webp"
                 alt="Legacy"
                 fill
+                sizes="(max-width: 1023px) 100vw, 550px"
                 className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                unoptimized
               />
             </motion.div>
 
@@ -381,7 +394,7 @@ export default function LandingPage({ locale }: { locale?: Language }) {
                     {t.ui.landing.exploreHistory}
                   </Button>
                 </Link>
-                <Link href={profileHref}>
+                <Link href="#credentials">
                   <Button variant="outline" size="lg">
                     {t.ui.landing.viewAchievements}
                   </Button>
@@ -393,7 +406,118 @@ export default function LandingPage({ locale }: { locale?: Language }) {
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. READY TO BEGIN CTA                                                     */}
+      {/* 6. WORLD CHAMPIONSHIP 2012 PHOTO                                         */}
+      {/* ========================================================================= */}
+      <section className="relative py-10 md:py-14 z-10">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <motion.figure
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="m-0"
+          >
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/15 bg-slate-950/60 aspect-[4/3]">
+              <Image
+                src="/sensei-inoue.webp"
+                alt={t.ui.landing.lineageAlt}
+                fill
+                sizes="(max-width: 1023px) 100vw, 768px"
+                className="object-cover"
+              />
+            </div>
+            <figcaption className="mt-4 text-center font-lalezar text-2xl sm:text-3xl text-white leading-tight">
+              {t.ui.landing.lineageCaption}
+            </figcaption>
+          </motion.figure>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 7. CREDENTIALS                                                           */}
+      {/* ========================================================================= */}
+      <section
+        id="credentials"
+        className="relative py-10 md:py-14 z-10 scroll-mt-24"
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10 items-start">
+            {/* Certified coaching record (crawlable text) */}
+            <div className="lg:col-span-3">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className={`space-y-4 ${isRtl ? "text-right" : "text-left"}`}
+              >
+                <Badge
+                  variant="gold"
+                  className="py-1 px-3 text-xs font-semibold"
+                >
+                  {t.ui.landing.credentialsBadge}
+                </Badge>
+
+                <h2 className="font-lalezar text-3xl sm:text-4xl lg:text-5xl text-amber-400 font-normal leading-tight">
+                  {t.ui.landing.credentialsTitle}
+                </h2>
+
+                <p className="text-slate-300 text-base sm:text-lg leading-loose text-justify font-light">
+                  {t.ui.landing.credentialsDesc}
+                </p>
+              </motion.div>
+
+              <ol className="mt-6 space-y-3">
+                {t.ui.landing.credentialsItems.map((item) => (
+                  <li
+                    key={`${item.year}-${item.role}-${item.result}`}
+                    className="flex items-start gap-4 p-4 rounded-2xl bg-slate-950/60 border border-white/10 transition-colors hover:border-amber-500/40 hover:bg-slate-900/70"
+                  >
+                    <span className="shrink-0 rounded-xl border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs sm:text-sm font-bold text-amber-300 tabular-nums">
+                      {item.year}
+                    </span>
+                    <div className="space-y-1">
+                      <h3 className="text-sm sm:text-base font-semibold text-white">
+                        {item.role}
+                      </h3>
+                      <p className="text-xs sm:text-sm leading-relaxed text-slate-400 font-light">
+                        {item.result}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* Official certificate scan + PDF */}
+            <motion.div
+              initial={{ opacity: 0, x: isRtl ? -30 : 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="lg:col-span-2"
+            >
+              <CertificateCard
+                pages={certificate.pages}
+                pdfHref={certificate.pdf}
+                alt={t.ui.landing.certificateAlt}
+                caption={t.ui.landing.certificateCaption}
+                dir={isRtl ? "rtl" : "ltr"}
+                labels={{
+                  open: t.ui.landing.certificateOpen,
+                  close: t.ui.landing.certificateClose,
+                  prev: t.ui.landing.certificatePrev,
+                  next: t.ui.landing.certificateNext,
+                  download: t.ui.landing.certificateDownload,
+                }}
+              />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 8. READY TO BEGIN CTA                                                     */}
       {/* ========================================================================= */}
       <section className="relative py-14 md:py-20 z-10 text-center">
         <div className="max-w-4xl mx-auto px-4">
